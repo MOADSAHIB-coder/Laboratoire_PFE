@@ -1,0 +1,27 @@
+import { Routes, Route } from "react-router-dom";
+import  Dashboard from "../pages/etudiant/Dashboard";
+import MesCours from "../pages/etudiant/cours";
+import Projets from "../pages/etudiant/projets";
+import TP from "../pages/etudiant/tp";
+import Discussion from "../pages/etudiant/discussion";
+import Ressources from "../pages/etudiant/ressources";
+import Parametres from "../pages/etudiant/parametres";
+import Profil from "../pages/etudiant/profil";
+
+
+function EtudiantRoute() {
+  return (
+    <Routes>
+      <Route path="/" element={<Dashboard />} />
+      <Route path="/mes-cours" element={<MesCours />} />
+      <Route path="/projets-devoirs" element={<Projets />} />
+      <Route path="/tps" element={<TP />} />
+      <Route path="/discussion" element={<Discussion />} />
+      <Route path="/ressources" element={<Ressources />} />
+      <Route path="/parametres" element={<Parametres />} />
+      <Route path="/profil" element={<Profil />} />
+    </Routes>
+  );
+}
+
+export default EtudiantRoute;
