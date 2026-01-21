@@ -43,8 +43,8 @@ function SideBar({ val1, val2, val3, icon1, icon2, icon3, link1, link2, link3}) 
             <Link to='/etudiant/discussion'><span className="font-medium text-base">Discussion</span></Link>
         </li>
         <li className="flex items-center py-3 px-6 mb-2 rounded-lg cursor-pointer text-gray-700 hover:bg-blue-100 hover:text-blue-600 transition-all duration-200 ease-in-out gap-4 shadow-sm">
-            <img src="/icons/ressources.png" alt="" className="w-6 h-6" />
-            <Link to='/etudiant/ressources'><span className="font-medium text-base">Ressources</span></Link>
+            <img src="/icons/statistique.png" alt="" className="w-6 h-6" />
+            <Link to='/etudiant/statistique'><span className="font-medium text-base">Statistique</span></Link>
         </li>
         <li className="flex items-center py-3 px-6 mb-2 rounded-lg cursor-pointer text-gray-700 hover:bg-blue-100 hover:text-blue-600 transition-all duration-200 ease-in-out gap-4 shadow-sm">
             <img src="/icons/parametres.png" alt="" className="w-6 h-6" />

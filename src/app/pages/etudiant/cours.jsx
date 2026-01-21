@@ -72,17 +72,22 @@ function MesCours(){
 
     return (
         <EtudiantLayout>
-            <div className="p-5 h-screen overflow-auto bg-gray-50 flex flex-wrap justify-center gap-10">
-                {/* Graph1 */}
-                <div className="bg-white p-5 rounded-2xl shadow-xl flex-1 min-w-[20px] max-w-[400px] max-h-[400px]">
-                    <h2 className="text-xl font-semibold mb-6 text-center">Progression de l'utilisateur</h2>
-                    <Bar data={dataProgress} />
-                </div>
+            <div className="min-h-screen flex flex-col items-center bg-gray-50 p-10 gap-10">
+                <h2 className="text-center text-3xl font-bold text-gray-800 max-w-3xl">
+                    Découvrez vos cours et commencez votre apprentissage
+                </h2>
+                <div className="flex flex-wrap justify-center gap-10 w-full">
+                    {/* Graph1 */}
+                    <div className="bg-white p-5 rounded-2xl shadow-xl max-w-[70vh] max-h-[53vh] w-full">
+                        <h2 className="text-xl font-semibold mb-4 text-center">Progression de l'utilisateur</h2>
+                        <Bar data={dataProgress} />
+                    </div>
 
-                {/* Graph2 */}
-                <div className="bg-white p-5 rounded-2xl shadow-xl flex-1 min-w-[350px] max-w-[400px] max-h-[400px]">
-                    <h2 className="text-xl font-semibold mb-6 text-center">Distribution par type de cours</h2>
-                    <Radar data={dataRadar} options={optionsRadar} />
+                    {/* Graph2 */}
+                    <div className="bg-white p-5 rounded-2xl shadow-xl max-w-[50vh] max-w-[47vh] w-full">
+                        <h2 className="text-xl font-semibold mb-4 text-center">Distribution par type de cours</h2>
+                        <Radar data={dataRadar} options={optionsRadar} />
+                    </div>
                 </div>
             </div>
 

@@ -1,6 +1,6 @@
 import EtudiantLayout from "../../layouts/EtudiantLayout";
 
-function Ressources(){
+function Statistique(){
 
     
     return (
@@ -10,4 +10,4 @@ function Ressources(){
     )
 }
 
-export default Ressources
+export default Statistique

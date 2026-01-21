@@ -4,7 +4,7 @@ import MesCours from "../pages/etudiant/cours";
 import Projets from "../pages/etudiant/projets";
 import TP from "../pages/etudiant/tp";
 import Discussion from "../pages/etudiant/discussion";
-import Ressources from "../pages/etudiant/ressources";
+import Statistique from "../pages/etudiant/ressources";
 import Parametres from "../pages/etudiant/parametres";
 import Profil from "../pages/etudiant/profil";
 
@@ -17,7 +17,7 @@ function EtudiantRoute() {
       <Route path="/projets-devoirs" element={<Projets />} />
       <Route path="/tps" element={<TP />} />
       <Route path="/discussion" element={<Discussion />} />
-      <Route path="/ressources" element={<Ressources />} />
+      <Route path="/statistique" element={<Statistique />} />
       <Route path="/parametres" element={<Parametres />} />
       <Route path="/profil" element={<Profil />} />
     </Routes>
