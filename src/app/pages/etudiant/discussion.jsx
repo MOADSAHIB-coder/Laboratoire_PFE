@@ -1,3 +1,4 @@
+import Communication from "../../components/communication";
 import EtudiantLayout from "../../layouts/EtudiantLayout";
 
 function Discussion(){
@@ -5,7 +6,7 @@ function Discussion(){
     
     return (
         <EtudiantLayout>
-            
+            <Communication/>
         </EtudiantLayout>
     )
 }

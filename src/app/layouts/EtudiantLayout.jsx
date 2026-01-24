@@ -9,8 +9,8 @@ function EtudiantLayout({children}){
             {/* Sidebar */}
             <SideBar
                 val1="Mes cours" 
-                val2="Devoirs/Projets" 
-                val3="Realiser TP" 
+                val2="Devoirs en cours" 
+                val3="Réaliser TP Virtuel" 
                 icon1='/icons/cours.png'
                 icon2='/icons/devoir.png'
                 icon3='/icons/tp.png'
@@ -20,11 +20,16 @@ function EtudiantLayout({children}){
             />
 
             {/* Main Content */}
-            <main className="ml-[20rem] p-5 overflow-auto h-screen">
-                <Header />
-                {children}
-            </main>
-        </div>
+            <div className="flex-1 ml-[20rem] flex flex-col h-screen">
+                    {/* Header fixe en haut */}
+                    <Header />
+
+                    {/* Contenu scrollable */}
+                    <main className="flex-1 overflow-auto p-5 bg-gray-50">
+                    {children}
+                    </main>
+                </div>
+            </div>
 
     );
 }
