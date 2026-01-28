@@ -124,7 +124,7 @@ function Dashboard(){
             <div className=" p-5 h-screen overflow-auto [&::-webkit-scrollbar]:hidden bg-gray-50 flex flex-col gap-6" 
                 style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}>
                 {/* Carte de bienvenue */}
-                <div className="bg-white rounded-xl shadow-md p-6 flex flex-col md:flex-row md:items-center md:justify-between">
+                <div className="bg-white rounded-xl shadow-md p-4 sm:p-6 flex flex-col md:flex-row md:items-center md:justify-between w-full">
                     <div>
                     <h2 className="text-2xl font-bold">Bienvenue, {studenName || 'Etudiant Reseaux'} !</h2>
                     <p className="text-gray-600 mt-1">Filière : {filiere || 'Gestion des Reseaux et Securite Informatique'}</p>
@@ -135,12 +135,12 @@ function Dashboard(){
                     <img
                         src={studentImage || '/icons/user.png'}
                         alt="visage de Etudiant"
-                        className="w-[6.3rem] h-[6.3rem] rounded-full object-cover bg-[#E9F1F2] ml-[3.4rem]"
+                        className="w-20 h-20 sm:w-28 sm:h-28 md:w-35 md:h-35 rounded-full object-cover bg-[#E9F1F2] mt-4 md:mt-0"
                     />
                 </div>
 
                 {/* Accès rapide aux TP / projets */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 w-full">
                     <Link to='/etudiant/tps' className="bg-blue-500 text-white px-6 py-4 rounded-lg shadow hover:bg-blue-600 hover:font-bold text-center">
                         <button >
                         Commencer un TP
@@ -158,39 +158,40 @@ function Dashboard(){
                         </button>
                     </Link>
                 </div>
-                <div className="flex flex-wrap justify-center gap-10 w-full">
+                <div className="flex flex-col md:flex-row flex-wrap justify-center gap-6 w-full">
 
                     {/* Colonne 1: Graph1 devant Graph4 */}
                     <div className="flex flex-col gap-10">
-                        <div className="bg-white p-5 rounded-2xl shadow-xl max-w-[70vw] max-h-[60vh] w-[30vw] h-[40vh]">
+                        <div className="bg-white p-5 rounded-2xl shadow-xl w-full sm:w-[45vw] md:w-[30vw] h-64 sm:h-72 md:h-96">
                         <h3 className="text-xl font-semibold mb-4 text-center">
                             Progression Devoirs & Projets
                         </h3>
-                        <Bar data={dataProgress1} />
+                        <Bar data={dataProgress1}  options={{ responsive: true, maintainAspectRatio: true }}/>
+
                         </div>
 
-                        <div className="bg-white p-5 rounded-2xl shadow-xl max-w-[70vw] max-h-[60vh] w-[30vw] h-[40vh]">
+                        <div className="bg-white p-4 sm:p-5 rounded-2xl shadow-xl w-full sm:w-[45vw] md:w-[30vw] h-64 sm:h-72 md:h-96">
                         <h2 className="text-xl font-semibold mb-4 text-center">
                             Progression de l'utilisateur
                         </h2>
-                        <Bar data={dataProgress2} />
+                        <Bar data={dataProgress2} options={{ responsive: true, maintainAspectRatio: true }}/>
                         </div>
                     </div>
 
                     {/* Colonne 2: Graph2 devant Graph3 */}
                     <div className="flex flex-col gap-10">
-                        <div className="bg-white p-5 rounded-2xl shadow-xl max-w-[70vw] w-[20vw]">
+                        <div className="bg-white p-5 rounded-2xl shadow-xl w-full sm:w-[45vw] md:w-[25vw] h-64 sm:h-72 md:h-75 ">
                         <h3 className="text-xl font-semibold mb-4 text-center">
                             Répartition Devoirs vs Projets
                         </h3>
-                        <Doughnut data={dataRepartition} />
+                        <Doughnut data={dataRepartition}  options={{ responsive: false, maintainAspectRatio: true }}/>
                         </div>
 
-                        <div className="bg-white p-5 rounded-2xl shadow-xl max-w-[70vw] w-[20vw]">
+                        <div className="bg-white p-5 rounded-2xl shadow-xl w-full sm:w-[45vw] md:w-[25vw] h-64 sm:h-72 md:h-[51vh]">
                         <h2 className="text-xl font-semibold mb-4 text-center">
                             Distribution par type de cours
                         </h2>
-                        <Radar data={dataRadar} options={optionsRadar} />
+                        <Radar data={dataRadar}  options={{ ...optionsRadar, maintainAspectRatio: true }}/>
                         </div>
                     </div>
 

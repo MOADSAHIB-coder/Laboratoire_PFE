@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { FiStar } from "react-icons/fi";
 const etudiants = [
     { 
       id: 1, 
@@ -7,7 +8,8 @@ const etudiants = [
       niveau: "S3",
       avatar: '/icons/user.png',
       lastMessage: "Bonjour",
-      lastDate: "2025-01-22T00:35:00"
+      lastDate: "2025-01-22T00:35:00",
+      role:'etu'
     },
     { 
       id: 2, 
@@ -16,7 +18,8 @@ const etudiants = [
       niveau: "S3",
       avatar: '/icons/user.png',
       lastMessage: "Tu as fini le TP ?",
-      lastDate: "2025-01-23T12:35:00"
+      lastDate: "2025-01-23T12:35:00",
+      role:'etu'
     },
     { 
       id: 3, 
@@ -25,7 +28,8 @@ const etudiants = [
       niveau: "S2",
       avatar: '/icons/user.png',
       lastMessage: "Merci !",
-      lastDate: "2026-01-20T10:35:00"
+      lastDate: "2026-01-20T10:35:00",
+      role:'etu'
     },
     { 
       id: 4, 
@@ -34,7 +38,8 @@ const etudiants = [
       niveau: "S3",
       avatar: '/icons/user.png',
       lastMessage: "Ok",
-      lastDate: "2026-01-22T14:35:00"
+      lastDate: "2026-01-22T14:35:00",
+      role:'prof'
     },
     { 
       id: 5, 
@@ -43,7 +48,8 @@ const etudiants = [
       niveau: "S3",
       avatar: '/icons/user.png',
       lastMessage: "On se voit demain",
-      lastDate: "2026-01-22T17:50:10"
+      lastDate: "2026-01-22T17:50:10",
+      role:'etu'
     },
     { 
       id: 6, 
@@ -52,7 +58,8 @@ const etudiants = [
       niveau: "S3",
       avatar: '/icons/user.png',
       lastMessage: "Tu as fini le TP ?",
-      lastDate: "2025-01-23T12:35:00"
+      lastDate: "2025-01-23T12:35:00",
+      role:'prof'
     },
     { 
       id: 7, 
@@ -61,7 +68,8 @@ const etudiants = [
       niveau: "S2",
       avatar: '/icons/user.png',
       lastMessage: "Merci !",
-      lastDate: "2026-01-20T10:35:00"
+      lastDate: "2026-01-20T10:35:00",
+      role:'etu'
     },
     { 
       id: 8, 
@@ -70,7 +78,8 @@ const etudiants = [
       niveau: "S3",
       avatar: '/icons/user.png',
       lastMessage: "Tu as fini le TP ?",
-      lastDate: "2025-01-23T12:35:00"
+      lastDate: "2025-01-23T12:35:00",
+      role:'prof'
     },
     { 
       id: 9, 
@@ -79,7 +88,8 @@ const etudiants = [
       niveau: "S2",
       avatar: '/icons/user.png',
       lastMessage: "Merci !",
-      lastDate: "2026-01-20T10:35:00"
+      lastDate: "2026-01-20T10:35:00",
+      role:'etu'
     },
     { 
       id: 10, 
@@ -88,7 +98,8 @@ const etudiants = [
       niveau: "S3",
       avatar: '/icons/user.png',
       lastMessage: "Tu as fini le TP ?",
-      lastDate: "2025-01-23T12:35:00"
+      lastDate: "2025-01-23T12:35:00",
+      role:'etu'
     },
     { 
       id: 11, 
@@ -97,7 +108,8 @@ const etudiants = [
       niveau: "S2",
       avatar: '/icons/user.png',
       lastMessage: "Merci !",
-      lastDate: "2026-01-20T10:35:00"
+      lastDate: "2026-01-20T10:35:00",
+      role:'prof'
     },
     { 
       id: 12, 
@@ -106,7 +118,8 @@ const etudiants = [
       niveau: "S3",
       avatar: '/icons/user.png',
       lastMessage: "Tu as fini le TP ?",
-      lastDate: "2025-01-23T12:35:00"
+      lastDate: "2025-01-23T12:35:00",
+      role:'etu'
     },
     { 
       id: 13, 
@@ -115,7 +128,8 @@ const etudiants = [
       niveau: "S2",
       avatar: '/icons/user.png',
       lastMessage: "Merci !",
-      lastDate: "2026-01-20T10:35:00"
+      lastDate: "2026-01-20T10:35:00",
+      role:'etu'
     },
     { 
       id: 14, 
@@ -124,7 +138,8 @@ const etudiants = [
       niveau: "S3",
       avatar: '/icons/user.png',
       lastMessage: "Tu as fini le TP ?",
-      lastDate: "2025-01-23T12:35:00"
+      lastDate: "2025-01-23T12:35:00",
+      role:'etu'
     },
     { 
       id: 15, 
@@ -133,7 +148,8 @@ const etudiants = [
       niveau: "S2",
       avatar: '/icons/user.png',
       lastMessage: "Merci !",
-      lastDate: "2026-01-20T10:35:00"
+      lastDate: "2026-01-20T10:35:00",
+      role:'etu'
     },
     { 
       id: 16, 
@@ -142,7 +158,8 @@ const etudiants = [
       niveau: "S2",
       avatar: '/icons/user.png',
       lastMessage: "Tu as fini le TP ?",
-      lastDate: "2025-01-23T12:35:00"
+      lastDate: "2025-01-23T12:35:00",
+      role:'etu'
     },
     { 
       id: 17, 
@@ -151,7 +168,8 @@ const etudiants = [
       niveau: "S2",
       avatar: '/icons/user.png',
       lastMessage: "Merci !",
-      lastDate: "2026-01-20T10:35:00"
+      lastDate: "2026-01-20T10:35:00",
+      role:'etu'
     },
     { 
       id: 18, 
@@ -160,7 +178,8 @@ const etudiants = [
       niveau: "S3",
       avatar: '/icons/user.png',
       lastMessage: "Tu as fini le TP ?",
-      lastDate: "2025-01-23T12:35:00"
+      lastDate: "2025-01-23T12:35:00",
+      role:'etu'
     },
     { 
       id: 19, 
@@ -169,7 +188,8 @@ const etudiants = [
       niveau: "S2",
       avatar: '/icons/user.png',
       lastMessage: "Merci !",
-      lastDate: "2026-01-20T10:35:00"
+      lastDate: "2026-01-20T10:35:00",
+      role:'etu'
     },
     { 
       id: 20, 
@@ -178,7 +198,8 @@ const etudiants = [
       niveau: "S1",
       avatar: '/icons/user.png',
       lastMessage: "Tu as fini le TP ?",
-      lastDate: "2025-01-23T12:35:00"
+      lastDate: "2025-01-23T12:35:00",
+      role:'etu'
     },
     { 
       id: 21, 
@@ -187,7 +208,8 @@ const etudiants = [
       niveau: "S2",
       avatar: '/icons/user.png',
       lastMessage: "Merci !",
-      lastDate: "2026-01-20T10:35:00"
+      lastDate: "2026-01-20T10:35:00",
+      role:'etu'
     },
     { 
       id: 22, 
@@ -196,7 +218,8 @@ const etudiants = [
       niveau: "S4",
       avatar: '/icons/user.png',
       lastMessage: "Tu as fini le TP ?",
-      lastDate: "2025-01-23T12:35:00"
+      lastDate: "2025-01-23T12:35:00",
+      role:'etu'
     },
     { 
       id: 23, 
@@ -205,7 +228,8 @@ const etudiants = [
       niveau: "S2",
       avatar: '/icons/user.png',
       lastMessage: "Merci !",
-      lastDate: "2026-01-20T10:35:00"
+      lastDate: "2026-01-20T10:35:00",
+      role:'etu'
     },
     { 
       id: 24, 
@@ -214,7 +238,8 @@ const etudiants = [
       niveau: "S4",
       avatar: '/icons/user.png',
       lastMessage: "Tu as fini le TP ?",
-      lastDate: "2025-01-23T12:35:00"
+      lastDate: "2025-01-23T12:35:00",
+      role:'etu'
     },
     { 
       id: 25, 
@@ -223,7 +248,8 @@ const etudiants = [
       niveau: "S4",
       avatar: '/icons/user.png',
       lastMessage: "Merci !",
-      lastDate: "2026-01-20T10:35:00"
+      lastDate: "2026-01-20T10:35:00",
+      role:'etu'
     },
   ];
 
@@ -287,21 +313,21 @@ function Communication() {
 
 
   return (
-    <div className="flex h-screen overflow-hidden max-h-[85vh] bg-gray-100 border border-blue-400 ">
+    <div className="flex border md:border-black h-screen md:h-[87vh] bg-gray-100 overflow-auto">
       
       {/* Contacts */}
-      <aside className="w-1/3 bg-white border-r relative flex flex-col h-full overflow-hidden">
-        <div className="absolute left-0 top-0 h-full w-1 bg-blue-500 rounded-r z-10"></div>
-        <h2 className="p-3 text-lg font-bold text-gray-700 tracking-wide border-gray-200 uppercase">
+      <aside className="w-80 md:w-80 lg:w-96 bg-white border-r flex flex-col">
+        <div className="absolute left-0 top-0 h-full w-1 bg-black rounded-r z-10"></div>
+        <h2 className="p-4 text-lg font-bold uppercase">
             Mes contacts
         </h2>
 
-        <div className="p-3">
+        <div className="p-1">
           <input
             type="search"
             placeholder="Chercher vos contacts..."
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full p-2 pl-5 rounded-full bg-gray-200 outline-none"
+            className="w-full p-2 pl-4 rounded-full bg-gray-200 outline-none"
           />
         </div>
 
@@ -322,17 +348,21 @@ function Communication() {
               {/* Infos */}
               <div className="flex-1">
                 <div className="flex justify-between">
-                  <p className="font-semibold">{c.nom}</p>
+                  <p className="font-semibold">{c.role === 'etu' ? c.nom : <>{c.nom} - <FiStar className="inline text-blue-400" /></>}</p>
                   <span className="text-xs text-gray-400">{formatLastMessageDate(c.lastDate)}</span>
                 </div>
-
                 <div className="flex justify-between">
                   <p className="text-sm text-gray-500 truncate">
                     {c.lastMessage}
                   </p>
-                  <span className="text-xs bg-blue-200 px-2 rounded">
+                  {c.role === 'etu' ? (<span className="text-xs bg-blue-200 px-2 rounded">
                     Niveau : {c.niveau}
-                  </span>
+                  </span>)
+                   : (
+                        <span className="text-xs bg-blue-200 px-2 rounded">
+                    Professeur
+                  </span>)
+                  }
                 </div>
               </div>
             </li>
@@ -342,8 +372,7 @@ function Communication() {
       </aside>
 
       {/* Chat */}
-      <section className="flex flex-col flex-1">
-        
+      <section className="flex-1 flex flex-col bg-[#f2f5f7]">        
         {!selectedContact ? (
           //pas de tap sur un contact
           <div className="flex-1 flex items-center justify-center text-gray-400 text-lg">
@@ -352,7 +381,7 @@ function Communication() {
         ) : (
           <>
             {/* Header */}
-            <div className="p-3 bg-white border-b flex items-center gap-3">
+            <div className="p-4 bg-white border-b flex items-center gap-3">
               <img
                 src={selectedContact.avatar}
                 alt=""
@@ -377,13 +406,13 @@ function Communication() {
             </div>
 
             {/* Input */}
-            <div className="p-3 bg-white flex gap-2">
+            <div className="p-4 bg-white flex flex-col sm:flex-row gap-2">
               <input
                 type="text"
                 placeholder={`Message à ${selectedContact.nom}...`}
                 className="flex-1 p-3 pl-5 rounded-full bg-gray-200 outline-none"
               />
-              <button className="bg-blue-500 text-white px-6 rounded-full">
+              <button className="bg-blue-500 text-white px-6 py-2 rounded-full w-full sm:w-auto">
                 Envoyer
               </button>
             </div>

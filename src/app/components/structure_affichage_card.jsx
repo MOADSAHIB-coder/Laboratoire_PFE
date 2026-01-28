@@ -1,14 +1,15 @@
 import { useState } from "react";
 
 const Datas = [
-  {id:1, titre: 'cours de reseaux informatique', description : 'reseaux informatique ....', type: 'Reseau', niveau: 'bac+1', semestre:'S2', nomProf : 'Ayoube jibouni', date: '2026-01-22 14:35:12', filiere : 'Gestion des reseau et securite',AU:'2026-2027' },
-  {id:2, titre: 'TP de dev web',type_tp:'projet', description : 'SQL....', type: 'Data', niveau: 'bac+1', semestre:'S2', nomProf : 'Maryame Homare', date: '2026-01-23 14:35:12', filiere : 'Gestion des reseau et securite',AU:'2026-2027'},
-  {id:3, titre: 'cours de reseaux informatique', description : 'reseaux informatique ....', type: 'dev', niveau: 'bac+2', semestre:'S3', nomProf : 'Naoual Nassiri', date: '2026-01-22 14:35:12', filiere : 'Gestion des reseau et securite',AU:'2026-2027' },
-  {id:4, titre: 'TP de base de donnees et conception',type_tp:'devoir', description : 'UML et NoSQL ....', type: 'Data', niveau: 'bac+1', semestre:'S2', nomProf : 'Ibrahim Dib', date: '2025-01-22 13:35:12', filiere : 'Gestion des reseau et securite',AU:'2026-2027' }
+  {id:1, titre: 'cours de reseaux informatique', description : 'reseaux informatique ....', type: 'Reseau', niveau: 'bac+1', semestre:'S2', nomProf : 'Ayoube jibouni', date: '2026-01-22 14:35:12', filiere : 'Gestion des reseau et securite',AU:'2025-2026' },
+  {id:2, titre: 'TP de dev web',type_tp:'projet', description : 'SQL....', type: 'Data', niveau: 'bac+1', semestre:'S2', nomProf : 'Maryame Homare', date: '2026-01-23 14:35:12', filiere : 'Gestion des reseau et securite',AU:'2025-2026'},
+  {id:3, titre: 'cours de reseaux informatique', description : 'reseaux informatique ....', type: 'dev', niveau: 'bac+2', semestre:'S3', nomProf : 'Naoual Nassiri', date: '2026-01-22 14:35:12', filiere : 'Gestion des reseau et securite',AU:'2025-2026' },
+  {id:4, titre: 'TP de base de donnees et conception',type_tp:'devoir', description : 'UML et NoSQL ....', type: 'Data', niveau: 'bac+1', semestre:'S2', nomProf : 'Ibrahim Dib', date: '2025-01-22 13:35:12', filiere : 'Gestion des reseau et securite',AU:'2025-2026' }
 ];//supprimer par la suite (l'utilisation de la base de donnees.)
 
-function CadresAffichage({ userFilter }) {
+function CadresAffichage({ userFilter, type_service }) {
   const [selectedCours, setSelectedCours] = useState(null);
+
 
   // Filtrer les cours selon les infos de l'utilisateur
   const filteredDatas = Datas.filter(Meschoix =>
@@ -16,36 +17,67 @@ function CadresAffichage({ userFilter }) {
     (!userFilter.filiere || Meschoix.filiere === userFilter.filiere) &&
     (!userFilter.niveau || Meschoix.niveau === userFilter.niveau) &&
     (!userFilter.semestre || Meschoix.semestre === userFilter.semestre) &&
-    (!userFilter.AU || Meschoix.AU === userFilter.AU)&&
-    (!userFilter.type_tp || Meschoix.type_tp === userFilter.type_tp) 
+    (!userFilter.AU || Meschoix.AU === userFilter.AU)
+    
   );
+  const cours = filteredDatas.filter(item => !item.type_tp); // cours
+  const tps = filteredDatas.filter(item =>
+    item.type_tp && (!userFilter.type_tp || item.type_tp === userFilter.type_tp)
+  ); // projet / devoir
+
 
   return (
-    <div className="p-5 flex flex-col gap-4">
-      {filteredDatas.length>0 ? (filteredDatas.map((Meschoix, index) => (
-        <div
-          key={Meschoix.id}
-          className="p-4 border rounded shadow hover:bg-gray-100 cursor-pointer"
-          onClick={() => setSelectedCours(Meschoix)}
-        >
-          <p>
-            <span className="font-bold mr-2">{index + 1}.</span>
-            <span className="mr-2">{Meschoix.titre}</span>
-            <span className="text-gray-500">{Meschoix.date}</span>
-          </p>
-        </div>
-        ))) : 
-          (
-        <p className="text-center text-gray-500 italic mt-4">
-          ⚠️ Aucun résultat trouvé pour vos critères.
-        </p>
-          )
-        }
+    <div className="p-5 flex flex-col gap-4 w-full max-w-7xl mx-auto">
+          {type_service ==='cours' ? (
+            cours.length > 0 ? (
+              cours.map((Meschoix, index) => (
+                <div
+                  key={Meschoix.id}
+                  className="p-4 border rounded shadow hover:bg-gray-100 cursor-pointer w-full max-w-full sm:max-w-md md:max-w-lg lg:max-w-xl"
+                  onClick={() => setSelectedCours(Meschoix)}
+                >
+                  <p>
+                    <span className="font-bold mr-2">{index + 1}.</span>
+                    <span className="mr-2">{Meschoix.titre}</span>
+                    <span className="text-gray-500">{Meschoix.date}</span>
+                  </p>
+                </div>
+              ))
+            ) : (
+              // ⚠️ Aucun cours trouvé s'affiche seulement si on est sur la page cours
+              <p className="text-center text-gray-500 italic mt-4">
+                ⚠️ Aucun cours trouvé.
+              </p>
+            )
+          ) : (
+            tps.length > 0 ? (
+              tps.map((Meschoix, index) => (
+                <div
+                  key={Meschoix.id}
+                  className="p-4 border rounded shadow hover:bg-gray-100 cursor-pointer"
+                  onClick={() => setSelectedCours(Meschoix)}
+                >
+                  <p>
+                    <span className="font-bold mr-2">{index + 1}.</span>
+                    <span className="mr-2">{Meschoix.titre}</span>
+                    <span className="text-gray-500">{Meschoix.date}</span>
+                    <span className="ml-2 text-xs text-blue-500 uppercase">
+                      {Meschoix.type_tp}
+                    </span>
+                  </p>
+                </div>
+              ))
+            ) : (
+              // ⚠️ Aucun projet / devoir trouvé s'affiche seulement si on est sur la page tp/projet
+              <p className="text-center text-gray-500 italic mt-4">
+                ⚠️ Aucun projet / devoir trouvé.
+              </p>
+            )
+          )}
 
         {selectedCours && (
             <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50">
-                <div className="bg-white w-[40vw] max-w-2xl rounded-2xl shadow-2xl overflow-hidden relative">
-
+                <div className="bg-white w-full sm:w-3/4 md:w-2/3 lg:w-1/2 max-w-2xl rounded-2xl shadow-2xl overflow-hidden relative max-h-[90vh] overflow-y-auto">
                 {/* Header */}
                 <div className="flex justify-between items-center px-6 py-4 border-b bg-gray-50">
                     <h2 className="text-lg font-semibold text-gray-800">
@@ -61,7 +93,7 @@ function CadresAffichage({ userFilter }) {
 
                 {/* Body */}
                 <div className="p-6 space-y-3 text-sm text-gray-700">
-                    <div className="grid grid-cols-2 gap-3">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <p><span className="font-medium">Filière :</span> {selectedCours.filiere}</p>
                     <p><span className="font-medium">Année :</span> {selectedCours.AU}</p>
                     <p><span className="font-medium">Professeur :</span> {selectedCours.nomProf}</p>

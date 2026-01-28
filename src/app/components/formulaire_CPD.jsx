@@ -2,11 +2,14 @@
 
 import { useState } from "react";
 import CadresAffichage from "./structure_affichage_card";
+import { Datas } from "../pages/enseignant/Dashboard";
 
-function FormulaireCPD({children, Type, showTypeSelect  }){
+function FormulaireCPD({children, Type, showTypeSelect, choix, role  }){
 
-    const DateActuelle = new Date().getFullYear();
-    const Annees = Array.from({length:7},(_,i) => DateActuelle - 5 + i);
+    const now = new Date()
+    const DateActuelle = now.getFullYear();
+    const MoisActuelle = now.getMonth()+1
+    const Annees = Array.from({length:7},(_,i) => DateActuelle - 7 + i);
 
     const [Niveau, setniveaus] = useState('bac+1')
     const semestres = Niveau === 'bac+1' ? ['S1','S2'] : ['S3','S4']
@@ -28,30 +31,50 @@ function FormulaireCPD({children, Type, showTypeSelect  }){
 
     });
 
+    // Prof simulé
+    const user = { nomProf: "Naoual Nassiri" };
+    const dataProf = Datas.filter(element => 
+        element.nomProf === user.nomProf
+    )
+
+    const filieres = [...new Set(dataProf.map(f => f.filiere))]
 
     
 
     return (
-        <div className="max-w-8xl w-[60vw] mx-auto p-6 bg-white shadow-lg rounded-lg">
-            <div className="max-w-6xl mx-auto p-6">
+        <div className="w-full sm:w-[90%] md:w-[80%] lg:w-[70%] xl:w-[60%] mx-auto p-4 sm:p-6 bg-white shadow-lg rounded-lg">
+            <div className="w-full mx-auto p-3 sm:p-6">
                 <form className="flex flex-col gap-4">
 
                     {/* Filiere */}
                     <div className="flex flex-col">
                     <label htmlFor="filiere" className="mb-1 font-semibold text-gray-700">Filière :</label>
-                    <input
+                    {role === 'etu' ? (
+                        <input
                         type="text"
-                        value={filters.filiere}
                         id="filiere"
-                        readOnly
+                        value={filters.filiere}
                         className="border border-gray-300 rounded px-3 py-2 bg-gray-100 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                        readOnly
                     />
+                    ) : (
+                        <select 
+                        id="filiere"
+                        className="border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                    >
+                        {filieres.map((f, i) => 
+                            <option value={f} key={i}>{f}</option>
+                        )}
+                    </select>
+                    )}
+                    
                     </div>
 
                     {/* Année universitaire */}
                     <div className="flex flex-col">
-                    <label htmlFor="AU" className="mb-1 font-semibold text-gray-700">Année universitaire :</label>
-                    <select
+                        <label htmlFor="AU" className="mb-1 font-semibold text-gray-700">Année universitaire :</label>
+                        {role === 'etu' ? (
+                            <select
                         id="AU"
                         defaultValue={DateActuelle-1}
                         onChange={(e)=>setFilters({...filters, AU: e.target.value})}
@@ -61,6 +84,20 @@ function FormulaireCPD({children, Type, showTypeSelect  }){
                         <option key={index} value={`${A}-${A+1}`}>{A}-{A+1}</option>
                         ))}
                     </select>
+                        ) : (
+                            <select
+                        id="AU"
+                        defaultValue={DateActuelle-1}
+                        onChange={(e)=>setFilters({...filters, AU: e.target.value})}
+                        className="border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                    >
+                        {6<MoisActuelle ? (
+                            <option value={`${DateActuelle}-${DateActuelle+1}`}>{DateActuelle}-{DateActuelle+1}</option>
+                        ) : (
+                            <option value={`${DateActuelle-1}-${DateActuelle}`}>{DateActuelle-1}-{DateActuelle}</option>
+                        )}
+                    </select>
+                        )}
                     </div>
 
                     {/* Type de cours/projet/devoir */}
@@ -83,7 +120,7 @@ function FormulaireCPD({children, Type, showTypeSelect  }){
                     {/* Niveau avec radios */}
                     <div className="flex flex-col">
                     <label className="mb-1 font-semibold text-gray-700">Niveau :</label>
-                    <div className="flex items-center gap-6">
+                    <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-6">
                         <label className="flex items-center gap-2">
                         <input
                             type="radio"
@@ -143,22 +180,22 @@ function FormulaireCPD({children, Type, showTypeSelect  }){
                     </div>)}
                     {children}
                     
-
                     {/* Bouton submit */}
+                    {role === 'etu' && (
                     <button
-                    type="submit"
-                    onClick={valider}
-                    className="mt-4 bg-blue-500 text-white py-2 rounded hover:bg-blue-600 transition-colors"
+                        type="submit"
+                        onClick={valider}
+                        className="mt-4 bg-blue-500 text-white py-2 px-4 rounded w-full sm:w-auto hover:bg-blue-600 transition-colors"
                     >
-                    Valider
-                    </button>
+                        Valider
+                    </button>)}
                 </form>
             </div>
 
             {/* AFFICHAGE DES COURS SOUS LE FORMULAIRE */}
             {appliedFilters && (
-            <div className="mt-4">
-                <CadresAffichage userFilter={appliedFilters} />
+            <div className="mt-4 w-full overflow-x-auto">
+                <CadresAffichage userFilter={appliedFilters} type_service={choix} />
             </div>
             )}
 

@@ -1,85 +1,105 @@
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
+import { MdDashboard } from "react-icons/md";
 
-function SideBar({ val1, val2, val3, icon1, icon2, icon3, link1, link2, link3}) {
+function SideBar({ val1, val2, val3, icon1, icon2, icon3, link1, link2, link3, link4, link5, link6, link7, link8}) {
+
 
   return (
-    <aside className="w-[20rem] h-[100vh]  bg-white shadow-md text-black flex flex-col p-[1rem] fixed ">
+    <aside className="w-[20vw] h-screen bg-white shadow-md text-black flex flex-col p-6 fixed top-0 left-0 ">
+
       
-      <div className="bg-white rounded-[8%] h-[35vh] p-3 mb-12">
-        <a href="http://estd.uiz.ac.ma/" target="{_blank}"><img
-          src={'/images/ESTD.png'}
-          alt="Not found"
-          className="w-[6.3rem] h-[6.3rem] rounded-full object-cover bg-[#E9F1F2] ml-[4.8rem]"
-        /></a>
-        <p className="text-gray-700 text-sm md:text-base leading-relaxed mt-2 text-justify">
+      <div className="bg-white rounded-lg p-3 mb-6 sm:mb-8 flex flex-col items-center">
+        <a href="http://estd.uiz.ac.ma/" target="{_blank}">
+            <img
+            src="/images/ESTD.png"
+            alt="Logo ESTD"
+            className="w-20 h-20 sm:w-24 sm:h-24 rounded-full object-cover bg-[#E9F1F2] mb-2"
+            />
+        </a>
+        <p className="text-gray-700 text-xs sm:text-sm md:text-base leading-relaxed text-center">
             <span className="font-semibold text-gray-900">École Supérieure de Technologie de Dakhla</span>{" "}
             <span className="text-gray-500">(ESTD)</span> — <i>ESTD-LABTECHNET</i> est une plateforme de laboratoire virtuel sécurisé dédiée à l’apprentissage des réseaux informatiques et à la supervision des activités pédagogiques, conçue pour évoluer vers d’autres domaines de l’informatique.
         </p>
 
       </div>
 
-      <ul className="flex-1 list-none mb-[5.2rem] p-0 m-0 bg-white rounded-3xl">
-        <Link to='/etudiant'>
-          <li className="flex items-center py-3 px-6 mb-2 rounded-lg cursor-pointer text-gray-700 hover:bg-blue-100 hover:text-blue-600 transition-all duration-200 ease-in-out gap-4 shadow-sm">
-            <img src="/icons/accueil.png" alt="" className="w-4 h-4" />
-            <span className="font-medium text-base">Dashboard</span>
-          </li>
-        </Link>
+      <ul className="flex-1 list-none p-0 m-0 space-y-2 sm:space-y-3">
+        <NavLink to={link1}
+            className={({isActive}) => `flex items-center py-2 sm:py-3 px-4 sm:px-6 rounded-lg cursor-pointer text-gray-700 transition-colors duration-200 gap-3 sm:gap-4 
+            ${isActive ? "bg-blue-100 text-blue-600" : "hover:bg-blue-100 hover:text-blue-600 hover:font-bold"}`}
 
-        <Link to={link1}>
-          <li className="flex items-center py-3 px-6 mb-2 rounded-lg cursor-pointer text-gray-700 hover:bg-blue-100 hover:text-blue-600 transition-all duration-200 ease-in-out gap-4 shadow-sm">
-            <img src={icon1} alt="" className="w-4 h-4" />
-            <span className="font-medium text-base">{val1}</span>           
-          </li>
-        </Link> 
+        >
+            <MdDashboard className="text-2xl text-black w-4 h-4 sm:w-5 sm:h-5" />
+            <span className="text-sm sm:text-base">Dashboard</span>
+        </NavLink>
 
-        <Link to={link2}>
-          <li className="flex items-center py-3 px-6 mb-2 rounded-lg cursor-pointer text-gray-700 hover:bg-blue-100 hover:text-blue-600 transition-all duration-200 ease-in-out gap-4 shadow-sm">
-            <img src={icon2} alt="" className="w-4 h-4" />
-            <span className="font-medium text-base">{val2}</span>
-          </li>
-        </Link>
+        <NavLink to={link2}
+            className={({isActive}) => `flex items-center py-2 sm:py-3 px-4 sm:px-6 rounded-lg cursor-pointer text-gray-700 transition-colors duration-200 gap-3 sm:gap-4 
+            ${isActive ? "bg-blue-100 text-blue-600" : "hover:bg-blue-100 hover:text-blue-600 hover:font-bold"}`}
 
-        <Link to={link3}>
-          <li className="flex items-center py-3 px-6 mb-2 rounded-lg cursor-pointer text-gray-700 hover:bg-blue-100 hover:text-blue-600 transition-all duration-200 ease-in-out gap-4 shadow-sm">
-            <img src={icon3} alt="" className="w-4 h-4" />
-            <span className="font-medium text-base">{val3}</span>
-          </li>
-        </Link>
+        >
+            <img src={icon1} alt="" className="w-4 h-4 sm:w-5 sm:h-5" />
+            <span className="text-sm sm:text-base">{val1}</span>           
+        </NavLink> 
 
-        <Link to='/etudiant/discussion'>
-          <li className="flex items-center py-3 px-6 mb-2 rounded-lg cursor-pointer text-gray-700 hover:bg-blue-100 hover:text-blue-600 transition-all duration-200 ease-in-out gap-4 shadow-sm">
-            <img src="/icons/discussion.png" alt="" className="w-4 h-4" />
-            <span className="font-medium text-base">Discussion</span>
-          </li>
-        </Link>
+        <NavLink to={link3}
+            className={({isActive}) => `flex items-center py-2 sm:py-3 px-4 sm:px-6 rounded-lg cursor-pointer text-gray-700 transition-colors duration-200 gap-3 sm:gap-4 
+            ${isActive ? "bg-blue-100 text-blue-600" : "hover:bg-blue-100 hover:text-blue-600 hover:font-bold"}`}
 
-        <Link to='/etudiant/statistique'>
-          <li className="flex items-center py-3 px-6 mb-2 rounded-lg cursor-pointer text-gray-700 hover:bg-blue-100 hover:text-blue-600 transition-all duration-200 ease-in-out gap-4 shadow-sm">
-            <img src="/icons/statistique.png" alt="" className="w-4 h-4" />
-            <span className="font-medium text-base">Statistique</span>
-          </li>
-        </Link>
+        >
+            <img src={icon2} alt="" className="w-4 h-4 sm:w-5 sm:h-5" />
+            <span className="text-sm sm:text-base">{val2}</span>
+        </NavLink>
 
-        <Link to='/etudiant/parametres'>
-          <li className="flex items-center py-3 px-6 mb-2 rounded-lg cursor-pointer text-gray-700 hover:bg-blue-100 hover:text-blue-600 transition-all duration-200 ease-in-out gap-4 shadow-sm">
-            <img src="/icons/parametres.png" alt="" className="w-4 h-4" />
-            <span className="font-medium text-base">Parametres</span>
-          </li>
-        </Link>
+        <NavLink to={link4}
+            className={({isActive}) => `flex items-center py-2 sm:py-3 px-4 sm:px-6 rounded-lg cursor-pointer text-gray-700 transition-colors duration-200 gap-3 sm:gap-4 
+            ${isActive ? "bg-blue-100 text-blue-600" : "hover:bg-blue-100 hover:text-blue-600 hover:font-bold"}`}
 
-        <Link to='/etudiant/profil'>
-          <li className="flex items-center py-3 px-6 mb-2 rounded-lg cursor-pointer text-gray-700 hover:bg-blue-100 hover:text-blue-600 transition-all duration-200 ease-in-out gap-4 shadow-sm">
-            <img src="/icons/profil.png" alt="" className="w-4 h-4" />
-            <span className="font-medium text-base">Pofil</span>
-        </li>
-        </Link>
+        >
+            <img src={icon3} alt="" className="w-4 h-4 sm:w-5 sm:h-5" />
+            <span className="text-sm sm:text-base">{val3}</span>
+        </NavLink>
 
-        <Link to=''>
-          <li className="flex items-center py-3 px-6 mb-2 rounded-lg cursor-pointer text-red-700 hover:bg-blue-100 hover:text-blue-600 transition-all duration-200 ease-in-out gap-4 shadow-sm">
-            <span className="font-medium text-base">Déconnexion</span>
-        </li>
-        </Link>
+        <NavLink to={link5}
+            className={({isActive}) => `flex items-center py-2 sm:py-3 px-4 sm:px-6 rounded-lg cursor-pointer text-gray-700 transition-colors duration-200 gap-3 sm:gap-4 
+            ${isActive ? "bg-blue-100 text-blue-600" : "hover:bg-blue-100 hover:text-blue-600 hover:font-bold"}`}
+
+        >
+            <img src="/icons/discussion.png" alt="" className="w-4 h-4 sm:w-5 sm:h-5" />
+            <span className="text-sm sm:text-base">Discussion</span>
+        </NavLink>
+
+        <NavLink to={link6}
+            className={({isActive}) => `flex items-center py-2 sm:py-3 px-4 sm:px-6 rounded-lg cursor-pointer text-gray-700 transition-colors duration-200 gap-3 sm:gap-4 
+            ${isActive ? "bg-blue-100 text-blue-600" : "hover:bg-blue-100 hover:text-blue-600 hover:font-bold"}`}
+
+        >
+            <img src="/icons/statistique.png" alt="" className="w-4 h-4 sm:w-5 sm:h-5" />
+            <span className="text-sm sm:text-base">Statistique</span>
+        </NavLink>
+
+        <NavLink to={link7}
+            className={({isActive}) => `flex items-center py-2 sm:py-3 px-4 sm:px-6 rounded-lg cursor-pointer text-gray-700 transition-colors duration-200 gap-3 sm:gap-4 
+            ${isActive ? "bg-blue-100 text-blue-600" : "hover:bg-blue-100 hover:text-blue-600 hover:font-bold"}`}
+
+        >
+            <img src="/icons/parametres.png" alt="" className="w-4 h-4 sm:w-5 sm:h-5" />
+            <span className="text-sm sm:text-base">Parametres</span>
+        </NavLink>
+
+        <NavLink to={link8}
+            className={({isActive}) => `flex items-center py-2 sm:py-3 px-4 sm:px-6 rounded-lg cursor-pointer text-gray-700 transition-colors duration-200 gap-3 sm:gap-4 
+            ${isActive ? "bg-blue-100 text-blue-600" : "hover:bg-blue-100 hover:text-blue-600 hover:font-bold"}`}
+
+          >
+            <img src="/icons/profil.png" alt="" className="w-4 h-4 sm:w-5 sm:h-5" />
+            <span className="text-sm sm:text-base">Pofil</span>
+        </NavLink>
+
+        <NavLink to='/'
+            className='flex items-center py-3 px-6 mb-2 rounded-lg cursor-pointer text-red-700 hover:bg-blue-100 hover:text-blue-600 transition-all duration-200 ease-in-out gap-4 shadow-sm'>
+            <span className="text-sm sm:text-base">Déconnexion</span>
+        </NavLink>
 
       </ul>
     </aside>

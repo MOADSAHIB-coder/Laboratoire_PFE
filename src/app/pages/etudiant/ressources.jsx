@@ -46,13 +46,13 @@ function Statistique(){
 
     return (
         <EtudiantLayout>
-            <div className="p-6 bg-gray-100 min-h-screen">
-                <h1 className="text-2xl font-bold mb-6">📊 Statistiques – LABTECHNET</h1>
+            <div className="p-4 sm:p-6 md:p-8 min-h-screen w-full">
+                <h1 className="text-2xl font-bold text-center mb-6">📊 Statistiques – LABTECHNET</h1>
 
 
                 {/* Cartes principales */}
-                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
-                <StatCard title="Progression globale%">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 w-full">
+                <StatCard title="Progression globale%" >
                     <p className="text-2xl font-bold text-blue-600 mb-2">{stats.progression}%</p>
                     <div className="w-full bg-gray-200 rounded-full h-2">
                         <div
@@ -88,21 +88,24 @@ function Statistique(){
 
                 {/* Graphique TP les plus travaillés */}
                 <div className="bg-white rounded-2xl shadow p-6 mt-6">
-                <h2 className="text-lg font-semibold mb-4">TP les plus travaillés</h2>
-                <span className="text-sm text-gray-400">Top 4</span>
-                <ResponsiveContainer width="100%" height={300}>
-                <BarChart data={topTP}>
-                <XAxis dataKey="name" />
-                <YAxis />
-                <Tooltip />
-                <Bar dataKey="value" name='Total' fill="#3B82F6"/>
-                </BarChart>
-                </ResponsiveContainer>
+                    <h2 className="text-lg font-semibold mb-4">TP les plus travaillés</h2>
+                    <span className="text-sm text-gray-400">Top 4</span>
+                    <div className="w-full h-64 sm:h-72 md:h-80 lg:h-96">
+                        <ResponsiveContainer width="100%" height='100%'>
+                        <BarChart data={topTP}>
+                        <XAxis dataKey="name" />
+                        <YAxis />
+                        <Tooltip />
+                        <Bar dataKey="value" name='Total' fill="#3B82F6"/>
+                        </BarChart>
+                        </ResponsiveContainer>
+                    </div>
                 </div>
 
                 <div className="bg-white rounded-2xl shadow p-6 mt-6">
                     <h2 className="text-lg font-semibold mb-4">📊 TP par niveau</h2>
-                    <ResponsiveContainer width="100%" height={250}>
+                    <div className="w-full h-64 sm:h-72 md:h-80 lg:h-96">
+                    <ResponsiveContainer width="100%" height='100%'>
                         <BarChart data={tpNiveaux} margin={{ top: 10, right: 20, left: 0, bottom: 0 }}>
                         <XAxis dataKey="niveau" />
                         <YAxis />
@@ -110,11 +113,13 @@ function Statistique(){
                         <Bar dataKey="value" name='Total' fill="#3B82F6" />
                         </BarChart>
                     </ResponsiveContainer>
+                    </div>
                 </div>
 
                 <div className="bg-white rounded-2xl shadow p-6 mt-6">
                     <h2 className="text-lg font-semibold mb-4">📈 Activité quotidienne</h2>
-                    <ResponsiveContainer width="100%" height={300}>
+                    <div className="w-full h-64 sm:h-72 md:h-80 lg:h-96">
+                    <ResponsiveContainer width="100%" height='100%'>
                         <BarChart data={dailyActivity}>
                         <XAxis dataKey="day" />
                         <YAxis />
@@ -123,6 +128,7 @@ function Statistique(){
                         <Bar dataKey="tp" name="TP réalisés" fill="#10B981" />
                         </BarChart>
                     </ResponsiveContainer>
+                    </div>
                 </div>
 
 

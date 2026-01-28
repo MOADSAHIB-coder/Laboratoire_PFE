@@ -26,7 +26,7 @@ function Parametres() {
 
   return (
     <EtudiantLayout>
-      <div className="min-h-screen bg-gray-100 p-8 flex justify-center">
+      <div className="min-h-screen p-8 flex justify-center">
         <div className="bg-white shadow-xl rounded-xl w-full max-w-4xl p-6 space-y-6">
 
           <h1 className="text-3xl font-bold text-gray-800 flex items-center gap-2">

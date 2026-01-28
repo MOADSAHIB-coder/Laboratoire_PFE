@@ -7,7 +7,7 @@ const etudiantData = {
     nom: "SAHIB",
     prenom: "MOAD",
     genre: "Homme",
-    matricule: "ETU2026001",
+    matricule: "R138445438",
     dateNaissance: "2003-05-12",
     lieuNaissance: "Casablanca, Maroc",
     photo: "/icons/user.png",
@@ -65,15 +65,16 @@ function ProfilEtudiant() {
 
     return (
         <EtudiantLayout>
-            <main className="min-h-screen bg-gray-100 p-10 flex justify-center">
-                <section className="bg-white shadow-2xl rounded-2xl w-full max-w-5xl p-8 flex flex-col gap-8">
+            <div className="min-h-screen p-4 sm:p-6 md:p-8 lg:p-10 flex justify-center w-full">
+                <section className="bg-white shadow-2xl rounded-2xl w-full max-w-full sm:max-w-[90%] md:max-w-[80%] lg:max-w-[70%] p-4 sm:p-6 md:p-8 flex flex-col gap-8">
 
                     {/* HEADER PHOTO + IDENTITÉ */}
-                    <div className="flex flex-col md:flex-row items-center gap-6">
-                        <img src={etudiant.photo} alt={etudiant.nom} className="w-32 h-32 rounded-full border-4 border-blue-500 object-cover"/>
+                    <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6 md:gap-8">
+                        <img src={etudiant.photo} alt={etudiant.nom} className="w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 lg:w-36 lg:h-36 rounded-full border-4 border-blue-500 object-cover"/>
                         <div className="flex flex-col gap-1">
                             <h1 className="text-3xl font-bold text-gray-800">{etudiant.prenom} {etudiant.nom}</h1>
                             <p className="text-gray-500">{etudiant.filiere} - {etudiant.niveau} ({etudiant.semestre})</p>
+                            <p className="text-gray-400">Matricul - {etudiant.matricule}</p>
                             <p className="text-gray-400">Inscrit depuis {etudiant.dateInscription}</p>
                         </div>
                     </div>
@@ -85,7 +86,7 @@ function ProfilEtudiant() {
                     </div>
 
                     {/* CONTACT */}
-                    <div className="border-t pt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="border-t pt-4 sm:pt-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
                         <div className="flex items-center gap-3"><FaEnvelope className="text-blue-500"/> {etudiant.email}</div>
                         <div className="flex items-center gap-3"><FaPhone className="text-green-500"/> {etudiant.telPrincipal}</div>
                         <div className="flex items-center gap-3"><FaCalendarAlt  className="text-gray-500"/> Né le {etudiant.dateNaissance}</div>
@@ -95,7 +96,7 @@ function ProfilEtudiant() {
                     </div>
 
                     {/* ACADÉMIQUE */}
-                    <div className="border-t pt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="border-t pt-4 sm:pt-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
                         <div className="flex items-center gap-3"><FaGraduationCap className="text-blue-500"/> Université : {etudiant.universite}</div>
                         <div className="flex items-center gap-3"><FaGraduationCap className="text-green-500"/> Niveau : {etudiant.niveau}</div>
                         <div className="flex items-center gap-3"><FaGraduationCap className="text-purple-500"/> Filière : {etudiant.filiere}</div>
@@ -105,7 +106,7 @@ function ProfilEtudiant() {
                     </div>
 
                     {/* COMPÉTENCES */}
-                    <div className="border-t pt-6">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                         <h2 className="text-2xl font-semibold text-gray-700 mb-3">Compétences & Certifications</h2>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div>
@@ -124,7 +125,7 @@ function ProfilEtudiant() {
                     </div>
 
                     {/* BOUTONS */}
-                    <div className="flex justify-end gap-4 pt-6 border-t">
+                    <div className="flex justify-end gap-4 pt-6 border-t flex-wrap">
                         <button 
                             onClick={() => setModalOpen(true)}
                             className="px-6 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition-colors"
@@ -139,7 +140,7 @@ function ProfilEtudiant() {
                 {modalOpen && (
                     <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50">
                         <form 
-                            className="bg-white rounded-2xl w-[90%] max-w-4xl p-8 flex flex-col gap-4 overflow-y-auto max-h-[90vh]"
+                            className="bg-white rounded-2xl w-[95%] sm:w-[90%] md:w-[80%] lg:w-[70%] max-w-4xl p-4 sm:p-6 md:p-8 flex flex-col gap-4 overflow-y-auto max-h-[90vh]"
                             onSubmit={handleSave}
                         >
                             <h2 className="text-2xl font-bold text-gray-800 mb-4">Modifier profil</h2>
@@ -225,7 +226,7 @@ function ProfilEtudiant() {
                         </form>
                     </div>
                 )}
-            </main>
+            </div>
         </EtudiantLayout>
     );
 }

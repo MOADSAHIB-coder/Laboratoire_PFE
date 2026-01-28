@@ -12,7 +12,7 @@ import Profil from "../pages/etudiant/profil";
 function EtudiantRoute() {
   return (
     <Routes>
-      <Route path="/" element={<Dashboard />} />
+      <Route path="/dashboard" element={<Dashboard />} />
       <Route path="/mes-cours" element={<MesCours />} />
       <Route path="/projets-devoirs" element={<Projets />} />
       <Route path="/tps" element={<TP />} />
