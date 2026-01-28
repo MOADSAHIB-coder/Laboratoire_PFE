@@ -5,7 +5,7 @@ function SideBar({ val1, val2, val3, icon1, icon2, icon3, link1, link2, link3, l
 
 
   return (
-    <aside className="w-[20vw] h-screen bg-white shadow-md text-black flex flex-col p-6 fixed top-0 left-0 ">
+    <aside className="w-[20vw] h-screen bg-white lg:p-0 shadow-md text-black flex flex-col p-6 fixed top-0 left-0 overflow-auto ">
 
       
       <div className="bg-white rounded-lg p-3 mb-6 sm:mb-8 flex flex-col items-center">
@@ -16,14 +16,9 @@ function SideBar({ val1, val2, val3, icon1, icon2, icon3, link1, link2, link3, l
             className="w-20 h-20 sm:w-24 sm:h-24 rounded-full object-cover bg-[#E9F1F2] mb-2"
             />
         </a>
-        <p className="text-gray-700 text-xs sm:text-sm md:text-base leading-relaxed text-center">
-            <span className="font-semibold text-gray-900">École Supérieure de Technologie de Dakhla</span>{" "}
-            <span className="text-gray-500">(ESTD)</span> — <i>ESTD-LABTECHNET</i> est une plateforme de laboratoire virtuel sécurisé dédiée à l’apprentissage des réseaux informatiques et à la supervision des activités pédagogiques, conçue pour évoluer vers d’autres domaines de l’informatique.
-        </p>
-
       </div>
 
-      <ul className="flex-1 list-none p-0 m-0 space-y-2 sm:space-y-3">
+      <ul className="flex flex-col flex-1 list-none p-0 m-0 space-y-2 sm:space-y-3">
         <NavLink to={link1}
             className={({isActive}) => `flex items-center py-2 sm:py-3 px-4 sm:px-6 rounded-lg cursor-pointer text-gray-700 transition-colors duration-200 gap-3 sm:gap-4 
             ${isActive ? "bg-blue-100 text-blue-600" : "hover:bg-blue-100 hover:text-blue-600 hover:font-bold"}`}
@@ -97,7 +92,7 @@ function SideBar({ val1, val2, val3, icon1, icon2, icon3, link1, link2, link3, l
         </NavLink>
 
         <NavLink to='/'
-            className='flex items-center py-3 px-6 mb-2 rounded-lg cursor-pointer text-red-700 hover:bg-blue-100 hover:text-blue-600 transition-all duration-200 ease-in-out gap-4 shadow-sm'>
+            className="flex items-center py-3 px-6 rounded-lg cursor-pointer text-red-700 hover:bg-blue-100 hover:text-blue-600 transition-all duration-200 ease-in-out gap-4 shadow-sm mt-auto">
             <span className="text-sm sm:text-base">Déconnexion</span>
         </NavLink>
 

@@ -313,10 +313,10 @@ function Communication() {
 
 
   return (
-    <div className="flex border md:border-black h-screen md:h-[87vh] bg-gray-100 overflow-auto">
+    <div className="flex border md:border-black h-screen md:h-[87vh] lg:w-[99%] lg:h-[82vh] xl:h-[87vh] bg-gray-100 overflow-auto">
       
       {/* Contacts */}
-      <aside className="w-80 md:w-80 lg:w-96 bg-white border-r flex flex-col">
+      <aside className="w-80 md:w-80 lg:w-72 bg-white border-r flex flex-col">
         <div className="absolute left-0 top-0 h-full w-1 bg-black rounded-r z-10"></div>
         <h2 className="p-4 text-lg font-bold uppercase">
             Mes contacts
@@ -327,7 +327,7 @@ function Communication() {
             type="search"
             placeholder="Chercher vos contacts..."
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full p-2 pl-4 rounded-full bg-gray-200 outline-none"
+            className="w-full p-2 pl-4 rounded-full lg:mb-2 bg-gray-200 outline-none"
           />
         </div>
 

@@ -161,8 +161,8 @@ function Dashboard(){
                 <div className="flex flex-col md:flex-row flex-wrap justify-center gap-6 w-full">
 
                     {/* Colonne 1: Graph1 devant Graph4 */}
-                    <div className="flex flex-col gap-10">
-                        <div className="bg-white p-5 rounded-2xl shadow-xl w-full sm:w-[45vw] md:w-[30vw] h-64 sm:h-72 md:h-96">
+                    <div className="flex flex-col  gap-10">
+                        <div className="bg-white p-5 rounded-2xl shadow-xl w-full sm:w-[45vw] sm:h-72 md:w-[45vw] md:h-96 lg:w-[50vw] h-64 lg:h-80 xl:w-[35vw] xl:h-[45vh]">
                         <h3 className="text-xl font-semibold mb-4 text-center">
                             Progression Devoirs & Projets
                         </h3>
@@ -170,7 +170,7 @@ function Dashboard(){
 
                         </div>
 
-                        <div className="bg-white p-4 sm:p-5 rounded-2xl shadow-xl w-full sm:w-[45vw] md:w-[30vw] h-64 sm:h-72 md:h-96">
+                        <div className="bg-white p-4 sm:p-5 rounded-2xl shadow-xl w-full sm:w-[45vw] sm:h-72 md:w-[45vw] md:h-96 lg:w-[50vw] h-64 lg:h-80 xl:w-[35vw] xl:h-[45vh]">
                         <h2 className="text-xl font-semibold mb-4 text-center">
                             Progression de l'utilisateur
                         </h2>
@@ -179,15 +179,15 @@ function Dashboard(){
                     </div>
 
                     {/* Colonne 2: Graph2 devant Graph3 */}
-                    <div className="flex flex-col gap-10">
-                        <div className="bg-white p-5 rounded-2xl shadow-xl w-full sm:w-[45vw] md:w-[25vw] h-64 sm:h-72 md:h-75 ">
+                    <div className="flex xl:flex-col lg:flex-row gap-10">
+                        <div className="bg-white p-5 rounded-2xl shadow-xl w-full sm:w-[45vw] md:w-[25vw] h-64 sm:h-72 md:h-75 lg:w-80 lg:h-[25rem] xl:w-96 xl:h-[27rem]">
                         <h3 className="text-xl font-semibold mb-4 text-center">
                             Répartition Devoirs vs Projets
                         </h3>
-                        <Doughnut data={dataRepartition}  options={{ responsive: false, maintainAspectRatio: true }}/>
+                        <Doughnut data={dataRepartition}  options={{ responsive: true, maintainAspectRatio: true }}/>
                         </div>
 
-                        <div className="bg-white p-5 rounded-2xl shadow-xl w-full sm:w-[45vw] md:w-[25vw] h-64 sm:h-72 md:h-[51vh]">
+                        <div className="bg-white p-5 rounded-2xl shadow-xl w-full sm:w-[45vw] md:w-[25vw] h-64 sm:h-72 md:h-[51vh] lg:w-80 lg:h-[25rem] xl:w-96 xl:h-[26rem]">
                         <h2 className="text-xl font-semibold mb-4 text-center">
                             Distribution par type de cours
                         </h2>

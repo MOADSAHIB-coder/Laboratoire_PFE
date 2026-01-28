@@ -27,7 +27,7 @@ function TP(){
                     Créez votre TP sur mesure et explorez vos compétences avec un contenu adapté à votre parcours
                 </h2>
 
-                <div className="w-full max-w-full sm:max-w-[90%] md:max-w-[70%] lg:max-w-[60%] mx-auto p-4 sm:p-6 md:p-8 bg-white shadow-lg rounded-lg">
+                <div className="w-full max-w-full sm:max-w-[90%] md:max-w-[70%] lg:max-w-[100%] xl:w-[90%] mx-auto p-4 sm:p-6 md:p-8 bg-white shadow-lg rounded-lg">
                     <div className="max-w-6xl mx-auto p-6">
                         <form className="flex flex-col gap-4 w-full">
                             {/* Filiere */}

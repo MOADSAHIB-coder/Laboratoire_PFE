@@ -10,7 +10,7 @@ function EtudiantLayout({children}){
             <SideBar
                 val1="Mes cours" 
                 val2="Devoirs en cours" 
-                val3="Réaliser TP Virtuel" 
+                val3="TP Virtuel" 
                 icon1='/icons/cours.png'
                 icon2='/icons/devoir.png'
                 icon3='/icons/tp.png'

@@ -42,7 +42,7 @@ function FormulaireCPD({children, Type, showTypeSelect, choix, role  }){
     
 
     return (
-        <div className="w-full sm:w-[90%] md:w-[80%] lg:w-[70%] xl:w-[60%] mx-auto p-4 sm:p-6 bg-white shadow-lg rounded-lg">
+        <div className="w-full sm:w-[90%] md:w-[80%] lg:w-[90%] xl:w-[80%] mx-auto p-4 sm:p-6 bg-white shadow-lg rounded-lg">
             <div className="w-full mx-auto p-3 sm:p-6">
                 <form className="flex flex-col gap-4">
 

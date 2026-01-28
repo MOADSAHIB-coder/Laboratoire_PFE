@@ -66,7 +66,7 @@ function ProfilEtudiant() {
     return (
         <EtudiantLayout>
             <div className="min-h-screen p-4 sm:p-6 md:p-8 lg:p-10 flex justify-center w-full">
-                <section className="bg-white shadow-2xl rounded-2xl w-full max-w-full sm:max-w-[90%] md:max-w-[80%] lg:max-w-[70%] p-4 sm:p-6 md:p-8 flex flex-col gap-8">
+                <section className="bg-white shadow-2xl rounded-2xl w-full max-w-full sm:max-w-[90%] md:max-w-[80%] lg:max-w-[100%] p-4 sm:p-6 md:p-8 flex flex-col gap-8">
 
                     {/* HEADER PHOTO + IDENTITÉ */}
                     <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6 md:gap-8">
@@ -106,9 +106,9 @@ function ProfilEtudiant() {
                     </div>
 
                     {/* COMPÉTENCES */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                    <div className="border-t pt-4 sm:pt-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
                         <h2 className="text-2xl font-semibold text-gray-700 mb-3">Compétences & Certifications</h2>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="grid grid-cols-1 md:grid-row-2 lg:grid-row-1 gap-4">
                             <div>
                                 <h3 className="text-lg font-semibold text-gray-800 mb-1 flex items-center gap-2"><FaCertificate/> Langages de Programmation</h3>
                                 <p>{etudiant.langages}</p>
