@@ -15,7 +15,7 @@ function AjouterCours(){
                     role='ens'
                     type_evect='Cours'
                 >
-                    <img src="/images/c_ens.png" alt="" className="ml-[15rem]"/>
+                    <img src="/images/cours_back.png" alt=""/>
                 </EnvoyerDevoirCours>
             </EnseignantLayout>
         </div>

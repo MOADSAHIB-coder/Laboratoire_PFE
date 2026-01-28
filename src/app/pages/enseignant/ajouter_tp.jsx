@@ -12,7 +12,7 @@ function Ajoutertp(){
                     role='ens'
                     type_evect='Devoir'
                 >
-                    <img src="/images/ex_ens.png" alt="" className="ml-[15rem]"/>
+                    <img src="/images/ex_ens.png" alt="" className="lg:w-96 lg:h-96 xl:mt-20"/>
                 </EnvoyerDevoirCours>
             </EnseignantLayout>
         </div>

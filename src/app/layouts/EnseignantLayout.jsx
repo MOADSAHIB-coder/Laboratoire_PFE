@@ -4,7 +4,7 @@ import SideBar from "../components/sidebar"
 function EnseignantLayout({children}){
 
     return(
-        <>
+        <div className="flex min-h-screen">
             {/* Sidebar */}
             <SideBar
                 val1="Cours enseignés" 
@@ -24,16 +24,16 @@ function EnseignantLayout({children}){
             />
 
             {/* Main Content */}
-            <div className="flex-1 ml-[20rem] flex flex-col h-screen">
+            <div className="flex-1 pl-[20vw] flex flex-col overflow-auto">
                 {/* Header fixe en haut */}
                 <Header />
 
                 {/* Contenu scrollable */}
-                <main className="flex-1 overflow-auto p-5 bg-gray-50">
+                <main className="flex-1 overflow-auto bg-gray-50 pt-[1rem] px-5">
                 {children}
                 </main>
             </div>
-        </>
+        </div>
     )
 }
 

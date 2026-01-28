@@ -43,9 +43,9 @@ function EnvoyerDevoirCours({ children ,type, bool, role, type_evect}){
     return (
         <>
         {choixTraitement === null && (
-            <div className="ml-0 md:ml-[15rem] h-auto md:h-[80vh] flex flex-col items-center space-y-6 relative">
+            <div className="ml-0 h-auto flex flex-col items-center space-y-6 relative">
                 {children}
-                    <div className="flex flex-col md:flex-row items-center md:ml-[20rem] space-y-4 md:space-y-0 md:space-x-6">
+                    <div className="flex flex-col xl:flex-row items-center space-y-4 xl:space-y-0 xl:space-x-11">
                         {/* Bouton bleu */}
                         <div
                             onClick={() => setchoixTraitement('envoyer')}
