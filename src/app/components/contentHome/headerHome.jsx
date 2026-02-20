@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import DropdownMenu from "./Dropdown";
 
 function HeaderHome() {
@@ -40,7 +40,10 @@ function HeaderHome() {
 
       {/* Menu desktop */}
       <nav className="hidden md:flex gap-4 lg:gap-10 font-bold">
-        <DropdownMenu title="ACCUIEL" items={services} />
+        <div className="px-3 py-1 font-bold hover:bg-gray-100 ">
+          <Link to="/">ACCUEIL</Link>
+        </div>
+
         <DropdownMenu title="SERVICES" items={services} />
         <DropdownMenu title="CONTACTEZ-NOUS" items={services} />
         <DropdownMenu title="A PROPOS" items={apropos} />

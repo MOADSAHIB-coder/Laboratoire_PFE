@@ -18,6 +18,7 @@ export const features = [
     description: `Consultation des supports pédagogiques
 Téléchargement des cours et documents
 Accès centralisé aux TPs`,
+    href: "#cours",
   },
   {
     icon: <FaFlask className="text-green-500 w-8 h-8" />,
@@ -25,6 +26,7 @@ Accès centralisé aux TPs`,
     description: `Réalisation des travaux pratiques directement en ligne
 Soumission des devoirs via la plateforme
 Visualisation des résultats et feedbacks`,
+    href: "#tp",
   },
   {
     icon: <FaNetworkWired className="text-purple-500 w-8 h-8" />,
@@ -32,6 +34,7 @@ Visualisation des résultats et feedbacks`,
     description: `Création de topologies réseau
 Configuration des équipements (routeurs, switchs, etc.)
 Simulation de scénarios réels de réseaux`,
+    href: "#reseau",
   },
   {
     icon: <FaRobot className="text-yellow-500 w-8 h-8" />,
@@ -39,6 +42,7 @@ Simulation de scénarios réels de réseaux`,
     description: `Génération intelligente de TPs personnalisés
 Adaptation selon le niveau de l’étudiant
 Réduction de la triche et amélioration de l’évaluation individuelle`,
+    href: "#generation",
   },
   {
     icon: <FaChartBar className="text-red-500 w-8 h-8" />,
@@ -46,6 +50,7 @@ Réduction de la triche et amélioration de l’évaluation individuelle`,
     description: `Suivi en temps réel des activités des étudiants
 Correction des TPs par les enseignants
 Publication des résultats et commentaires`,
+    href: "#suivi",
   },
   {
     icon: <FaComments className="text-indigo-500 w-8 h-8" />,
@@ -53,6 +58,7 @@ Publication des résultats et commentaires`,
     description: `Espace de discussion étudiants–enseignants
 Partage d’idées et questions techniques
 Favorisation du travail collaboratif`,
+    href: "#collaboration",
   },
 ];
 
@@ -72,7 +78,7 @@ export default function Fonctionalite() {
             icon={feature.icon}
             title={feature.title}
             description={feature.description}
-            href="#"
+            href={`/fonctionnalite${feature.href || ""}`}
           />
         ))}
       </div>

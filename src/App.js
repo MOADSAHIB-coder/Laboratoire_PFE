@@ -12,6 +12,7 @@ import ReinilialiserMotDePasse from "./app/auth/Forgot-password";
 import NewPassword from "./app/auth/Newpass";
 import Contacts from "./app/pages/homes/FormContact";
 import FoireQuestion from "./app/pages/homes/FAQ";
+import FonctonnaliteSite from "./app/pages/homes/fonctionnalite/fonctionnalite";
 
 //import EnseignantRoute from "./app/routes/EnseignantRoutes";
 //import AdminRoute from "./app/routes/AdminRoutes";
@@ -42,6 +43,10 @@ function App() {
 
       {/* FAQ */}
       <Route path="/faq" element={<FoireQuestion />} />
+
+      {/*fonctionnalites du site*/}
+
+      <Route path="/fonctionnalite" element={<FonctonnaliteSite />} />
 
       {/* Page par défaut */}
       <Route path="*" element={<Testauth />} />

@@ -1,9 +1,11 @@
 //carte cliquable avec icon titre et description et lien
 
+import { Link } from "react-router-dom";
+
 function Card({ icon, title, description, href }) {
   return (
-    <a
-      href={href}
+    <Link
+      to={href}
       className="group block rounded-2xl bg-white p-6
                  ring-1 ring-gray-200 shadow-sm
                  transition-all duration-300
@@ -29,7 +31,7 @@ function Card({ icon, title, description, href }) {
       >
         En savoir plus →
       </span>
-    </a>
+    </Link>
   );
 }
 
