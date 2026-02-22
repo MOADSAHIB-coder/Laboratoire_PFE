@@ -1,4 +1,4 @@
-import Card from "./teamCard";
+import Card from "../../../components/contentHome/teamCard";
 
 import {
   FaBook,

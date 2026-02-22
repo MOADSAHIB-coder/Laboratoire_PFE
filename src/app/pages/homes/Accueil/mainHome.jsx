@@ -1,6 +1,6 @@
 import MainFeature from "./featureMain";
 import MainHero from "./mainHero";
-import CounterSection from "./mainState";
+import CounterSection from "../../../components/contentHome/mainState";
 
 export default function MainHome() {
   return (

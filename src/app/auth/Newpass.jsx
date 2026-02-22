@@ -57,46 +57,72 @@ function NewPassword() {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-50">
-      <div className="bg-white p-6 rounded-xl shadow-md w-full max-w-md">
-        <h2 className="text-2xl font-bold text-center mb-6">
-          Nouveau mot de passe
-        </h2>
+    <div className="flex flex-col md:flex-row min-h-screen">
+      <div className="bg-blue-800 p-8 md:p-12 w-full md:w-1/2">
+        <div className="md:mx-10 md:my-16 w-full max-w-1/2  text-center mx-4 my-8">
+          <h1 className="text-white  md:text-3xl mt-10 font-medium">
+            Bienvenu dans votre espace privé{" "}
+          </h1>
+          <p className="font-bold text-white text-3xl">ESTD-LabTechNet</p>
+          <p className="md:text-xl text-white sm:text-lg p-8 font-medium">
+            Authentifiez-vous et profitez des services de ESTD-LabTectNet
+          </p>
+        </div>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label>Mot de passe</label>
-            <Input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-          </div>
+        <div className="flex justify-center items-center">
+          <img
+            src="/images/imgLogin.png"
+            alt="Lab"
+            className="w-full max-w-lg mx-auto h-auto object-cover"
+          />
+        </div>
+      </div>
+      <div className="flex justify-center w-full items-center min-h-screen md:w-1/2 bg-gray-50">
+        <div className="bg-white p-6 rounded-xl shadow-md w-full max-w-md">
+          <h2 className="text-2xl font-bold text-center mb-6">
+            Nouveau mot de passe
+          </h2>
 
-          <div>
-            <label>Confirmer le mot de passe</label>
-            <Input
-              type="password"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-            />
-          </div>
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div>
+              <label>
+                Mot de passe<span className="text-red-500">*</span>{" "}
+              </label>
+              <Input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </div>
 
-          {/* Affichage du message */}
-          {message && (
-            <p
-              className={
-                messageType === "error" ? "text-red-500" : "text-green-600"
-              }
-            >
-              {message}
-            </p>
-          )}
+            <div>
+              <label>
+                Confirmer le mot de passe
+                <span className="text-red-500">*</span>{" "}
+              </label>
+              <Input
+                type="password"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+              />
+            </div>
 
-          <Button type="submit" className="w-full">
-            Réinitialiser
-          </Button>
-        </form>
+            {/* Affichage du message */}
+            {message && (
+              <p
+                className={
+                  messageType === "error" ? "text-red-500" : "text-green-600"
+                }
+              >
+                {message}
+              </p>
+            )}
+
+            <Button type="submit" className="w-full">
+              Réinitialiser
+            </Button>
+          </form>
+        </div>
       </div>
     </div>
   );

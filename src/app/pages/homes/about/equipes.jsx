@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { membres } from "../data/dataAbout";
+import { membres } from "./dataAbout";
 import Profil from "./profilMembre";
 
 function AfficherProfils() {

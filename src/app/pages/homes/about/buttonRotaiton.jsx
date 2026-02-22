@@ -15,7 +15,6 @@ export function ButtonRotation({
         <span
           className={`transform transition ${className} ${open ? "rotate-180" : ""}`}
         >
-          {" "}
           ⌄
         </span>
       </button>

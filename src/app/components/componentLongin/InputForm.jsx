@@ -14,6 +14,7 @@ function Input({
   isTouched,
   checked,
   errors,
+  disabled,
 }) {
   const [show, setShow] = useState(false);
   const [focused, setFocused] = useState(false);
@@ -46,6 +47,7 @@ function Input({
         checked={type === "checkbox" ? checked : undefined}
         onChange={onChange}
         onBlur={onBlur}
+        disabled={disabled}
         placeholder={placeholder}
         onFocus={(e) => {
           setFocused(true);
@@ -53,8 +55,10 @@ function Input({
         }}
         minLength={minLength}
         className={`${
-          type === "checkbox" ? "w-4 h-4" : "w-full px-3 py-3"
-        } border ${borderColor}   rounded-md focus:outline-none focus:ring-2 ${ringColor} ${className}`}
+          type === "checkbox"
+            ? `w-4 h-4 ${disabled ? "cursor-not-allowed" : "cursor-pointer"}`
+            : "w-full px-3 py-3"
+        } border ${borderColor}   rounded-md focus:outline-none  focus:ring-2 ${ringColor} ${className}`}
       />
 
       {/* Label de la champ a cocher*/}

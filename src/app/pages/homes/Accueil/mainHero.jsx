@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 
 import { useState, useEffect } from "react";
-import RotationText from "./rotationText";
+import RotationText from "../../../components/contentHome/rotationText";
 
 // Composant MainHero : section principale du site avec un slideshow d'images et des textes animés
 

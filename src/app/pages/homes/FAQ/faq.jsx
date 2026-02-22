@@ -1,8 +1,9 @@
-import FooterHome from "../../components/contentHome/footerHome";
-import HeaderHome from "../../components/contentHome/headerHome";
 import { faqData } from "./FoireData";
 import { useState } from "react";
-import ContactezNous from "./FormulaireContact";
+
+import HeaderHome from "../../../components/contentHome/headerHome";
+import FooterHome from "../../../components/contentHome/footerHome";
+import ContactezNous from "../Formulaire/FormulaireContact";
 
 function FoireQuestion() {
   const categories = [

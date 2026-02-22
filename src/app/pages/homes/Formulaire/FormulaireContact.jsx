@@ -1,10 +1,13 @@
-import Input from "../../components/componentLongin/InputForm";
+import Input from "../../../components/componentLongin/InputForm";
 import { useState } from "react";
-import { FormMessage } from "../../components/componentLongin/MessageForm";
-import { Select } from "../../components/componentLongin/ButonForm";
 
-import { filieres, niveaux } from "../../components/componentLongin/ButonForm";
+import {
+  filieres,
+  niveaux,
+} from "../../../components/componentLongin/ButonForm";
 import { BsExclamationCircleFill } from "react-icons/bs";
+import { Select } from "../../../components/componentLongin/ButonForm";
+import { FormMessage } from "../../../components/componentLongin/MessageForm";
 
 function ContactezNous() {
   const [form, setForm] = useState({

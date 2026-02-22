@@ -1,5 +1,5 @@
-import FooterHome from "../footerHome";
-import HeaderHome from "../headerHome";
+import FooterHome from "../../../components/contentHome/footerHome";
+import HeaderHome from "../../../components/contentHome/headerHome";
 import { ButtonPreview } from "./buttonRotaiton";
 import Contexte from "./contexte_motivation";
 import AfficherProfils from "./equipes";

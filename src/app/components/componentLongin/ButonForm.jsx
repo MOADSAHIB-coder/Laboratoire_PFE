@@ -10,12 +10,19 @@ export const niveaux = [
   { value: "S3-S2", label: "2ème année" },
 ];
 
-export function Button({ children, disabled = false, onClick }) {
+export function Button({
+  children,
+  disabled = false,
+  onClick,
+  classname,
+  type,
+}) {
   return (
     <button
       onClick={onClick}
       disabled={disabled}
-      className={`px-4 py-4 text-lg w-full rounded ${disabled ? "bg-gray-400 cursor-not-allowed" : "bg-blue-500 hover:bg-blue-600 cursor-pointer"} text-white font-medium`}
+      type={type}
+      className={`px-4 py-4 text-lg w-full rounded ${disabled ? "bg-gray-400 cursor-not-allowed" : "bg-blue-500 hover:bg-blue-600 cursor-pointer"} text-white font-medium ${classname}`}
     >
       {children}
     </button>

@@ -1,6 +1,6 @@
-import HeaderHome from "../../components/contentHome/headerHome";
+import HeaderHome from "../../../components/contentHome/headerHome";
 import ContactezNous from "./FormulaireContact";
-import FooterHome from "../../components/contentHome/footerHome";
+import FooterHome from "../../../components/contentHome/footerHome";
 
 export default function Contacts() {
   return (
