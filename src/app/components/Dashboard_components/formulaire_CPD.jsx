@@ -1,10 +1,30 @@
-// Une formulaire pour les cours Prejets/Devoirs.
-
-import { useState } from "react";
+import { useEffect , useState } from "react";
 import CadresAffichage from "./structure_affichage_card";
-import { Datas } from "../pages/enseignant/Dashboard";
+import { Datas } from "../../pages/enseignant/Dashboard";
 
-function FormulaireCPD({children, Type, showTypeSelect, choix, role  }){
+function FormulaireCPD({children, Type, showTypeSelect, choix, role, onSubmit  }){
+
+    // Interaction avec la base de donnees ---------------------------------
+
+        const [etudiantData, setetudiantdata] = useState([])
+        const [loading, setLoading] = useState(true);
+
+        useEffect(() => {
+          const etudiantURL = "http://127.0.0.1:8000/api/etudiants/etudiants/";
+
+          // Fetch les deux APIs
+          Promise.all([
+            fetch(etudiantURL).then(res => res.json()),
+          ])
+            .then(([etudiantData]) => {
+              setetudiantdata(etudiantData);
+              setLoading(false)
+            })
+            .catch(err => console.log(err));
+
+        }, []);
+
+    // ---------------------------------------------------------------------
 
     const now = new Date()
     const DateActuelle = now.getFullYear();
@@ -22,14 +42,13 @@ function FormulaireCPD({children, Type, showTypeSelect, choix, role  }){
     }
 
     const [filters, setFilters] = useState({
-        type: "Reseau",
-        filiere: "Gestion des reseau et securite",
-        niveau: "bac+1",
-        semestre: "S1",
-        AU: `${DateActuelle-1}-${DateActuelle}`,
-        type_tp:'projet'
-
-    });
+        type: 'reseaux', 
+        filiere: etudiantData[0]?.filiere || null,
+        niveau: 'bac+1',
+        semestre: 'S1',
+        AU: MoisActuelle > 6 ? `${DateActuelle}-${DateActuelle+1}` : `${DateActuelle-1}-${DateActuelle}`,
+        type_tp: 'projet'
+        });
 
     // Prof simulé
     const user = { nomProf: "Naoual Nassiri" };
@@ -37,23 +56,28 @@ function FormulaireCPD({children, Type, showTypeSelect, choix, role  }){
         element.nomProf === user.nomProf
     )
 
-    const filieres = [...new Set(dataProf.map(f => f.filiere))]
+    const filieres = [...new Set(dataProf.map(f => f.filiere))]    
 
-    
+    if(loading){
+        return (
+            <div className="text-center mt-[50vh]"> Loading ...</div>
+        )
+    }
 
     return (
         <div className="w-full sm:w-[90%] md:w-[80%] lg:w-[90%] xl:w-[80%] mx-auto p-4 sm:p-6 bg-white shadow-lg rounded-lg">
             <div className="w-full mx-auto p-3 sm:p-6">
-                <form className="flex flex-col gap-4">
+                <form onSubmit={onSubmit} className="flex flex-col gap-4">
 
                     {/* Filiere */}
                     <div className="flex flex-col">
                     <label htmlFor="filiere" className="mb-1 font-semibold text-gray-700">Filière :</label>
-                    {role === 'etu' ? (
+                    {role === 'etu' || role==='etuE' ? (
                         <input
                         type="text"
                         id="filiere"
-                        value={filters.filiere}
+                        name="filiere"
+                        value={etudiantData[0].filiere || "---" }
                         className="border border-gray-300 rounded px-3 py-2 bg-gray-100 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-400"
                         readOnly
                     />
@@ -76,7 +100,8 @@ function FormulaireCPD({children, Type, showTypeSelect, choix, role  }){
                         {role === 'etu' ? (
                             <select
                         id="AU"
-                        defaultValue={DateActuelle-1}
+                        name="AU"
+                        defaultValue={filters.AU}
                         onChange={(e)=>setFilters({...filters, AU: e.target.value})}
                         className="border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
                     >
@@ -87,7 +112,8 @@ function FormulaireCPD({children, Type, showTypeSelect, choix, role  }){
                         ) : (
                             <select
                         id="AU"
-                        defaultValue={DateActuelle-1}
+                        name="AU"
+                        defaultValue={filters.AU}
                         onChange={(e)=>setFilters({...filters, AU: e.target.value})}
                         className="border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
                     >
@@ -105,15 +131,16 @@ function FormulaireCPD({children, Type, showTypeSelect, choix, role  }){
                     <label htmlFor="typeC" className="mb-1 font-semibold text-gray-700">Type de {Type} :</label>
                     <select
                         id="typeC"
+                        name="typeC"
                         defaultValue={filters.type}
                         className="border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
                         onChange={(e)=>setFilters({...filters, type: e.target.value})}
                     >
-                        <option value="Reseau">Réseaux</option>
+                        <option value="reseaux">Réseaux</option>
                         <option value="dev">Développement</option>
-                        <option value="Data">Data</option>
-                        <option value="Securite">Sécurité</option>
-                        <option value="infrat">Infrastructure</option>
+                        <option value="data">Data</option>
+                        <option value="securite">Sécurité</option>
+                        <option value="infra">Infrastructure</option>
                     </select>
                     </div>
 
@@ -157,6 +184,7 @@ function FormulaireCPD({children, Type, showTypeSelect, choix, role  }){
                     <label htmlFor="sem" className="mb-1 font-semibold text-gray-700">Semestre :</label>
                     <select
                         id="sem"
+                        name="sem"
                         onChange={(e)=>setFilters({...filters, semestre: e.target.value})}
                         className="border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
                     >
@@ -170,6 +198,7 @@ function FormulaireCPD({children, Type, showTypeSelect, choix, role  }){
                     <label htmlFor="typeTP" className="mb-1 font-semibold text-gray-700">Type :</label>
                     <select
                         id="typeTP"
+                        name="typeTP"
                         defaultValue={filters.type_tp}
                         onChange={(e) => setFilters({...filters, type_tp: e.target.value})}
                         className="border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
@@ -181,7 +210,7 @@ function FormulaireCPD({children, Type, showTypeSelect, choix, role  }){
                     {children}
                     
                     {/* Bouton submit */}
-                    {role === 'etu' && (
+                    {(role === 'etu') && (
                     <button
                         type="submit"
                         onClick={valider}

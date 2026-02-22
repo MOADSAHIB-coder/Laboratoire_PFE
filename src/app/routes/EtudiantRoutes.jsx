@@ -7,6 +7,7 @@ import Discussion from "../pages/etudiant/discussion";
 import Statistique from "../pages/etudiant/ressources";
 import Parametres from "../pages/etudiant/parametres";
 import Profil from "../pages/etudiant/profil";
+import EnvoyerTP from "../pages/etudiant/devoir";
 
 
 function EtudiantRoute() {
@@ -20,6 +21,7 @@ function EtudiantRoute() {
       <Route path="/statistique" element={<Statistique />} />
       <Route path="/parametres" element={<Parametres />} />
       <Route path="/profil" element={<Profil />} />
+      <Route path="/devoir" element={<EnvoyerTP/>}/>
     </Routes>
   );
 }

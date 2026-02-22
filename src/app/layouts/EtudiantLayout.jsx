@@ -1,5 +1,5 @@
-import SideBar from "../components/sidebar";
-import Header from "../components/header";
+import SideBar from "../components/Dashboard_components/sidebar";
+import Header from "../components/Dashboard_components/header";
 
 function EtudiantLayout({children}){
 
@@ -9,11 +9,12 @@ function EtudiantLayout({children}){
             {/* Sidebar */}
             <SideBar
                 val1="Mes cours" 
-                val2="Devoirs en cours" 
+                val2="Mes activités" 
                 val3="TP Virtuel" 
                 icon1='/icons/cours.png'
                 icon2='/icons/devoir.png'
                 icon3='/icons/tp.png'
+                link0='/etudiant/devoir'
                 link1='/etudiant/dashboard'
                 link2='/etudiant//mes-cours'
                 link3='/etudiant/projets-devoirs'

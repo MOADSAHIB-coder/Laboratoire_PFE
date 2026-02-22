@@ -73,16 +73,27 @@ function DashboardEnseignant() {
           <div className="flex flex-col gap-6">
             <h2 className="text-2xl font-bold mb-4">Sélectionnez une filière pour voir le dashboard</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-              {filieres.map((f, i) => (
-                <div
-                  key={i}
-                  onClick={() => setSelectedFiliere(f)}
-                  className="cursor-pointer bg-white p-6 rounded-2xl shadow hover:scale-105 transform transition"
-                >
-                  <p className="text-xl font-semibold">{f}</p>
-                  <p className="text-gray-500 mt-2">{datasProf.filter(d => d.filiere === f).length} cours / TP disponibles</p>
-                </div>
-              ))}
+              {filieres.map((f, i) => {
+                const niveaux = [
+                  ...new Set(
+                    datasProf
+                      .filter(d => d.filiere === f)
+                      .map(d => d.niveau)
+                  )
+                ];
+                return (
+                  <div
+                    key={i}
+                    onClick={() => setSelectedFiliere(f)}
+                    className="cursor-pointer bg-white p-6 rounded-2xl shadow hover:scale-105 transform transition"
+                  >
+                    <p className="text-xl font-semibold">{f}</p>
+                    <p className="text-gray-500 mt-2">
+                        Niveau : {niveaux.join(" / ")}
+                    </p>
+                  </div>
+                );
+              })}
             </div>
           </div>
         )}

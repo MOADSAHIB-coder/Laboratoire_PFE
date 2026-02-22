@@ -1,4 +1,4 @@
-import FormulaireCPD from "../../components/formulaire_CPD";
+import FormulaireCPD from "../../components/Dashboard_components/formulaire_CPD";
 import EtudiantLayout from "../../layouts/EtudiantLayout";
 
 function Projets(){

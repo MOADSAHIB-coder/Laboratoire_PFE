@@ -1,5 +1,5 @@
 import EtudiantLayout from "../../layouts/EtudiantLayout";
-import FormulaireCPD from "../../components/formulaire_CPD";
+import FormulaireCPD from "../../components/Dashboard_components/formulaire_CPD";
 
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, ArcElement, PointElement, LineElement, RadialLinearScale, Title, Tooltip, Legend } from "chart.js";
 
@@ -18,10 +18,6 @@ ChartJS.register(
 
 
 function MesCours(){
-
-    
-    
-
 
     return (
         <EtudiantLayout>

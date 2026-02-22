@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import EtudiantLayout from "../../layouts/EtudiantLayout";
 import { Link } from "react-router-dom";
 import { Bar, Doughnut, Radar } from "react-chartjs-2";
@@ -28,32 +29,43 @@ ChartJS.register(
 );
 
 function Dashboard(){
-    const studentImage = ''
-    const studenName = ''
-    const filiere = ''
-    const DevoirProjet = ''
 
-    /// Statistiques
-    const devoirsTermines = 3;
-    const devoirsEnCours = 2;
-    const projetsTermines = 1;
-    const projetsEnCours = 1;
-    //const [devoirs, setDevoirs] = useState('')
-    //const [projets, setProjets] = useState('')
+    const [stats, setStats] = useState([]);
+    const [general, setgeneral] = useState([])
+    const [profil, setprofil] = useState([])
 
-    //const totalCours = 12; // total cours dans le système
-    const coursTermine = 4; // comme bien de cours l'utilisateur faire
-    const coursEncours = 2;
-    const coursPasCommence = 6;
+    const [courStats, setcourStats] = useState([])
+
+    const [loading, setLoading] = useState(true);
+
+
+    useEffect(() => {
+        Promise.all([
+            fetch("http://127.0.0.1:8000/api/etudiants/stats/").then(res => res.json()),
+            fetch("http://127.0.0.1:8000/api/etudiants/etudiants/").then(res => res.json()),
+            fetch("http://127.0.0.1:8000/api/etudiants/profiles/").then(res => res.json()),
+
+            fetch("http://127.0.0.1:8000/api/cours/stats/").then(res => res.json()),
+        ])
+        .then(([statsData, generalData, profilData, coursData]) => {
+            setStats(statsData);
+            setgeneral(generalData);
+            setprofil(profilData);
+            setcourStats(coursData);
+            setLoading(false); 
+        })
+        .catch(err => console.log(err));
+    }, []);
 
 
     // Graph 1: Progression Devoirs & Projets
+    
     const dataProgress1 = {
         labels: ["Devoirs Terminés", "Devoirs En cours", "Projets Terminés", "Projets En cours"],
         datasets: [
         {
             label: "Progression académique",
-            data: [devoirsTermines, devoirsEnCours, projetsTermines, projetsEnCours],
+            data: stats[0] ? [stats[0].tp_complete, stats[0].total_tp - stats[0].tp_complete, 10, 15] : [0,0,0,0], // ajouter les donnees de devoirs projet (|App| Travaux)
             backgroundColor: ["#22c55e", "#facc15", "#3b82f6", "#a855f7"],
             borderRadius: 8,
         },
@@ -65,10 +77,7 @@ function Dashboard(){
         labels: ["Total Devoirs", "Total Projets"],
         datasets: [
         {
-            data: [
-            devoirsTermines + devoirsEnCours,
-            projetsTermines + projetsEnCours,
-            ],
+            data : stats[0] ? [stats[0].total_tp, stats[0].total_cours] : [0,0,0,0], // ajouter les donnees de devoirs projet (|App| Travaux)
             backgroundColor: ["#3b82f6", "#ec4899"],
         },
         ],
@@ -80,7 +89,7 @@ function Dashboard(){
         datasets: [
         {
             label: "Cours",
-            data: [coursTermine, coursEncours, coursPasCommence],
+            data: courStats ? [courStats.cours_termine, courStats.cours_en_cours, courStats.cours_pas_commence] : [0,0,0],
             backgroundColor: ["#4CAF50", "#FFC107", "#E0E0E0"],
         },
         ],
@@ -88,7 +97,17 @@ function Dashboard(){
 
     // Graph 4: 
     const courseTypes = ["Réseaux", "Développement", "Sécurité", "Infrastructure", "Data"];
-    const coursesPerType = [5, 8, 3, 4, 6]; // exemple: nombre de cours par type
+    const coursesPerType = courseTypes.map(type => {
+    switch(type) {
+        case "Réseaux": return courStats.nombre_CType?.["reseaux"] || 0;
+        case "Développement": return courStats.nombre_CType?.["dev"] || 0;
+        case "Sécurité": return courStats.nombre_CType?.["securite"] || 0;
+        case "Infrastructure": return courStats.nombre_CType?.["infra"] || 0;
+        case "Data": return courStats.nombre_CType?.["data"] || 0;
+        default: return 0;
+    }
+    });
+
 
     const dataRadar = {
         labels: courseTypes,
@@ -119,21 +138,28 @@ function Dashboard(){
         },
         };
 
+        if(loading){
+            return (
+                <div className="text-center mt-[50vh]"> Loading ...</div>
+            )
+        }
+
     return (
         <EtudiantLayout>
+            
             <div className=" p-5 h-screen overflow-auto [&::-webkit-scrollbar]:hidden bg-gray-50 flex flex-col gap-6" 
                 style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}>
                 {/* Carte de bienvenue */}
                 <div className="bg-white rounded-xl shadow-md p-4 sm:p-6 flex flex-col md:flex-row md:items-center md:justify-between w-full">
                     <div>
-                    <h2 className="text-2xl font-bold">Bienvenue, {studenName || 'Etudiant Reseaux'} !</h2>
-                    <p className="text-gray-600 mt-1">Filière : {filiere || 'Gestion des Reseaux et Securite Informatique'}</p>
+                    <h2 className="text-2xl font-bold">Bienvenue, {profil[0] ? profil[0].nom+' '+profil[0].prenom : 'Etudiant Reseaux'} !</h2>
+                    <p className="text-gray-600 mt-1">Filière : {general[0] ? general[0].filiere : 'Gestion des Reseaux et Securite Informatique'}</p>
                     <p className="mt-2 text-blue-500 font-semibold">
-                        Vous avez {DevoirProjet || '0'} TP à compléter cette semaine
+                        Vous avez {stats[0] ? stats[0].total_tp - stats[0].tp_complete : '0'} TP à compléter cette semaine
                     </p>
                     </div>
                     <img
-                        src={studentImage || '/icons/user.png'}
+                        src='/icons/user.png'
                         alt="visage de Etudiant"
                         className="w-20 h-20 sm:w-28 sm:h-28 md:w-35 md:h-35 rounded-full object-cover bg-[#E9F1F2] mt-4 md:mt-0"
                     />

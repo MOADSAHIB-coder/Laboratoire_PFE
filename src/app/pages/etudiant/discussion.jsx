@@ -1,4 +1,4 @@
-import Communication from "../../components/communication";
+import Communication from "../../components/Dashboard_components/communication";
 import EtudiantLayout from "../../layouts/EtudiantLayout";
 
 function Discussion(){

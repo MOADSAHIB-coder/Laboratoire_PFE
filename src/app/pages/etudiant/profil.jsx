@@ -1,38 +1,15 @@
-import { useState } from "react";
+import { useState , useEffect } from "react";
 import EtudiantLayout from "../../layouts/EtudiantLayout";
 import { FaEnvelope, FaPhone, FaLinkedin, FaGithub, FaMapMarkerAlt, FaGraduationCap,FaCalendarAlt, FaCertificate } from "react-icons/fa";
 
 const etudiantData = {
-    // IDENTITÉ
-    nom: "SAHIB",
-    prenom: "MOAD",
-    genre: "Homme",
-    matricule: "R138445438",
-    dateNaissance: "2003-05-12",
-    lieuNaissance: "Casablanca, Maroc",
-    photo: "/icons/user.png",
 
     // CONTACT
     email: "moad.sahib@example.com",
-    telPrincipal: "+212612345678",
-    telSecondaire: "+212698765432",
-    whatsapp: "+212612345678",
-    telegram: "@moadS",
-    adresse: "Quartier Alwalaa, Casablanca",
-    ville: "Casablanca",
-    codePostal: "20000",
-    pays: "Maroc",
-    linkedin: "linkedin.com/in/moadsahib",
-    github: "github.com/moadsahib",
 
     // ACADÉMIQUE
-    niveau: "Bac+2",
-    semestre: "S4",
-    filiere: "Gestion des réseaux et sécurité",
+    
     universite: "Université Internationale de Technologie",
-    AU: "2025-2026",
-    dateInscription: "2023-09-01",
-    dateFin: "2026-06-30",
     tuteur: "Dr. Ayoube Jibouni",
 
     // COMPÉTENCES
@@ -45,6 +22,7 @@ const etudiantData = {
     // DESCRIPTION PERSONNELLE
     description: "Étudiant passionné par les réseaux et la cybersécurité, motivé à apprendre de nouvelles technologies et à participer à des projets innovants."
 };
+
 
 function ProfilEtudiant() {
 
@@ -63,6 +41,26 @@ function ProfilEtudiant() {
         console.log("Profil mis à jour :", etudiant);
     };
 
+    // ----Interaction avec la base de donnees--------------
+        const [Etud, setEtud] = useState([]);
+        const [Profil, setprofil] = useState([]);
+        useEffect(() => {
+                    const etudiantURL = "http://127.0.0.1:8000/api/etudiants/etudiants/";
+                    const etudiantProfil = "http://127.0.0.1:8000/api/etudiants/profiles/";
+
+                    Promise.all([
+                    fetch(etudiantURL).then(res => res.json()),
+                    fetch(etudiantProfil).then(res => res.json()),
+                    ])
+                    .then(([etu, profil]) => {
+                        setEtud(etu[0]);
+                        setprofil(profil[0]);
+                    })
+                    .catch(err => console.log(err));
+        
+                }, []);
+    // -----------------------------------------------------
+
     return (
         <EtudiantLayout>
             <div className="min-h-screen p-4 sm:p-6 md:p-8 lg:p-10 flex justify-center w-full">
@@ -70,12 +68,12 @@ function ProfilEtudiant() {
 
                     {/* HEADER PHOTO + IDENTITÉ */}
                     <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6 md:gap-8">
-                        <img src={etudiant.photo} alt={etudiant.nom} className="w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 lg:w-36 lg:h-36 rounded-full border-4 border-blue-500 object-cover"/>
+                        <img src='/icons/user.png' alt={etudiant.nom} className="w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 lg:w-36 lg:h-36 rounded-full border-4 border-blue-500 object-cover"/>
                         <div className="flex flex-col gap-1">
-                            <h1 className="text-3xl font-bold text-gray-800">{etudiant.prenom} {etudiant.nom}</h1>
-                            <p className="text-gray-500">{etudiant.filiere} - {etudiant.niveau} ({etudiant.semestre})</p>
-                            <p className="text-gray-400">Matricul - {etudiant.matricule}</p>
-                            <p className="text-gray-400">Inscrit depuis {etudiant.dateInscription}</p>
+                            <h1 className="text-3xl font-bold text-gray-800">{Profil.prenom} {Profil.nom}</h1>
+                            <p className="text-gray-500">{Etud.filiere} - {Etud.niveau} ({Etud.semestre})</p>
+                            <p className="text-gray-400">Matricul - {Etud.matricule}</p>
+                            <p className="text-gray-400">Inscrit depuis {Etud.date_inscription}</p>
                         </div>
                     </div>
 
@@ -88,20 +86,20 @@ function ProfilEtudiant() {
                     {/* CONTACT */}
                     <div className="border-t pt-4 sm:pt-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
                         <div className="flex items-center gap-3"><FaEnvelope className="text-blue-500"/> {etudiant.email}</div>
-                        <div className="flex items-center gap-3"><FaPhone className="text-green-500"/> {etudiant.telPrincipal}</div>
-                        <div className="flex items-center gap-3"><FaCalendarAlt  className="text-gray-500"/> Né le {etudiant.dateNaissance}</div>
-                        <div className="flex items-center gap-3"><FaMapMarkerAlt className="text-yellow-500"/> {etudiant.adresse}, {etudiant.ville}, {etudiant.pays}</div>
-                        <div className="flex items-center gap-3"><FaLinkedin className="text-blue-700"/> {etudiant.linkedin}</div>
-                        <div className="flex items-center gap-3"><FaGithub className="text-gray-800"/> {etudiant.github}</div>
+                        <div className="flex items-center gap-3"><FaPhone className="text-green-500"/> {Profil.telephone}</div>
+                        <div className="flex items-center gap-3"><FaCalendarAlt  className="text-gray-500"/> Né le {Profil.date_naissance}</div>
+                        <div className="flex items-center gap-3"><FaMapMarkerAlt className="text-yellow-500"/> {Profil.localisation}</div>
+                        <div className="flex items-center gap-3"><FaLinkedin className="text-blue-700"/> {Profil.linkedin}</div>
+                        <div className="flex items-center gap-3"><FaGithub className="text-gray-800"/> {Profil.github}</div>
                     </div>
 
                     {/* ACADÉMIQUE */}
                     <div className="border-t pt-4 sm:pt-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
                         <div className="flex items-center gap-3"><FaGraduationCap className="text-blue-500"/> Université : {etudiant.universite}</div>
-                        <div className="flex items-center gap-3"><FaGraduationCap className="text-green-500"/> Niveau : {etudiant.niveau}</div>
-                        <div className="flex items-center gap-3"><FaGraduationCap className="text-purple-500"/> Filière : {etudiant.filiere}</div>
-                        <div className="flex items-center gap-3"><FaGraduationCap className="text-yellow-500"/> Semestre : {etudiant.semestre}</div>
-                        <div className="flex items-center gap-3"><FaGraduationCap className="text-red-500"/> Année universitaire : {etudiant.AU}</div>
+                        <div className="flex items-center gap-3"><FaGraduationCap className="text-green-500"/> Niveau : {Etud.niveau}</div>
+                        <div className="flex items-center gap-3"><FaGraduationCap className="text-purple-500"/> Filière : {Etud.filiere}</div>
+                        <div className="flex items-center gap-3"><FaGraduationCap className="text-yellow-500"/> Semestre : {Etud.semestre}</div>
+                        <div className="flex items-center gap-3"><FaGraduationCap className="text-red-500"/> Année universitaire : {Etud.annee_universitaire}</div>
                         <div className="flex items-center gap-3"><FaGraduationCap className="text-indigo-500"/> Tuteur : {etudiant.tuteur}</div>
                     </div>
 

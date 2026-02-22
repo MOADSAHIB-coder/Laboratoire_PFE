@@ -1,0 +1,31 @@
+/* Pour le container de la carte */
+.perspective {
+  perspective: 1000px;
+}
+
+/* L'intérieur qui tourne */
+.flip-card-inner {
+  transform-style: preserve-3d;
+  transition: transform 0.6s;
+}
+
+/* Quand on survole la carte, elle tourne */
+.flip-card:hover .flip-card-inner {
+  transform: rotateY(180deg);
+}
+
+/* Front et back de la carte */
+.flip-card-front,
+.flip-card-back {
+  backface-visibility: hidden;
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 1rem; /* même radius que tes divs */
+}
+
+/* Back de la carte à 180deg */
+.flip-card-back {
+  transform: rotateY(180deg);
+}

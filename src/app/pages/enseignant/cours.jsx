@@ -1,4 +1,4 @@
-import EnvoyerDevoirCours from "../../components/addTpCoursenseignant";
+import EnvoyerDevoirCours from "../../components/Dashboard_components/addTpCoursenseignant";
 import EnseignantLayout from "../../layouts/EnseignantLayout";
 
 

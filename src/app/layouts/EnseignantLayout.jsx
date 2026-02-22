@@ -1,5 +1,5 @@
-import Header from "../components/header"
-import SideBar from "../components/sidebar"
+import Header from "../components/Dashboard_components/header"
+import SideBar from "../components/Dashboard_components/sidebar"
 
 function EnseignantLayout({children}){
 
@@ -8,11 +8,12 @@ function EnseignantLayout({children}){
             {/* Sidebar */}
             <SideBar
                 val1="Cours enseignés" 
-                val2="Ajouter devoirs" 
-                val3="TP réalisés par les étudiants" 
+                val2="Travaux Académiques" 
+                val3="TP réalisés" 
                 icon1='/icons/cours.png'
                 icon2='/icons/devoir.png'
                 icon3='/icons/tp.png'
+                link0='/enseignant/decument'
                 link1='/enseignant/dashboard'
                 link2='/enseignant/mes-cours'
                 link3='/enseignant/mes-travaux'

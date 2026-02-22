@@ -1,48 +1,26 @@
+import { useState , useEffect } from "react";
 import EtudiantLayout from "../../layouts/EtudiantLayout";
-import StatCard from "../../components/statecadre";
+import StatCard from "../../components/Dashboard_components/statecadre";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
-
-
-const stats = {
-progression: 50,
-cours: { done: 12, total: 20 },
-tp: { done: 9, total: 15 },
-tempsTotal: '32h',
-tempsMoyenTP: '45 min',
-tpLances: 18,
-tentatives: 3.2,
-derniereActivite: 'TP Routage – 22/01/2026',
-connexions: {today:45, total:150},
-dureeSession: '35 min'
-};
-
-
-const topTP = [
-{ name: 'Routage', value: 5 },
-{ name: 'VLAN', value: 19 },
-{ name: 'Firewall', value: 7 },
-{ name: 'DNS', value: 5 }
-];
-
-const tpNiveaux = [
-  { niveau: 'S1', value: 5 },
-  { niveau: 'S2', value: 12 },
-  { niveau: 'S3', value: 18 },
-  { niveau: 'S4', value: 7 }
-];
-
-const dailyActivity = [
-  { day: 'Lun', connexions: 5, tp: 2 },
-  { day: 'Mar', connexions: 8, tp: 3 },
-  { day: 'Mer', connexions: 4, tp: 1 },
-  { day: 'Jeu', connexions: 6, tp: 4 },
-  { day: 'Ven', connexions: 3, tp: 2 },
-  { day: 'Sam', connexions: 2, tp: 1 },
-  { day: 'Dim', connexions: 1, tp: 0 }
-];
-
+import { topTP , tpNiveaux , dailyActivity } from "../../components/Dashboard_components/DataTest";
 
 function Statistique(){
+
+    // ----Interaction avec la base de donnees--------------
+        const [statsE, setStatsE] = useState([])
+        useEffect(() => {
+                    const etudiantURL = "http://127.0.0.1:8000/api/stats/statistique/";
+
+                    Promise.all([
+                    fetch(etudiantURL).then(res => res.json()),
+                    ])
+                    .then(([DataE]) => {
+                        setStatsE(DataE);
+                    })
+                    .catch(err => console.log(err));
+        
+                }, []);
+    // -----------------------------------------------------
 
     return (
         <EtudiantLayout>
@@ -53,36 +31,36 @@ function Statistique(){
                 {/* Cartes principales */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 w-full">
                 <StatCard title="Progression globale%" >
-                    <p className="text-2xl font-bold text-blue-600 mb-2">{stats.progression}%</p>
+                    <p className="text-2xl font-bold text-blue-600 mb-2">{statsE.progression}%</p>
                     <div className="w-full bg-gray-200 rounded-full h-2">
                         <div
                         className="bg-blue-500 h-2 rounded-full"
-                        style={{ width: `${stats.progression}%` }}
+                        style={{ width: `${statsE.progression}%` }}
                         ></div>
                     </div>
                 </StatCard>
 
-                <StatCard title="Cours consultés" value={`${stats.cours.done} / ${stats.cours.total}`} />
-                <StatCard title="TP réalisés" value={`${stats.tp.done} / ${stats.tp.total}`} />
-                <StatCard title="Temps total passé" value={stats.tempsTotal} />
-                <StatCard title="Temps moyen / TP" value={stats.tempsMoyenTP} />
-                <StatCard title="TP virtuels lancés" value={stats.tpLances} />
-                <StatCard title="Tentatives / TP" value={stats.tentatives} />
+                <StatCard title="Cours consultés" value={`${statsE.cours_done} / ${statsE.cours_total}`} />
+                <StatCard title="TP réalisés" value={`${statsE.tp_done} / ${statsE.tp_total}`} />
+                <StatCard title="Temps total passé" value={statsE.temps_total} />
+                <StatCard title="Temps moyen / TP" value={statsE.temps_moyen_tp} />
+                <StatCard title="TP virtuels lancés" value={statsE.tp_lances} />
+                <StatCard title="Tentatives / TP" value={statsE.tentatives} />
                 <StatCard title="Nombre de connexions">
                     <div className="flex justify-between">
                         <div>
                         <p className="text-xs text-gray-500">Aujourd’hui</p>
-                        <p className="text-xl font-bold text-blue-600">{stats.connexions.today}</p>
+                        <p className="text-xl font-bold text-blue-600">{statsE.connexions_today}</p>
                         </div>
                         <div>
                         <p className="text-xs text-gray-500">Total</p>
-                        <p className="text-xl font-bold text-blue-600">{stats.connexions.total}</p>
+                        <p className="text-xl font-bold text-blue-600">{statsE.connexions_total}</p>
                         </div>
                     </div>
                 </StatCard>
 
-                <StatCard title="Durée moyenne des sessions" value={stats.dureeSession} />
-                <StatCard title="Dernière activité" value={stats.derniereActivite} />
+                <StatCard title="Durée moyenne des sessions" value={statsE.duree_session} />
+                <StatCard title="Dernière activité" value={statsE.derniere_activite} />
                 </div>
 
 

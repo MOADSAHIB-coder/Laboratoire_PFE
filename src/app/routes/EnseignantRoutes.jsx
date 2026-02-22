@@ -7,6 +7,7 @@ import ParametresEnseignant from "../pages/enseignant/parametres";
 import ProfilEnseignant from "../pages/enseignant/profil";
 import StatistiqueEnseignant from "../pages/enseignant/stats";
 import VoirTpEtudiants from "../pages/enseignant/tp_etudiant";
+import ShowDecument from "../pages/enseignant/Tp_correction";
 
 
 function EnseignantRoute() {
@@ -20,6 +21,7 @@ function EnseignantRoute() {
       <Route path="/statistique" element={<StatistiqueEnseignant />} />
       <Route path="/parametres" element={<ParametresEnseignant />} />
       <Route path="/profil" element={<ProfilEnseignant />} />
+      <Route path="/decument" element={<ShowDecument />} />
     </Routes>
   );
 }

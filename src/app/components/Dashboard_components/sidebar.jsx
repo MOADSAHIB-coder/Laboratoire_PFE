@@ -1,11 +1,12 @@
 import { NavLink } from "react-router-dom";
 import { MdDashboard } from "react-icons/md";
+import SideBarItem from "./sidebarItems";
 
-function SideBar({ val1, val2, val3, icon1, icon2, icon3, link1, link2, link3, link4, link5, link6, link7, link8}) {
+function SideBar({ val1, val2, val3, icon1, icon2, icon3,link0, link1, link2, link3, link4, link5, link6, link7, link8}) {
 
 
   return (
-    <aside className="w-[20vw] h-screen bg-white lg:p-0 shadow-md text-black flex flex-col p-6 fixed top-0 left-0 overflow-auto ">
+    <aside className="w-[20vw] lg:w-56 xl:w-[20vw] h-screen bg-white lg:p-0 shadow-md text-black flex flex-col p-6 fixed top-0 left-0 overflow-auto ">
 
       
       <div className="bg-white rounded-lg p-3 mb-6 sm:mb-8 flex flex-col items-center">
@@ -21,7 +22,7 @@ function SideBar({ val1, val2, val3, icon1, icon2, icon3, link1, link2, link3, l
       <ul className="flex flex-col flex-1 list-none p-0 m-0 space-y-2 sm:space-y-3">
         <NavLink to={link1}
             className={({isActive}) => `flex items-center py-2 sm:py-3 px-4 sm:px-6 rounded-lg cursor-pointer text-gray-700 transition-colors duration-200 gap-3 sm:gap-4 
-            ${isActive ? "bg-blue-100 text-blue-600" : "hover:bg-blue-100 hover:text-blue-600 hover:font-bold"}`}
+            ${isActive ? "bg-blue-100 text-blue-600" : "hover:bg-blue-100 hover:text-blue-600"}`}
 
         >
             <MdDashboard className="text-2xl text-black w-4 h-4 sm:w-5 sm:h-5" />
@@ -30,25 +31,37 @@ function SideBar({ val1, val2, val3, icon1, icon2, icon3, link1, link2, link3, l
 
         <NavLink to={link2}
             className={({isActive}) => `flex items-center py-2 sm:py-3 px-4 sm:px-6 rounded-lg cursor-pointer text-gray-700 transition-colors duration-200 gap-3 sm:gap-4 
-            ${isActive ? "bg-blue-100 text-blue-600" : "hover:bg-blue-100 hover:text-blue-600 hover:font-bold"}`}
+            ${isActive ? "bg-blue-100 text-blue-600" : "hover:bg-blue-100 hover:text-blue-600"}`}
 
         >
             <img src={icon1} alt="" className="w-4 h-4 sm:w-5 sm:h-5" />
             <span className="text-sm sm:text-base">{val1}</span>           
         </NavLink> 
 
-        <NavLink to={link3}
-            className={({isActive}) => `flex items-center py-2 sm:py-3 px-4 sm:px-6 rounded-lg cursor-pointer text-gray-700 transition-colors duration-200 gap-3 sm:gap-4 
-            ${isActive ? "bg-blue-100 text-blue-600" : "hover:bg-blue-100 hover:text-blue-600 hover:font-bold"}`}
-
-        >
-            <img src={icon2} alt="" className="w-4 h-4 sm:w-5 sm:h-5" />
-            <span className="text-sm sm:text-base">{val2}</span>
-        </NavLink>
+        {val2==='Mes activités' ? (
+            <SideBarItem 
+                icon={icon2}
+                label={val2}
+                subItems={[
+                { label: "Envoyer le TP", link: link0 },
+                { label: "Voir le TP", link: link3 },
+            ]}      
+            />
+        ):(
+            <SideBarItem 
+                icon={icon2}
+                label={val2}
+                subItems={[
+                { label: "Envoyer les document de TP", link: link3 },
+                { label: "Voir les document Envoyer", link: link0 },
+            ]}      
+            />
+        )}
+        
 
         <NavLink to={link4}
             className={({isActive}) => `flex items-center py-2 sm:py-3 px-4 sm:px-6 rounded-lg cursor-pointer text-gray-700 transition-colors duration-200 gap-3 sm:gap-4 
-            ${isActive ? "bg-blue-100 text-blue-600" : "hover:bg-blue-100 hover:text-blue-600 hover:font-bold"}`}
+            ${isActive ? "bg-blue-100 text-blue-600" : "hover:bg-blue-100 hover:text-blue-600"}`}
 
         >
             <img src={icon3} alt="" className="w-4 h-4 sm:w-5 sm:h-5" />
@@ -57,7 +70,7 @@ function SideBar({ val1, val2, val3, icon1, icon2, icon3, link1, link2, link3, l
 
         <NavLink to={link5}
             className={({isActive}) => `flex items-center py-2 sm:py-3 px-4 sm:px-6 rounded-lg cursor-pointer text-gray-700 transition-colors duration-200 gap-3 sm:gap-4 
-            ${isActive ? "bg-blue-100 text-blue-600" : "hover:bg-blue-100 hover:text-blue-600 hover:font-bold"}`}
+            ${isActive ? "bg-blue-100 text-blue-600" : "hover:bg-blue-100 hover:text-blue-600"}`}
 
         >
             <img src="/icons/discussion.png" alt="" className="w-4 h-4 sm:w-5 sm:h-5" />
@@ -66,7 +79,7 @@ function SideBar({ val1, val2, val3, icon1, icon2, icon3, link1, link2, link3, l
 
         <NavLink to={link6}
             className={({isActive}) => `flex items-center py-2 sm:py-3 px-4 sm:px-6 rounded-lg cursor-pointer text-gray-700 transition-colors duration-200 gap-3 sm:gap-4 
-            ${isActive ? "bg-blue-100 text-blue-600" : "hover:bg-blue-100 hover:text-blue-600 hover:font-bold"}`}
+            ${isActive ? "bg-blue-100 text-blue-600" : "hover:bg-blue-100 hover:text-blue-600"}`}
 
         >
             <img src="/icons/statistique.png" alt="" className="w-4 h-4 sm:w-5 sm:h-5" />
@@ -75,7 +88,7 @@ function SideBar({ val1, val2, val3, icon1, icon2, icon3, link1, link2, link3, l
 
         <NavLink to={link7}
             className={({isActive}) => `flex items-center py-2 sm:py-3 px-4 sm:px-6 rounded-lg cursor-pointer text-gray-700 transition-colors duration-200 gap-3 sm:gap-4 
-            ${isActive ? "bg-blue-100 text-blue-600" : "hover:bg-blue-100 hover:text-blue-600 hover:font-bold"}`}
+            ${isActive ? "bg-blue-100 text-blue-600" : "hover:bg-blue-100 hover:text-blue-600"}`}
 
         >
             <img src="/icons/parametres.png" alt="" className="w-4 h-4 sm:w-5 sm:h-5" />
@@ -84,7 +97,7 @@ function SideBar({ val1, val2, val3, icon1, icon2, icon3, link1, link2, link3, l
 
         <NavLink to={link8}
             className={({isActive}) => `flex items-center py-2 sm:py-3 px-4 sm:px-6 rounded-lg cursor-pointer text-gray-700 transition-colors duration-200 gap-3 sm:gap-4 
-            ${isActive ? "bg-blue-100 text-blue-600" : "hover:bg-blue-100 hover:text-blue-600 hover:font-bold"}`}
+            ${isActive ? "bg-blue-100 text-blue-600" : "hover:bg-blue-100 hover:text-blue-600"}`}
 
           >
             <img src="/icons/profil.png" alt="" className="w-4 h-4 sm:w-5 sm:h-5" />
