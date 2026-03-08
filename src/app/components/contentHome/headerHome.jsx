@@ -14,7 +14,7 @@ function HeaderHome() {
   ];
 
   const services = [
-    { name: "Travaux pratiques", to: "/etudiant" },
+    { name: "Travaux pratiques", to: "/complete-profil" },
     { name: "Création de topologie", to: "/enseignant" },
     { name: "Configuration réseau", to: "/etudiant" },
     { name: "Création de TPs", to: "/about" },
@@ -22,7 +22,6 @@ function HeaderHome() {
 
   return (
     <header className="w-full flex items-center justify-between py-4 px-4 md:px-16 bg-white sticky top-0 z-50 shadow-md">
-      {/* Logo */}
       <div className="font-bold text-2xl whitespace-nowrap">
         ESTD-LabTechNet
       </div>

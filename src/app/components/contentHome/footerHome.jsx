@@ -8,242 +8,224 @@ import {
 import { MdEmail, MdLocationOn } from "react-icons/md";
 import { Link } from "react-router-dom";
 
-//fonction qui associe les liens aux icons reseaux sociaux
 export function ReseauSocial() {
+  const socials = [
+    {
+      icon: <FaInstagram size={18} />,
+      href: "https://www.instagram.com",
+      label: "Instagram",
+    },
+    {
+      icon: <FaFacebook size={18} />,
+      href: "https://www.facebook.com",
+      label: "Facebook",
+    },
+    {
+      icon: <FaLinkedin size={18} />,
+      href: "https://www.linkedin.com",
+      label: "LinkedIn",
+    },
+    {
+      icon: <FaWhatsapp size={18} />,
+      href: "https://wa.me/1234567890",
+      label: "WhatsApp",
+    },
+  ];
+
   return (
-    <div style={{ display: "flex", gap: "15px" }}>
-      <a
-        href="https://www.instagram.com"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        <FaInstagram size={40} color="#E1306C" />
-      </a>
-      <a
-        href="https://www.facebook.com"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        <FaFacebook size={40} color="#1877F2" />
-      </a>
-      <a
-        href="https://www.linkedin.com"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        <FaLinkedin size={40} color="#0A66C2" />
-      </a>
-      <a
-        href="https://wa.me/1234567890"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        <FaWhatsapp size={40} color="#25D366" />
-      </a>
+    <div className="flex items-center gap-3">
+      {socials.map((social) => (
+        <a
+          key={social.label}
+          href={social.href}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={social.label}
+          className="flex h-10 w-10 items-center justify-center rounded-full border border-gray-700 bg-gray-800 text-gray-300 transition duration-300 hover:-translate-y-0.5 hover:border-blue-500 hover:bg-blue-600 hover:text-white"
+        >
+          {social.icon}
+        </a>
+      ))}
     </div>
   );
 }
 
-//La section
 function FooterHome() {
+  const aproposLinks = [
+    { name: "Présentation générale", to: "/apropos#presentation" },
+    { name: "Objectif du projet", to: "/apropos#objectif" },
+    { name: "Contexte et motivation", to: "/apropos#contexte" },
+    { name: "La vision du projet", to: "/apropos#vision" },
+    { name: "Les valeurs du projet", to: "/apropos#valeurs" },
+    { name: "Cadre du projet", to: "/apropos#cadre" },
+    { name: "Équipe du projet", to: "/apropos#equipe" },
+  ];
+
+  const serviceLinks = [
+    { name: "Les Projets et Devoirs", to: "/etudiant/projets-devoirs" },
+    { name: "Réalisez vos Travaux Pratiques", to: "/etudiant/dashboard" },
+    { name: "Accédez aux programmes", to: "/etudiant/mes-cours" },
+    { name: "Suivez les étudiants", to: "/enseignant/tps-etudiant" },
+    { name: "Créez les topologies", to: "/enseignant/dashboard" },
+    { name: "Créez les Travaux Pratiques", to: "/enseignant/mes-travaux" },
+    { name: "Recevez les Guides / Tutoriels", to: "/etudiant/dashboard" },
+    { name: "Discutez en communauté", to: "/etudiant/discussion" },
+  ];
+
   return (
-    <footer id="id-footer" className="bg-gray-900 text-gray-300 pt-6">
-      <div className="max-w-7xl mx-auto px-6 sm:px-6 md:px-8 lg:px-16 py-10">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
-          <div>
-            {/*A propos du projet */}
-            <h2 className="text-white md:text-xl font-semibold mb-4">
-              A propos de{" "}
-              <span className="text-white md:text-xl font-bold mb-4">
-                ESTD-LabTechNet
-              </span>
-            </h2>
-            <div>
-              <ul className="space-y-5 text-sm text-gray-400 md:pt-6">
-                <li>
-                  <Link className="hover:text-white  hover:underline" to="">
-                    Présentation générale
-                  </Link>
-                </li>
-                <li>
-                  <Link className="hover:text-white  hover:underline" to="">
-                    Ojectif du projet
-                  </Link>
-                </li>
-                <li>
-                  <Link className="hover:text-white  hover:underline" to="">
-                    Contexte et motivation
-                  </Link>
-                </li>
-                <li>
-                  <Link className="hover:text-white  hover:underline" to="">
-                    La vision du projet
-                  </Link>
-                </li>
-                <li>
-                  <Link className="hover:text-white  hover:underline" to="">
-                    Les valeurs du projet
-                  </Link>
-                </li>
-                <li>
-                  <Link className="hover:text-white  hover:underline" to="">
-                    Cadre du projet
-                  </Link>
-                </li>
-                <li>
-                  <Link className="hover:text-white  hover:underline" to="">
-                    Equipe du projet
-                  </Link>
-                </li>
-              </ul>
-            </div>
-            <div className="mt-4 md:mt-8">
+    <footer className="bg-gray-950 text-gray-300">
+      <div className="border-b border-gray-800">
+        <div className="mx-auto max-w-7xl px-6 py-12 md:px-10 lg:px-16">
+          <div className="grid grid-cols-1 gap-12 md:grid-cols-2 xl:grid-cols-4">
+            {/* Bloc marque */}
+            <div className="xl:pr-6">
               <Link
-                className="text-xl md:text-2xl font-bold  hover:underline"
-                to="/faq"
+                to="/"
+                className="inline-block text-2xl font-bold tracking-wide text-white"
               >
-                {" "}
-                FAQ
+                ESTD-LabTechNet
               </Link>
-            </div>
-          </div>
 
-          {/*Nos services*/}
-          <div>
-            <h2 className="text-white md:text-xl font-semibold mb-4">
-              Nos Services
-            </h2>
-            <ul className="space-y-5 text-sm text-gray-400 md:pt-6">
-              <li>
-                <Link
-                  className="block text-sm hover:text-white  hover:underline"
-                  to=""
-                >
-                  Consultez les Travaux Pratiques
-                </Link>
-              </li>
-              <li>
-                <Link
-                  className="block text-sm hover:text-white  hover:underline"
-                  to=""
-                >
-                  Réalisez vos Travaux Pratiques
-                </Link>
-              </li>
-              <li>
-                <Link
-                  className="block text-sm hover:text-white  hover:underline"
-                  to=""
-                >
-                  Accédez aux programmes
-                </Link>
-              </li>
-              <li>
-                <Link
-                  className="block text-sm hover:text-white hover:underline"
-                  to=""
-                >
-                  Suivez les etudiants
-                </Link>
-              </li>
-              <li>
-                <Link className="hover:text-white hover:underline" to="">
-                  Créez les topologies/Configurez résaux
-                </Link>
-              </li>
-              <li>
-                <Link className="hover:text-white" to="">
-                  {" "}
-                  Créez les Travaux Pratiques
-                </Link>
-              </li>
-              <li>
-                <Link
-                  className="block text-sm hover:text-white hover:underline"
-                  to=""
-                >
-                  Recevez les Guides/Tutoriels
-                </Link>
-              </li>
-              <li>
-                {" "}
-                <Link
-                  className="hover:text-white  hover:underline"
-                  Discutez
-                  en
-                  communauté
-                ></Link>
-              </li>
-            </ul>
-          </div>
-          {/*A propros de EST-D */}
-          <div>
-            <h2 className="text-white md:text-xl font-semibold mb-4">
-              Université IBN-ZHOR
-            </h2>
+              <p className="mt-4 text-sm leading-7 text-gray-400">
+                Une plateforme moderne dédiée aux travaux pratiques, aux
+                ressources pédagogiques, à la collaboration et à
+                l’accompagnement numérique des étudiants et enseignants.
+              </p>
 
-            <div>
-              <ul className="space-y-5 text-sm text-gray-400  md:pt-6">
-                <li>
-                  <p className="flex items-center gap-2 text-sm text-gray-400 hline hover:text-white hover:underline focus:outline-none">
-                    <MdLocationOn
-                      size={30}
-                      className="text-blue-400 flex-shrink-0"
-                    />
-                    Ecole Supérieure de Technologie EST - Dakhla
-                  </p>
-                </li>
-
-                <li>
-                  <p className="flex items-center gap-2 text-sm text-gray-400">
-                    <FaPhoneAlt
-                      size={30}
-                      className="text-base flex-shrink-0 text-blue-400"
-                    />{" "}
-                    +212528227125
-                  </p>
-                </li>
-                <li>
-                  {" "}
-                  <a
-                    className="flex items-center gap-2 text-sm text-gray-400 hover:text-white hover:underline"
-                    href="mailto:contact@uiz.ac.ma"
-                  >
-                    <MdEmail
-                      size={30}
-                      className="text-base flex-shrink-0 text-blue-400"
-                    />
-                    contact@uiz.ac.ma
-                  </a>
-                </li>
-                <li>
-                  {" "}
-                  <a
-                    className="block text-sm hover:text-white hover:underline"
-                    href="http://estd.uiz.ac.ma/#"
-                  >
-                    Site Ecole Supérieur de Technologie de Dakhla EST-D
-                  </a>
-                </li>
-              </ul>
-              {/*affiche les liens  reseaux sociaux sous forme d'icons facebook, instagramme...*/}
-              <div className="mt-10">
+              <div className="mt-6">
                 <ReseauSocial />
-                <Link to="/contactez-nous">
-                  <button className="w-full md:w-auto px-6 py-2 border   text-white  hover:bg-white hover:text-blue-600 transition mt-16">
-                    Contactez-nous
-                  </button>
+              </div>
+
+              <div className="mt-8">
+                <Link
+                  to="/contactez-nous"
+                  className="inline-flex items-center rounded-lg bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-700"
+                >
+                  Contactez-nous
                 </Link>
               </div>
+            </div>
+
+            {/* À propos */}
+            <div>
+              <h2 className="text-lg font-semibold text-white">
+                À propos du projet
+              </h2>
+              <div className="mt-3 h-1 w-14 rounded-full bg-blue-500" />
+
+              <ul className="mt-6 space-y-3">
+                {aproposLinks.map((link) => (
+                  <li key={link.name}>
+                    <Link
+                      to={link.to}
+                      className="text-sm text-gray-400 transition hover:pl-1 hover:text-white"
+                    >
+                      {link.name}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+
+              <div className="mt-6">
+                <Link
+                  to="/faq"
+                  className="inline-block text-sm font-semibold text-blue-400 transition hover:text-blue-300 hover:underline"
+                >
+                  Consulter la FAQ
+                </Link>
+              </div>
+              <div className="mt-6">
+                <Link
+                  to="inscrit-prof"
+                  className="inline-block text-sm font-semibold text-blue-400 transition hover:text-blue-300 hover:underline"
+                >
+                  Inscription professeur
+                </Link>
+              </div>
+            </div>
+
+            {/* Services */}
+            <div>
+              <h2 className="text-lg font-semibold text-white">Nos services</h2>
+              <div className="mt-3 h-1 w-14 rounded-full bg-blue-500" />
+
+              <ul className="mt-6 space-y-3">
+                {serviceLinks.map((link) => (
+                  <li key={link.name}>
+                    <Link
+                      to={link.to}
+                      className="text-sm text-gray-400 transition hover:pl-1 hover:text-white"
+                    >
+                      {link.name}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Contact institution */}
+            <div>
+              <h2 className="text-lg font-semibold text-white">
+                Université IBN ZOHR
+              </h2>
+              <div className="mt-3 h-1 w-14 rounded-full bg-blue-500" />
+
+              <ul className="mt-6 space-y-5 text-sm text-gray-400">
+                <li className="flex items-start gap-3">
+                  <MdLocationOn size={20} className="mt-0.5 text-blue-400" />
+                  <span>
+                    École Supérieure de Technologie
+                    <br />
+                    EST - Dakhla
+                  </span>
+                </li>
+
+                <li className="flex items-center gap-3">
+                  <FaPhoneAlt size={16} className="text-blue-400" />
+                  <span>+212 528 22 71 25</span>
+                </li>
+
+                <li>
+                  <a
+                    href="mailto:contact@uiz.ac.ma"
+                    className="flex items-center gap-3 transition hover:text-white"
+                  >
+                    <MdEmail size={20} className="text-blue-400" />
+                    <span>contact@uiz.ac.ma</span>
+                  </a>
+                </li>
+
+                <li>
+                  <a
+                    href="http://estd.uiz.ac.ma/#"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-sm text-gray-400 transition hover:text-white hover:underline"
+                  >
+                    Site de l’École Supérieure de Technologie de Dakhla
+                  </a>
+                </li>
+              </ul>
             </div>
           </div>
         </div>
       </div>
 
-      <div>
-        <div className=" border-t max-w-full text-center border-gray-50 pb-5"></div>
-        <div className=" py-4 text-center text-sm p-4 text-gray-400">
-          <div></div>© 2026 LabTech-EST-D | Tout droit reservé
+      <div className="mx-auto max-w-7xl px-6 py-5 md:px-10 lg:px-16">
+        <div className="flex flex-col items-center justify-between gap-3 text-center text-sm text-gray-500 md:flex-row">
+          <p>© 2026 LabTech-EST-D. Tous droits réservés.</p>
+
+          <div className="flex items-center gap-4">
+            <Link to="/apropos" className="transition hover:text-white">
+              À propos
+            </Link>
+            <Link to="/faq" className="transition hover:text-white">
+              FAQ
+            </Link>
+            <Link to="/contactez-nous" className="transition hover:text-white">
+              Contact
+            </Link>
+          </div>
         </div>
       </div>
     </footer>

@@ -15,13 +15,14 @@ function Input({
   checked,
   errors,
   disabled,
+  ...rest
 }) {
   const [show, setShow] = useState(false);
   const [focused, setFocused] = useState(false);
 
   const finalType = type === "password" ? (show ? "text" : "password") : type;
 
-  // Couleur de la bordure
+  // Couleur de la bordure et du focus
   let borderColor = "border-gray-400";
   let ringColor = "focus:ring-blue-500";
 
@@ -37,6 +38,12 @@ function Input({
     borderColor = "border-red-500";
     ringColor = "focus:ring-red-500";
   }
+
+  // Classes par défaut selon le type
+  const defaultClasses =
+    type === "checkbox"
+      ? `w-4 h-4 ${disabled ? "cursor-not-allowed" : "cursor-pointer"}`
+      : `w-full px-3 py-3 ${borderColor}  focus:outline-none focus:ring-2 ${ringColor}`;
 
   return (
     <div className="relative">
@@ -54,22 +61,22 @@ function Input({
           onFocus && onFocus(e);
         }}
         minLength={minLength}
-        className={`${
-          type === "checkbox"
-            ? `w-4 h-4 ${disabled ? "cursor-not-allowed" : "cursor-pointer"}`
-            : "w-full px-3 py-3"
-        } border ${borderColor}   rounded-md focus:outline-none  focus:ring-2 ${ringColor} ${className}`}
+        className={`${defaultClasses} ${className}`} // concatène les classes passées
+        autoComplete={type === "password" ? "new-password" : "off"}
+        onPaste={(e) => e.preventDefault()}
+        onCopy={(e) => e.preventDefault()}
+        onCut={(e) => e.preventDefault()}
+        {...rest}
       />
 
-      {/* Label de la champ a cocher*/}
-      {type === "checkbox" ? (
+      {/* Label pour checkbox */}
+      {type === "checkbox" && (
         <label className="ml-2 text-sm text-gray-600 cursor-pointer">
           {placeholder}
         </label>
-      ) : null}
+      )}
 
-      {/*bouton oeil pour cacher le mot de passe*/}
-
+      {/* Bouton œil pour mot de passe */}
       {type === "password" && (
         <button
           type="button"

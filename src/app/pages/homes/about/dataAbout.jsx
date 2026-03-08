@@ -97,31 +97,25 @@ export const objectif = [
 
 export const membres = [
   {
-    nomPrenom: "Mme. NAWAL NASSIRI",
-    statut: "Professeur",
-    role: "Encadrante du projet",
-    description: "Responsable de l’interface utilisateur.",
-    photo: "/images/juste2.jpeg",
-  },
-  {
     nomPrenom: "MOAD SAHIB",
     statut: "Etudiant",
-    role: "Developpeur",
-    description: "Responsable de l’interface utilisateur.",
+    role: "Développeur",
+    description: "Travaille sur les fonctionnalités du projet.",
     photo: "/images/juste2.jpeg",
   },
   {
     nomPrenom: "MEME-LEKO Juste Glavany",
     statut: "Etudiant",
-    role: "Role dans le projet",
-    description: "Responsable de l’interface utilisateur.",
+    role: "Développeur",
+    description: "Participe à la conception et à l’implémentation.",
     photo: "/images/juste.jpeg",
   },
   {
     nomPrenom: "FRAH LOUBNA",
-    statut: "Professeur",
-    role: "Role dans le projet",
-    description: "Responsable de l’interface utilisateur.",
+    statut: "Etudiante",
+    role: "Développeur",
+    description:
+      "Participe à la conception et à l’implémentation. Travaille sur les fonctionnalités du projet",
     photo: "/images/juste.jpeg",
   },
 ];

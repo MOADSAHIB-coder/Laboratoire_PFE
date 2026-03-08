@@ -6,15 +6,17 @@ export const filieres = [
 ];
 
 export const niveaux = [
-  { value: "S1-S2", label: "1ère année" },
-  { value: "S3-S2", label: "2ème année" },
+  { value: "bac+1", label: "BAC+1 " },
+  { value: "bac+2", label: "BAC+2" },
+  { value: "bac+3", label: "BAC+3" },
+  { value: "Autres", label: "Autres" },
 ];
 
 export function Button({
   children,
   disabled = false,
   onClick,
-  classname,
+  classname = "",
   type,
 }) {
   return (
@@ -35,20 +37,22 @@ export function Select({
   onChange,
   name,
   isTouched = false,
+  children,
+  className = "",
 }) {
   const borderColor =
     isTouched && !value ? "border-red-500" : "border-gray-400";
   const focusColor =
-    isTouched && !value ? "focus:ring-red-500" : "focus:ring-blue-500";
+    isTouched && !value ? "border focus:ring-red-500" : "focus:ring-blue-500";
 
   return (
     <select
       name={name}
       value={value}
       onChange={onChange}
-      className={`w-full border ${borderColor} rounded-md text-lg px-3 py-3 bg-white text-gray-400 focus:outline-none focus:ring-2 ${focusColor}`}
+      className={`w-full border-b-2 ${borderColor} text-lg px-3 py-3 bg-white text-gray-400 focus:outline-none focus:ring-2 ${focusColor} ${className}`}
     >
-      <option value="">Sélectionnez votre filière</option>
+      <option value="">{children}</option>
       {options.map((opt) => (
         <option key={opt.value} value={opt.value}>
           {opt.label}

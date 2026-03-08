@@ -1,13 +1,12 @@
-import { Route, Routes } from "react-router-dom"
-import Test from "./test"
+import { Route, Routes } from "react-router-dom";
+import Test from "./test";
 
-function Testauth(){
-    return (
-        <Routes>
-            <Route path="/" element={<Test />}/>
-        </Routes>
-    )
-
+function Testauth() {
+  return (
+    <Routes>
+      <Route path="/" element={<Test />} />
+    </Routes>
+  );
 }
 
-export default Testauth
+export default Testauth;

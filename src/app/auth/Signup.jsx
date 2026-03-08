@@ -1,482 +1,501 @@
-import { useState } from "react";
 import { Link } from "react-router-dom";
-import { BsExclamationCircleFill } from "react-icons/bs";
+import { useState } from "react";
+import api from "../api/API_Djando";
+import SignupPanel from "../components/component_Signup/SignupPanelGauche";
+import SignupStep1 from "../components/component_Signup/SignupEtape1";
+import SignupStep2 from "../components/component_Signup/SignupEtape2";
+import FormAlert from "../components/component_Signup/FormAlert";
 
-import Input from "../components/componentLongin/InputForm";
 import {
-  FormMessage,
-  FormRulesBubble,
-} from "../components/componentLongin/MessageForm";
-import {
-  Button,
-  Select,
-  filieres,
-  niveaux,
-} from "../components/componentLongin/ButonForm";
+  validateBaseStep1,
+  validateFullStep1,
+  validateStep2,
+} from "./utils_Signup/validateSignup";
 
-function Signup() {
-  const [form, setForm] = useState({
-    nom: "",
-    prenom: "",
+const Signup = () => {
+  const [currentStep, setCurrentStep] = useState(1);
+
+  const [errors, setErrors] = useState({});
+  const [nonFieldErrors, setNonFieldErrors] = useState([]);
+
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+  const [emailTicket, setEmailTicket] = useState(null);
+  const [emailOtpStatus, setEmailOtpStatus] = useState("idle");
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitSuccess, setSubmitSuccess] = useState(false);
+
+  const [showRecaptcha, setShowRecaptcha] = useState(false);
+  const [recaptchaValid, setRecaptchaValid] = useState(false);
+  const [acceptTerms, setAcceptTerms] = useState(false);
+
+  const [formStep1, setFormStep1] = useState({
+    firstName: "",
+    lastName: "",
+    cin: "",
     email: "",
-    password: "",
-    confirmation: "",
     filiere: "",
     niveau: "",
-    cin: "",
+    password: "",
+    confirmPassword: "",
   });
 
-  //Marque comme non touché au début
-  const [touched, setTouched] = useState({
-    nom: false,
-    prenom: false,
-    email: false,
-    password: false,
-    confirmation: false,
-    filiere: false,
-    niveau: false,
-    cin: false,
+  const [formStep2, setFormStep2] = useState({
+    localisation: "",
+    date_naissance: "",
+    genre: "",
+    matricule: "",
+    ville: "",
+    universite: "",
+    semestre: "",
+    annee_universitaire: "",
+    tuteur: "",
+    telephone: "",
+    certification: "",
+    skills: "",
+    linkedin: "",
+    github: "",
   });
 
-  const [submitMessage, setSubmitMessage] = useState("");
-  const [acceptTerms, setAcceptTerms] = useState(false);
-  const [touchedTerms, setTouchedTerms] = useState(false);
-  const [errors, setErrors] = useState({});
-  const [showRules, setShowRules] = useState(false);
-  const [termsOpened, setTermsOpened] = useState(false);
+  const labelBase = "mb-2 block text-sm font-semibold text-slate-700";
+  const errorBase = "mt-1 text-xs font-medium text-rose-600";
 
-  // Marquer champ touché
-  const handleBlur = (e) => {
-    const { name } = e.target;
-    setTouched({ ...touched, [name]: true });
-  };
+  const inputClass = (field) =>
+    `w-full rounded-xl border px-11 py-3.5 text-sm text-slate-800 shadow-sm outline-none transition-all duration-200 placeholder:text-slate-400 ${
+      errors[field]
+        ? "border-rose-500 bg-rose-50 focus:ring-4 focus:ring-rose-100"
+        : "border-slate-300 bg-white focus:border-blue-600 focus:ring-4 focus:ring-blue-100"
+    }`;
 
-  // Validation
-  const validate = (Values) => {
-    const newErrors = {};
+  const selectClass = (field) =>
+    `w-full rounded-xl border px-4 py-3.5 text-sm text-slate-800 shadow-sm outline-none transition-all duration-200 ${
+      errors[field]
+        ? "border-rose-500 bg-rose-50 focus:ring-4 focus:ring-rose-100"
+        : "border-slate-300 bg-white focus:border-blue-600 focus:ring-4 focus:ring-blue-100"
+    }`;
 
-    if (!Values.nom.trim()) newErrors.nom = "Veuillez saisir le nom";
-    else if (form.nom.trim().length < 5) newErrors.nom = "Nom invalide";
+  const errorText = (name) => errors?.[name];
 
-    if (!Values.prenom.trim()) newErrors.prenom = "Veuillez saisir le prenom";
-    else if (form.prenom.trim().length < 5)
-      newErrors.prenom = "Prénom invalide";
+  const applyBackendErrors = (data) => {
+    setErrors({});
+    setNonFieldErrors([]);
 
-    if (!Values.email.trim()) {
-      newErrors.email = "Veuillez saisir l'adresse e-mail";
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(Values.email.trim())) {
-      newErrors.email = "Adresse E-mail invalide";
+    const payload =
+      data?.errors && typeof data.errors === "object" ? data.errors : data;
+
+    if (!payload || typeof payload !== "object") {
+      setNonFieldErrors(["Une erreur inattendue est survenue."]);
+      return;
     }
 
-    if (!Values.password.trim())
-      newErrors.password = "Mot de passe obligatoire";
-    else if (
-      Values.password.length < 8 ||
-      !/[A-Z]/.test(form.password) ||
-      !/[a-z]/.test(form.password) ||
-      !/[0-9]/.test(form.password) ||
-      !/[^A-Za-z0-9]/.test(Values.password)
-    ) {
-      newErrors.password = "Le mot de passe invalide";
+    const nextFieldErrors = {};
+    const nextNonField = [];
+
+    const extractMessage = (value) => {
+      if (typeof value === "string") return value;
+
+      if (Array.isArray(value)) {
+        const firstString = value.find((item) => typeof item === "string");
+        if (firstString) return firstString;
+
+        const firstObject = value.find(
+          (item) => item && typeof item === "object" && !Array.isArray(item),
+        );
+        if (firstObject) {
+          const nestedValue = Object.values(firstObject)[0];
+          return extractMessage(nestedValue);
+        }
+      }
+
+      if (value && typeof value === "object") {
+        const firstKey = Object.keys(value)[0];
+        if (firstKey) return extractMessage(value[firstKey]);
+      }
+
+      return null;
+    };
+
+    if (typeof payload.error === "string") nextNonField.push(payload.error);
+    if (typeof payload.detail === "string") nextNonField.push(payload.detail);
+    if (typeof payload.message === "string" && !payload.errors) {
+      nextNonField.push(payload.message);
     }
 
-    if (!Values.confirmation.trim())
-      newErrors.confirmation = "Veuillez saisir la confirmation";
-    else if (Values.confirmation !== Values.password)
-      newErrors.confirmation = "Le mots de passe ne correspond pas";
+    for (const [key, val] of Object.entries(payload)) {
+      if (["error", "detail", "message"].includes(key)) continue;
 
-    if (!Values.filiere) newErrors.filiere = "Filière vide";
-    if (!Values.niveau) newErrors.niveau = "Niveau vide";
-    if (!Values.cin.trim()) newErrors.cin = "Veuillez saisir le CIN";
+      const msg = extractMessage(val);
+      if (!msg) continue;
 
-    return newErrors;
+      if (
+        key === "non_field_errors" ||
+        key === "__all__" ||
+        key === "email_ticket"
+      ) {
+        nextNonField.push(msg);
+      } else {
+        nextFieldErrors[key] = msg;
+      }
+    }
+
+    setErrors(nextFieldErrors);
+    setNonFieldErrors(nextNonField);
   };
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    if (value.startsWith(" ")) return;
-    setForm({ ...form, [name]: value });
-
-    const newForm = { ...form, [name]: value };
-    setForm(newForm);
-
-    setTouched({ ...touched, [name]: true });
-
-    const validationErrors = validate(newForm); //  validation live
-    setErrors(validationErrors);
-  };
-
-  const handleSubmit = (e) => {
+  const handleNextStep = (e) => {
     e.preventDefault();
+    setErrors({});
+    setNonFieldErrors([]);
 
-    const validationErrors = validate();
-    setErrors(validationErrors);
-    //Forcer les champ être comme touché pour afficher les erreurs
-    setTouched({
-      nom: true,
-      prenom: true,
-      email: true,
-      password: true,
-      confirmation: true,
-      filiere: true,
-      niveau: true,
-      cin: true,
-    });
+    const baseErrors = validateBaseStep1(formStep1);
+    if (Object.keys(baseErrors).length > 0) {
+      setErrors(baseErrors);
+      return;
+    }
 
-    if (Object.keys(validationErrors).length === 0) {
-      //Si les champs sont valides execute d'abord une action et nettoie le formulaire
-      setForm({
-        nom: "",
-        prenom: "",
-        email: "",
-        password: "",
-        confirmation: "",
-        filiere: "",
-        niveau: "",
-        cin: "",
-      });
-      setAcceptTerms(false);
-      setTouchedTerms(false);
+    if (emailOtpStatus !== "verified") {
+      setErrors((prev) => ({
+        ...prev,
+        email: "Veuillez valider votre email pour continuer.",
+      }));
+      setNonFieldErrors([
+        "Veuillez vérifier votre email (OTP) avant de continuer.",
+      ]);
+      return;
+    }
 
-      setSubmitMessage("Inscription réussie !");
-      console.log("Formulaire valide :", form);
+    const fullErrors = validateFullStep1(formStep1);
+    if (Object.keys(fullErrors).length > 0) {
+      setErrors(fullErrors);
+      return;
+    }
 
-      //si les champ sont valides champs devient a l'etat initiale non touche
-      setTouched({
-        nom: false,
-        prenom: false,
-        email: false,
-        password: false,
-        confirmation: false,
-        filiere: false,
-        niveau: false,
-        cin: false,
-      });
-    } else {
-      setSubmitMessage("Formulaire invalide");
+    setCurrentStep(2);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  const handlePreviousStep = () => {
+    setCurrentStep(1);
+    setNonFieldErrors([]);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  const handleRecaptchaSuccess = (isValid) => {
+    setRecaptchaValid(!!isValid);
+    if (!isValid) setAcceptTerms(false);
+  };
+
+  const handleTermsClick = () => {
+    setShowRecaptcha(true);
+  };
+
+  const handleChangeStep1 = (e) => {
+    const { name, value } = e.target;
+
+    setFormStep1((prev) => ({ ...prev, [name]: value }));
+
+    if (errors[name]) {
+      setErrors((prev) => ({ ...prev, [name]: "" }));
+    }
+
+    setNonFieldErrors([]);
+
+    if (name === "email") {
+      setEmailOtpStatus("idle");
+      setEmailTicket(null);
     }
   };
 
-  return (
-    <div className="flex flex-col md:flex-row min-h-screen">
-      <div className="bg-blue-800 p-8 md:p-12 w-full md:w-1/2">
-        <div className="md:mx-10 md:my-16 w-full max-w-1/2  text-center mx-4 my-8">
-          <h1 className="text-white  md:text-3xl mt-10 font-medium">
-            Bienvenu dans votre espace privé{" "}
+  const handleChangeStep2 = (e) => {
+    const { name, value } = e.target;
+
+    setFormStep2((prev) => ({ ...prev, [name]: value }));
+
+    if (errors[name]) {
+      setErrors((prev) => ({ ...prev, [name]: "" }));
+    }
+
+    setNonFieldErrors([]);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setErrors({});
+    setNonFieldErrors([]);
+
+    const step2Errors = validateStep2(formStep2);
+
+    if (!recaptchaValid) {
+      setNonFieldErrors([
+        "Veuillez ouvrir les conditions d’utilisation puis valider le captcha avant de finaliser.",
+      ]);
+    }
+
+    if (!acceptTerms) {
+      setNonFieldErrors((prev) => [
+        ...prev,
+        "Veuillez accepter les conditions d’utilisation pour continuer.",
+      ]);
+    }
+
+    if (Object.keys(step2Errors).length > 0) {
+      setErrors(step2Errors);
+    }
+
+    if (
+      Object.keys(step2Errors).length > 0 ||
+      !recaptchaValid ||
+      !acceptTerms
+    ) {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      return;
+    }
+
+    if (!emailTicket) {
+      setNonFieldErrors([
+        "Veuillez vérifier votre email (OTP) avant de finaliser.",
+      ]);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      const payload = {
+        ...formStep1,
+        ...formStep2,
+        email_ticket: emailTicket,
+        date_naissance: formStep2.date_naissance || null,
+      };
+
+      await api.post("etudiants/register/", payload);
+
+      setSubmitSuccess(true);
+
+      setTimeout(() => {
+        window.location.href = "/";
+      }, 800);
+    } catch (error) {
+      const data = error?.response?.data;
+
+      if (!data) {
+        setNonFieldErrors([
+          "Impossible de contacter le serveur. Vérifiez que Django tourne et que CORS est configuré.",
+        ]);
+      } else {
+        applyBackendErrors(data);
+      }
+
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const step1Fields = [
+    "firstName",
+    "lastName",
+    "cin",
+    "email",
+    "filiere",
+    "niveau",
+    "password",
+    "confirmPassword",
+  ];
+
+  const step2Fields = [
+    "localisation",
+    "date_naissance",
+    "genre",
+    "matricule",
+    "ville",
+    "universite",
+    "semestre",
+    "annee_universitaire",
+    "tuteur",
+    "telephone",
+    "certification",
+    "skills",
+    "linkedin",
+    "github",
+  ];
+
+  const currentStepFields = currentStep === 1 ? step1Fields : step2Fields;
+
+  const fieldErrorMessages = Object.entries(errors)
+    .filter(
+      ([key, value]) =>
+        currentStepFields.includes(key) &&
+        typeof value === "string" &&
+        value.trim() !== "",
+    )
+    .map(([, value]) => value);
+
+  const globalMessages = [...nonFieldErrors, ...fieldErrorMessages].filter(
+    (msg, index, arr) => msg && arr.indexOf(msg) === index,
+  );
+
+  const hasGlobalErrors = globalMessages.length > 0;
+
+  if (submitSuccess) {
+    return (
+      <div className="min-h-screen bg-[radial-gradient(circle_at_top,_rgba(37,99,235,0.08),_transparent_35%),linear-gradient(to_bottom,_#f8fafc,_#eef2ff_45%,_#f8fafc)] text-slate-900">
+        <div className="w-full max-w-md rounded-3xl border border-slate-200 bg-white p-10 text-center shadow-[0_20px_70px_rgba(15,23,42,0.08)]">
+          <div className="mx-auto mb-5 flex h-20 w-20 items-center justify-center rounded-full bg-emerald-600 text-5xl text-white">
+            ✓
+          </div>
+
+          <h1 className="mb-2 text-2xl font-extrabold tracking-tight text-slate-900">
+            Inscription réussie !
           </h1>
-          <p className="font-bold text-white text-3xl">ESTD-LabTechNet</p>
-          <p className="md:text-xl text-white sm:text-lg p-8 font-medium">
-            Créer votre compte et bénéficiez des services offerts par
-            ESTD-LabTectNet
+
+          <p className="leading-relaxed text-slate-600">
+            Votre profil a été créé avec succès. Un email de confirmation a été
+            envoyé à{" "}
+            <span className="font-semibold text-slate-900">
+              {formStep1.email}
+            </span>
+            .
           </p>
         </div>
-
-        <div className="flex justify-center items-center">
-          <img
-            src="/images/imgLogin.png"
-            alt="Lab"
-            className="w-full max-w-lg mx-auto h-auto object-cover"
-          />
-        </div>
       </div>
+    );
+  }
 
-      <div className="relative  bg-white my-10  h-full">
-        <div className="flex justify-center">
-          <div>
-            <h2 className="text-2xl font-bold text-center mb-8">
-              Créer votre compte
-            </h2>
+  return (
+    <div className="min-h-screen bg-gradient-to-b from-slate-50 via-white to-slate-100 text-slate-900">
+      <div className="min-h-screen flex">
+        <SignupPanel />
 
-            <form
-              onSubmit={handleSubmit}
-              noValidate
-              className="space-y-4 md:p-12 max-w-xl md:ml-20"
-            >
-              <div className="flex flex-col md:flex-row md:gap-8">
-                {/* Nom */}
-                <div className="relativeS">
-                  <label className="block mb-1 text-gray-400">
-                    Nom<span className="text-red-500">*</span>{" "}
-                  </label>
-                  <Input
-                    type="text"
-                    value={form.nom}
-                    onChange={handleChange}
-                    onBlur={(e) => {
-                      handleBlur(e);
-                      setShowRules(false);
-                    }}
-                    placeholder="Votre Nom"
-                    minLength={5}
-                    onFocus={() => setShowRules(true)}
-                    errors={errors.nom}
-                    isTouched={touched.nom}
-                    name="nom"
-                  />
-                  {errors.nom && touched.nom && (
-                    <div className="flex gap-1 items-center text-red-500 text-sm absolute">
-                      <BsExclamationCircleFill className="inline text-red-500 mr-1" />
-                      <FormMessage message={errors.nom} type="error" />
-                    </div>
-                  )}
-                </div>
-                <FormRulesBubble visible={showRules} errors={errors} />
-
-                {/* Prénom */}
-                <div className="relative">
-                  <label className="block mb-1 text-gray-400">
-                    Prénom<span className="text-red-500">*</span>{" "}
-                  </label>
-                  <Input
-                    type="text"
-                    value={form.prenom}
-                    onChange={handleChange}
-                    onBlur={(e) => {
-                      handleBlur(e);
-                      setShowRules(false);
-                    }}
-                    placeholder="Votre Prénom"
-                    minLength={5}
-                    onFocus={() => setShowRules(true)}
-                    errors={errors.prenom}
-                    isTouched={touched.prenom}
-                    name="prenom"
-                  />
-                  {errors.prenom && touched.prenom && (
-                    <div className="flex gap-1 items-center text-red-500 text-sm absolute">
-                      <BsExclamationCircleFill className="inline text-red-500 mr-1" />
-                      <FormMessage message={errors.prenom} type="error" />
-                    </div>
-                  )}
-                </div>
-              </div>
-
-              {/* CIN */}
-              <div className="relative">
-                <label className="block mb-1 text-gray-400">
-                  CIN<span className="text-red-500">*</span>{" "}
-                </label>
-                <Input
-                  type="text"
-                  value={form.cin}
-                  onChange={handleChange}
-                  onBlur={(e) => {
-                    handleBlur(e);
-                    setShowRules(false);
-                  }}
-                  placeholder="Votre CIN"
-                  errors={errors.cin}
-                  minLength={4}
-                  onFocus={() => setShowRules(true)}
-                  isTouched={touched.cin}
-                  name="cin"
-                />
-                {errors.cin && touched.cin && (
-                  <div className="flex gap-1 items-center text-red-500 text-sm absolute">
-                    <BsExclamationCircleFill className="inline text-red-500 mr-1" />
-                    <FormMessage message={errors.cin} type="error" />
+        <main className="flex w-full items-center justify-center px-4 py-10 lg:w-[920px]">
+          <div className="w-full max-w-[880px]">
+            <div className="overflow-hidden rounded-3xl border border-slate-200/80 bg-white/95 shadow-[0_25px_80px_rgba(15,23,42,0.10)] backdrop-blur-sm">
+              <div className="sticky top-0 z-20 border-b border-slate-200 bg-white px-6 py-5">
+                <div className="sticky top-0 z-20 border-b border-slate-200 bg-white/90 backdrop-blur-md px-6 py-5">
+                  <div>
+                    <h2 className="text-2xl font-extrabold tracking-tight md:text-3xl text-slate-900">
+                      Créer un compte
+                    </h2>
+                    <p className="mt-1 text-sm font-medium text-slate-600">
+                      Étape {currentStep}/2 • Vérification email avant de
+                      continuer
+                    </p>
                   </div>
-                )}
-              </div>
 
-              {/* Filière et Niveau */}
-              <div className="flex flex-col md:flex-row md:gap-8">
-                <div className="relative">
-                  <label className="block mb-1 text-gray-400">
-                    Filère<span className="text-red-500">*</span>{" "}
-                  </label>
-                  <Select
-                    type="text"
-                    value={form.filiere}
-                    options={filieres}
-                    onChange={handleChange}
-                    onBlur={(e) => {
-                      handleBlur(e);
-                      setShowRules(false);
-                    }}
-                    onFocus={() => setShowRules(true)}
-                    placeholder="Votre filière"
-                    isTouched={touched.filiere}
-                    name="filiere"
-                  />
-                  {errors.filiere && touched.filiere && (
-                    <div className="flex gap-1 items-center text-red-500 text-sm absolute">
-                      <BsExclamationCircleFill className="inline text-red-500 mr-1" />
-                      <FormMessage message={errors.filiere} type="error" />
-                    </div>
-                  )}
-                </div>
-
-                {/*niveau d'etude*/}
-                <div className="relative">
-                  <label className="block mb-1 text-gray-400">
-                    Niveau<span className="text-red-500">*</span>{" "}
-                  </label>
-                  <Select
-                    type="text"
-                    value={form.niveau}
-                    onChange={handleChange}
-                    options={niveaux}
-                    onBlur={(e) => {
-                      handleBlur(e);
-                      setShowRules(false);
-                    }}
-                    placeholder="Votre niveau d'étude"
-                    onFocus={() => setShowRules(true)}
-                    isTouched={touched.niveau}
-                    name="niveau"
-                  />
-                  {errors.niveau && touched.niveau && (
-                    <div className="flex gap-1 items-center text-red-500 text-sm absolute">
-                      <BsExclamationCircleFill className="inline text-red-500 mr-1" />
-                      <FormMessage message={errors.niveau} type="error" />
-                    </div>
-                  )}
-                </div>
-              </div>
-
-              {/* Email */}
-              <div className="relative">
-                <label className="block mb-1 text-gray-400">
-                  E-mail<span className="text-red-500">*</span>{" "}
-                </label>
-                <Input
-                  type="e-mail"
-                  value={form.email}
-                  onChange={handleChange}
-                  onBlur={(e) => {
-                    handleBlur(e);
-                    setShowRules(false);
-                  }}
-                  placeholder="Votre adresse e-mail"
-                  minLength={5}
-                  onFocus={() => setShowRules(true)}
-                  errors={errors.email}
-                  isTouched={touched.email}
-                  name="email"
-                />
-                {errors.email && touched.email && (
-                  <div className="flex gap-1 items-center text-red-500 text-sm absolute">
-                    <BsExclamationCircleFill className="inline text-red-500 mr-1" />
-                    <FormMessage message={errors.email} type="error" />
-                  </div>
-                )}
-              </div>
-
-              {/* Mot de passe */}
-              <div className="relative">
-                <label className="block mb-1 text-gray-400">
-                  Mot de passe<span className="text-red-500">*</span>{" "}
-                </label>
-                <Input
-                  type="password"
-                  value={form.password}
-                  onChange={handleChange}
-                  onBlur={(e) => {
-                    handleBlur(e);
-                    setShowRules(false);
-                  }}
-                  errors={errors.password}
-                  placeholder="Mot de passe"
-                  minLength={8}
-                  onFocus={() => setShowRules(true)}
-                  isTouched={touched.password}
-                  name="password"
-                />
-                {errors.password && touched.password && (
-                  <div className="flex gap-1 items-center text-red-500 text-sm absolute">
-                    <BsExclamationCircleFill className="inline text-red-500 mr-1" />
-
-                    <FormMessage message={errors.password} type="error" />
-                  </div>
-                )}
-              </div>
-
-              {/* Confirmation */}
-              <div className="relative">
-                <label className="block mb-1 text-gray-400">
-                  Confirmation<span className="text-red-500">*</span>{" "}
-                </label>
-                <Input
-                  type="password"
-                  value={form.confirmation}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  placeholder="Confirmez le mot de passe"
-                  minLength={8}
-                  isTouched={touched.confirmation}
-                  name="confirmation"
-                />
-                {errors.confirmation && touched.confirmation && (
-                  <div className="flex gap-1 items-center text-red-500 text-sm absolute">
-                    <BsExclamationCircleFill className="inline text-red-500 mr-1" />
-                    <FormMessage message={errors.confirmation} type="error" />
-                  </div>
-                )}
-              </div>
-
-              {/*Bouton pour accepter la validation de formulaire */}
-
-              <div className="flex items-center pt-4 gap-2">
-                <Input
-                  type="checkbox"
-                  name="acceptTerms"
-                  checked={acceptTerms}
-                  onChange={(e) => setAcceptTerms(e.target.checked)}
-                  onBlur={() => {
-                    setTouchedTerms(true);
-                    setTermsOpened(true);
-                  }}
-                  isTouched={touchedTerms}
-                  disabled={!termsOpened}
-                />
-
-                <div className="flex gap-1">
-                  <p flex>J'accepte les</p>
-                  <span>
-                    <Link
-                      to="/politique"
-                      className="text-blue-600 hover:underline cursor-pointer"
-                      onClick={() => {
-                        setTermsOpened(true);
-                        setTouchedTerms(true);
-                      }}
-                      target="_blank"
-                      rel="noopener noreferrer"
+                  <div className="flex items-center gap-3">
+                    <div
+                      className={`grid h-10 w-10 place-items-center rounded-full text-sm font-bold ${
+                        currentStep === 1
+                          ? "bg-blue-600 text-white shadow-md"
+                          : "border border-slate-300 bg-white text-slate-500"
+                      }`}
                     >
-                      conditions d'utilisation
-                    </Link>
-                  </span>
+                      1
+                    </div>
+
+                    <div
+                      className={`h-1 w-12 rounded-full ${
+                        currentStep >= 2 ? "bg-blue-600" : "bg-slate-200"
+                      }`}
+                    />
+
+                    <div
+                      className={`grid h-10 w-10 place-items-center rounded-full text-sm font-bold ${
+                        currentStep === 2
+                          ? "bg-blue-600 text-white shadow-md"
+                          : "border border-slate-300 bg-white text-slate-500"
+                      }`}
+                    >
+                      2
+                    </div>
+                  </div>
                 </div>
               </div>
 
-              {/* Bouton */}
-              <Button type="submit" disabled={!acceptTerms}>
-                S'inscrire
-              </Button>
-              {/* Message de soumission */}
-              {submitMessage && (
-                <FormMessage
-                  message={submitMessage}
-                  type={Object.keys(errors).length === 0 ? "success" : "error"}
-                />
-              )}
-            </form>
+              <div className="max-h-[78vh] overflow-y-auto px-6 py-6">
+                {currentStep === 1 ? (
+                  <SignupStep1
+                    formStep1={formStep1}
+                    errors={errors}
+                    nonFieldErrors={nonFieldErrors}
+                    handleChangeStep1={handleChangeStep1}
+                    handleNextStep={handleNextStep}
+                    showPassword={showPassword}
+                    setShowPassword={setShowPassword}
+                    showConfirmPassword={showConfirmPassword}
+                    setShowConfirmPassword={setShowConfirmPassword}
+                    setEmailOtpStatus={setEmailOtpStatus}
+                    setEmailTicket={setEmailTicket}
+                    inputClass={inputClass}
+                    selectClass={selectClass}
+                    errorText={errorText}
+                    errorBase={errorBase}
+                    labelBase={labelBase}
+                  />
+                ) : (
+                  <SignupStep2
+                    formStep2={formStep2}
+                    errors={errors}
+                    nonFieldErrors={nonFieldErrors}
+                    handleChangeStep2={handleChangeStep2}
+                    handleSubmit={handleSubmit}
+                    handlePreviousStep={handlePreviousStep}
+                    inputClass={inputClass}
+                    selectClass={selectClass}
+                    errorText={errorText}
+                    errorBase={errorBase}
+                    labelBase={labelBase}
+                    showRecaptcha={showRecaptcha}
+                    recaptchaValid={recaptchaValid}
+                    acceptTerms={acceptTerms}
+                    setAcceptTerms={setAcceptTerms}
+                    handleTermsClick={handleTermsClick}
+                    handleRecaptchaSuccess={handleRecaptchaSuccess}
+                    isSubmitting={isSubmitting}
+                  />
+                )}
 
-            <p className=" text-center">
-              Vous avez déjà un compte ?{" "}
-              <Link
-                className="text-blue-600 font-medium ml-1 hover:underline"
-                to="/login"
-              >
-                Se connecter
-              </Link>
-            </p>
+                {hasGlobalErrors && (
+                  <div className="mt-6 rounded-2xl border border-amber-200 bg-amber-50 px-5 py-4 shadow-sm">
+                    <FormAlert errors={globalMessages} />
+                  </div>
+                )}
+
+                <style>{`
+                  @keyframes fadeIn {
+                    from {
+                      opacity: 0;
+                      transform: translateY(8px);
+                    }
+                    to {
+                      opacity: 1;
+                      transform: translateY(0);
+                    }
+                  }
+                `}</style>
+              </div>
+            </div>
+
+            {currentStep === 1 && (
+              <p className="mt-5 text-center text-xs text-slate-500">
+                En créant un compte, vous acceptez nos{" "}
+                <Link
+                  to="/politique"
+                  className="font-medium text-blue-700 hover:underline"
+                >
+                  conditions
+                </Link>
+                .
+              </p>
+            )}
           </div>
-        </div>
+        </main>
       </div>
     </div>
   );
-}
+};
 
 export default Signup;

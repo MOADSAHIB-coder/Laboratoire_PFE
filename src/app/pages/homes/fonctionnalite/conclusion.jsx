@@ -7,7 +7,7 @@ export default function Conclusion() {
       <h2 className="text-2xl text-white bg-blue-700 py-2 md:p-6 font-bold">
         Conclusion
       </h2>
-      <div className="p-4 hover:scale-105 transition-transform duration-300 text-justify">
+      <div className="p-4 hover:scale-105 transition-transform duration-300">
         <p className="p-4 text-justify">
           En résumé, la plateforme ESTD-LabTechNet constitue une solution
           complète pour l’apprentissage pratique des réseaux et des technologies

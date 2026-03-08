@@ -7,19 +7,21 @@ import ParametresEnseignant from "../pages/enseignant/parametres";
 import ProfilEnseignant from "../pages/enseignant/profil";
 import StatistiqueEnseignant from "../pages/enseignant/stats";
 import VoirTpEtudiants from "../pages/enseignant/tp_etudiant";
-
+import ProtectedRoute from "../auth/RouteProtect";
 
 function EnseignantRoute() {
   return (
     <Routes>
-      <Route path="/dashboard" element={<DashboardEnseignant />} />
-      <Route path="/mes-cours" element={<AjouterCours />} />
-      <Route path="/mes-travaux" element={<Ajoutertp />} />
-      <Route path="/tps-etudiant" element={<VoirTpEtudiants />} />
-      <Route path="/discussion" element={<DiscussionEnseignant />} />
-      <Route path="/statistique" element={<StatistiqueEnseignant />} />
-      <Route path="/parametres" element={<ParametresEnseignant />} />
-      <Route path="/profil" element={<ProfilEnseignant />} />
+      <Route element={<ProtectedRoute />}>
+        <Route path="/dashboard" element={<DashboardEnseignant />} />
+        <Route path="/mes-cours" element={<AjouterCours />} />
+        <Route path="/mes-travaux" element={<Ajoutertp />} />
+        <Route path="/tps-etudiant" element={<VoirTpEtudiants />} />
+        <Route path="/discussion" element={<DiscussionEnseignant />} />
+        <Route path="/statistique" element={<StatistiqueEnseignant />} />
+        <Route path="/parametres" element={<ParametresEnseignant />} />
+        <Route path="/profil" element={<ProfilEnseignant />} />
+      </Route>
     </Routes>
   );
 }
