@@ -7,7 +7,7 @@ import ParametresEnseignant from "../pages/enseignant/parametres";
 import ProfilEnseignant from "../pages/enseignant/profil";
 import StatistiqueEnseignant from "../pages/enseignant/stats";
 import VoirTpEtudiants from "../pages/enseignant/tp_etudiant";
-import ProtectedRoute from "../auth/RouteProtect";
+import ProtectedRoute from "../auth/RouteProtect"; //Protection des routes
 
 function EnseignantRoute() {
   return (

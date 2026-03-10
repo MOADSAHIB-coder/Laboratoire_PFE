@@ -5,6 +5,7 @@ import SignupPanel from "../components/component_Signup/SignupPanelGauche";
 import SignupStep1 from "../components/component_Signup/SignupEtape1";
 import SignupStep2 from "../components/component_Signup/SignupEtape2";
 import FormAlert from "../components/component_Signup/FormAlert";
+import { useNavigate } from "react-router-dom";
 
 import {
   validateBaseStep1,
@@ -30,6 +31,7 @@ const Signup = () => {
   const [showRecaptcha, setShowRecaptcha] = useState(false);
   const [recaptchaValid, setRecaptchaValid] = useState(false);
   const [acceptTerms, setAcceptTerms] = useState(false);
+  const navigate = useNavigate();
 
   const [formStep1, setFormStep1] = useState({
     firstName: "",
@@ -276,8 +278,8 @@ const Signup = () => {
       setSubmitSuccess(true);
 
       setTimeout(() => {
-        window.location.href = "/";
-      }, 800);
+        navigate("/etudiant/dashboard");
+      }, 3000);
     } catch (error) {
       const data = error?.response?.data;
 
@@ -342,7 +344,7 @@ const Signup = () => {
 
   if (submitSuccess) {
     return (
-      <div className="min-h-screen bg-[radial-gradient(circle_at_top,_rgba(37,99,235,0.08),_transparent_35%),linear-gradient(to_bottom,_#f8fafc,_#eef2ff_45%,_#f8fafc)] text-slate-900">
+      <div className="min-h-screen flex items-center justify-center bg-[radial-gradient(circle_at_top,_rgba(37,99,235,0.08),_transparent_35%),linear-gradient(to_bottom,_#f8fafc,_#eef2ff_45%,_#f8fafc)] px-4 text-slate-900">
         <div className="w-full max-w-md rounded-3xl border border-slate-200 bg-white p-10 text-center shadow-[0_20px_70px_rgba(15,23,42,0.08)]">
           <div className="mx-auto mb-5 flex h-20 w-20 items-center justify-center rounded-full bg-emerald-600 text-5xl text-white">
             ✓
@@ -459,7 +461,7 @@ const Signup = () => {
                 )}
 
                 {hasGlobalErrors && (
-                  <div className="mt-6 rounded-2xl border border-amber-200 bg-amber-50 px-5 py-4 shadow-sm">
+                  <div className="mt-8 rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700">
                     <FormAlert errors={globalMessages} />
                   </div>
                 )}

@@ -99,23 +99,22 @@ export const membres = [
   {
     nomPrenom: "MOAD SAHIB",
     statut: "Etudiant",
-    role: "Développeur",
-    description: "Travaille sur les fonctionnalités du projet.",
+
+    description: "En 2 ème année de Gestion des Résequx et Sécurité",
     photo: "/images/juste2.jpeg",
   },
   {
     nomPrenom: "MEME-LEKO Juste Glavany",
     statut: "Etudiant",
-    role: "Développeur",
-    description: "Participe à la conception et à l’implémentation.",
+
+    description: "En 2 ème année de Gestion des Résequx et Sécurité",
     photo: "/images/juste.jpeg",
   },
   {
     nomPrenom: "FRAH LOUBNA",
     statut: "Etudiante",
-    role: "Développeur",
-    description:
-      "Participe à la conception et à l’implémentation. Travaille sur les fonctionnalités du projet",
+
+    description: "En 2 ème année de Gestion des Résequx et Sécurité",
     photo: "/images/juste.jpeg",
   },
 ];

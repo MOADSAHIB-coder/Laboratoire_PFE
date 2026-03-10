@@ -11,6 +11,11 @@ import Home from "../pages/homes/Accueil/home";
 import ReinilialiserMotDePasse from "../auth/Forgot-password";
 import Signup from "../auth/Signup";
 import InscriptionProfesseur from "../auth/SignupEnseignant";
+import {
+  PageEspaceAdmin,
+  PageEspaceEtudiant,
+  PageEspaceEnseignant,
+} from "../pages/homes/fonctionnalite/rolesEspaces";
 
 function PublicRoutes() {
   return (
@@ -49,6 +54,9 @@ function PublicRoutes() {
       {/*A propos*/}
       <Route path="/apropos" element={<About />} />
       <Route path="/inscrit-prof" element={<InscriptionProfesseur />} />
+      <Route path="/espace-etudiant" element={<PageEspaceEtudiant />} />
+      <Route path="/espace-enseignant" element={<PageEspaceEnseignant />} />
+      <Route path="espace-admin" element={<PageEspaceAdmin />} />
     </Routes>
   );
 }

@@ -43,7 +43,7 @@ function About() {
         id="presentation"
         className="relative mx-auto max-w-screen-xl lg:mr-10 px-4"
       >
-        <div className="w-full max-w-2xl bg-white p-8 shadow-xl z-50 static mt-8 lg:absolute lg:-mt-[15vh] lg:right-0">
+        <div className="w-full max-w-2xl bg-white p-8 shadow-xl z-40 static mt-8 lg:absolute lg:-mt-[15vh] lg:right-0">
           <h2 className="text-xl md:text-xl lg:text-2xl font-bold text-blue-700">
             Présentation Générale
           </h2>

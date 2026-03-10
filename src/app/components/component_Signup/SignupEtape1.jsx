@@ -41,7 +41,7 @@ const SignupStep1 = ({
           </p>
         </div>
 
-        <section className="rounded-2xl border border-slate-200 bg-gradient-to-b from-white to-slate-50/80 p-6 shadow-[0_8px_30px_rgba(15,23,42,0.04)]">
+        <section className="rounded-2xl border bg-slate-50 p-6">
           <div className="mb-5 flex items-center gap-3">
             <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
               <User className="h-5 w-5" />
@@ -111,7 +111,7 @@ const SignupStep1 = ({
           </div>
         </section>
 
-        <section className="rounded-2xl border border-slate-200 bg-gradient-to-b from-white to-slate-50/80 p-6 shadow-[0_8px_30px_rgba(15,23,42,0.04)]">
+        <section className="rounded-2xl border  bg-slate-50 p-6 ">
           <div className="mb-5 flex items-center gap-3">
             <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
               <Mail className="h-5 w-5" />
@@ -151,7 +151,7 @@ const SignupStep1 = ({
           </div>
         </section>
 
-        <section className="rounded-2xl border border-slate-200 bg-gradient-to-b from-white to-slate-50/80 p-6 shadow-[0_8px_30px_rgba(15,23,42,0.04)]">
+        <section className="rounded-2xl border  bg-slate-50 p-6 ">
           <div className="mb-5 flex items-center gap-3">
             <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
               <GraduationCap className="h-5 w-5" />
@@ -211,7 +211,7 @@ const SignupStep1 = ({
           </div>
         </section>
 
-        <section className="rounded-2xl border border-slate-200 bg-gradient-to-b from-white to-slate-50/80 p-6 shadow-[0_8px_30px_rgba(15,23,42,0.04)]">
+        <section className="rounded-2xl border bg-slate-50 p-6">
           <div className="mb-5 flex items-center gap-3">
             <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
               <ShieldCheck className="h-5 w-5" />

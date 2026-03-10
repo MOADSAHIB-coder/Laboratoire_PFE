@@ -1,19 +1,13 @@
 import Card from "../../../components/contentHome/teamCard";
 
-import {
-  FaBook,
-  FaFlask,
-  FaNetworkWired,
-  FaRobot,
-  FaChartBar,
-  FaComments,
-} from "react-icons/fa";
+import { FaFlask, FaNetworkWired, FaRobot, FaChartBar } from "react-icons/fa";
+import { BookOpen, MessageSquare } from "lucide-react";
 
 // Liste des fonctionnalités affichées sous forme de cartes
 
 export const features = [
   {
-    icon: <FaBook className="text-blue-500 w-8 h-8" />,
+    icon: <BookOpen className="text-blue-500 w-8 h-8" />,
     title: "Accès aux cours et TPs",
     description: `Consultation des supports pédagogiques
 Téléchargement des cours et documents
@@ -53,7 +47,7 @@ Publication des résultats et commentaires`,
     href: "#suivi",
   },
   {
-    icon: <FaComments className="text-indigo-500 w-8 h-8" />,
+    icon: <MessageSquare className="text-indigo-500 w-8 h-8" />,
     title: "Échange et collaboration",
     description: `Espace de discussion étudiants–enseignants
 Partage d’idées et questions techniques

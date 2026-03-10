@@ -44,7 +44,7 @@ function Login() {
       const res = await api.post("etudiants/login/", { username, password });
       const { access, refresh } = res.data;
       setTokens(access, refresh);
-      navigate("/etudiant");
+      navigate("/etudiant/dashboard");
     } catch (err) {
       setError("Nom d'utilisateur ou mot de passe incorrect.");
     } finally {
