@@ -213,7 +213,7 @@ export default function FonctionnaliteSite() {
                       Service actif
                     </p>
 
-                    <h2 className="mt-2 text-3xl font-bold tracking-tight md:text-4xl">
+                    <h2 className="mt-2 p-2 text-3xl font-bold tracking-tight md:text-4xl">
                       {activeService.title}
                     </h2>
 

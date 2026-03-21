@@ -88,7 +88,7 @@ const Signup = () => {
       data?.errors && typeof data.errors === "object" ? data.errors : data;
 
     if (!payload || typeof payload !== "object") {
-      setNonFieldErrors(["Une erreur inattendue est survenue."]);
+      setNonFieldErrors(["Une erreur est survenue lors de l'inscription."]);
       return;
     }
 
@@ -278,15 +278,13 @@ const Signup = () => {
       setSubmitSuccess(true);
 
       setTimeout(() => {
-        navigate("/etudiant/dashboard");
+        navigate("/connexion/etudiant");
       }, 3000);
     } catch (error) {
       const data = error?.response?.data;
 
       if (!data) {
-        setNonFieldErrors([
-          "Impossible de contacter le serveur. Vérifiez que Django tourne et que CORS est configuré.",
-        ]);
+        setNonFieldErrors(["Impossible de contacter le serveur."]);
       } else {
         applyBackendErrors(data);
       }
@@ -355,8 +353,9 @@ const Signup = () => {
           </h1>
 
           <p className="leading-relaxed text-slate-600">
-            Votre profil a été créé avec succès. Un email de confirmation a été
-            envoyé à{" "}
+            Votre profil a été créé avec succès. Votre compte est en attente de
+            validation par l’administrateur. Vous pourrez vous connecter une
+            fois votre compte activé.
             <span className="font-semibold text-slate-900">
               {formStep1.email}
             </span>

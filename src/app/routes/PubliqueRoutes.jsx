@@ -16,6 +16,7 @@ import {
   PageEspaceEtudiant,
   PageEspaceEnseignant,
 } from "../pages/homes/fonctionnalite/rolesEspaces";
+import LoginRedirect from "../components/component_Signup/LoginRedirect";
 
 function PublicRoutes() {
   return (
@@ -25,8 +26,13 @@ function PublicRoutes() {
       {/* Routes pour la page d'inscription*/}
       <Route path="/signup" element={<Signup />} />
 
-      {/*Routes login */}
-      <Route path="/login" element={<Login />} />
+      {/* Route "générique" de login */}
+      <Route path="/login" element={<LoginRedirect />} />
+
+      {/* Tes 3 écrans de connexion */}
+      <Route path="/connexion/etudiant" element={<Login />} />
+      <Route path="/connexion/enseignant" element={<Login />} />
+      <Route path="/connexion/admin" element={<Login />} />
 
       {/*ReinitialiserPassword*/}
       <Route path="/forgot-pass" element={<ReinilialiserMotDePasse />} />
@@ -56,7 +62,7 @@ function PublicRoutes() {
       <Route path="/inscrit-prof" element={<InscriptionProfesseur />} />
       <Route path="/espace-etudiant" element={<PageEspaceEtudiant />} />
       <Route path="/espace-enseignant" element={<PageEspaceEnseignant />} />
-      <Route path="espace-admin" element={<PageEspaceAdmin />} />
+      <Route path="/espace-admin" element={<PageEspaceAdmin />} />
     </Routes>
   );
 }

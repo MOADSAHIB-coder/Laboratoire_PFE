@@ -134,12 +134,13 @@ function FooterHome() {
                   Consulter la FAQ
                 </Link>
               </div>
+
               <div className="mt-6">
                 <Link
-                  to="/inscrit-prof"
+                  to="/admin"
                   className="inline-block text-sm font-semibold text-blue-400 transition hover:text-blue-300 hover:underline"
                 >
-                  Inscription professeur
+                  Adminstrateur
                 </Link>
               </div>
             </div>

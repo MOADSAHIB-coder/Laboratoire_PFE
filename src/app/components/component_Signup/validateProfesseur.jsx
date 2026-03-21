@@ -5,14 +5,14 @@ export const validateProfesseurForm = (formData) => {
 
   if (!formData.nom.trim()) {
     newErrors.nom = "Le nom est requis";
-  } else if (formData.nom.trim().length < 2) {
-    newErrors.nom = "Le nom doit contenir au moins 2 caractères";
+  } else if (formData.nom.trim().length < 4) {
+    newErrors.nom = "Le nom doit contenir au moins 4 caractères";
   }
 
   if (!formData.prenom.trim()) {
     newErrors.prenom = "Le prénom est requis";
-  } else if (formData.prenom.trim().length < 2) {
-    newErrors.prenom = "Le prénom doit contenir au moins 2 caractères";
+  } else if (formData.prenom.trim().length < 4) {
+    newErrors.prenom = "Le prénom doit contenir au moins 4 caractères";
   }
 
   if (!formData.cin.trim()) {

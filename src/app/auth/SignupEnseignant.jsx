@@ -10,17 +10,11 @@ import {
   CheckCircle2,
 } from "lucide-react";
 
-import EmailOTP from "./email_opt";
 import api from "../api/API_Djando";
 import { validateProfesseurForm } from "../components/component_Signup/validateProfesseur";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 
-const GLOBAL_ERROR_KEYS = [
-  "general",
-  "email_ticket",
-  "non_field_errors",
-  "detail",
-];
+const GLOBAL_ERROR_KEYS = ["general", "non_field_errors", "detail"];
 
 function InscriptionProfesseur() {
   const initialFormData = {
@@ -38,8 +32,6 @@ function InscriptionProfesseur() {
 
   const [formData, setFormData] = useState(initialFormData);
   const [errors, setErrors] = useState({});
-  const [emailStatus, setEmailStatus] = useState("idle");
-  const [emailTicket, setEmailTicket] = useState(null);
   const [successMessage, setSuccessMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -60,16 +52,9 @@ function InscriptionProfesseur() {
       [name]: value,
     }));
 
+    // on efface seulement l'erreur liée à ce champ
     setErrors((prev) => {
       const next = { ...prev, [name]: "" };
-
-      if (name === "email") {
-        next.email = "";
-        next.email_ticket = "";
-        setEmailStatus("idle");
-        setEmailTicket(null);
-      }
-
       return next;
     });
 
@@ -79,8 +64,6 @@ function InscriptionProfesseur() {
   const resetFormOnly = () => {
     setFormData(initialFormData);
     setErrors({});
-    setEmailStatus("idle");
-    setEmailTicket(null);
     setLoading(false);
   };
 
@@ -101,7 +84,7 @@ function InscriptionProfesseur() {
         const nestedKey = Object.keys(value)[0];
         formattedErrors[key] = Array.isArray(value[nestedKey])
           ? value[nestedKey][0]
-          : "Erreur invalide";
+          : "Une erreur est survenue lors de l'inscription";
       } else {
         formattedErrors[key] = value;
       }
@@ -147,14 +130,6 @@ function InscriptionProfesseur() {
 
     if (!formData.email?.trim()) {
       validationErrors.email = "Veuillez saisir une adresse email.";
-    } else if (emailStatus !== "verified") {
-      validationErrors.email =
-        "Veuillez vérifier votre adresse email avec le code OTP.";
-    }
-
-    if (!emailTicket) {
-      validationErrors.email_ticket =
-        "La vérification de l'adresse email est requise avant l'inscription.";
     }
 
     setErrors(validationErrors);
@@ -163,7 +138,6 @@ function InscriptionProfesseur() {
 
     const payload = {
       ...formData,
-      email_ticket: emailTicket,
     };
 
     try {
@@ -233,7 +207,6 @@ function InscriptionProfesseur() {
 
                 <ul className="mt-4 space-y-3 text-sm leading-6 text-blue-50">
                   <li>• enregistrer un enseignant</li>
-
                   <li>• renseigner les informations professionnelles</li>
                   <li>• créer un compte enseignant sécurisé</li>
                 </ul>
@@ -336,14 +309,6 @@ function InscriptionProfesseur() {
                       />
                     </div>
                     {errorText("email")}
-
-                    <EmailOTP
-                      email={formData.email}
-                      onStatusChange={setEmailStatus}
-                      onTicket={setEmailTicket}
-                      sendUrl="enseignants/otp/send/"
-                      verifyUrl="enseignants/otp/verify/"
-                    />
                   </div>
 
                   <div>
@@ -476,13 +441,17 @@ function InscriptionProfesseur() {
                 <div className="rounded-2xl border border-blue-100 bg-blue-50 px-5 py-4">
                   <p className="text-sm leading-6 text-slate-600">
                     Le mot de passe doit respecter les règles de sécurité
-                    définies. L’adresse e-mail doit être validée avant
-                    l’enregistrement final.
+                    définies. Utilisez une adresse e-mail institutionnelle
+                    valide.
                   </p>
                 </div>
 
                 {globalErrors.length > 0 && (
-                  <div className="rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700"></div>
+                  <div className="rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700">
+                    {globalErrors.map((err, idx) => (
+                      <p key={idx}>{err}</p>
+                    ))}
+                  </div>
                 )}
 
                 <div className="flex flex-col-reverse gap-4 border-t border-slate-200 pt-8 sm:flex-row sm:items-center sm:justify-end">

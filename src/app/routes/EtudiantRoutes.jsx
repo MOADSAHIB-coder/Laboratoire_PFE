@@ -12,7 +12,7 @@ import ProtectedRoute from "../auth/RouteProtect"; //Protection des routes
 function EtudiantRoute() {
   return (
     <Routes>
-      <Route element={<ProtectedRoute />}>
+      <Route element={<ProtectedRoute allowedRoles={["etudiant"]} />}>
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/mes-cours" element={<MesCours />} />
         <Route path="/projets-devoirs" element={<Projets />} />

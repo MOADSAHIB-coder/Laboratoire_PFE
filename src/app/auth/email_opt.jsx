@@ -1,11 +1,11 @@
+// src/app/auth/email_opt.jsx
+
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { MailCheck, ShieldCheck, RotateCcw, Loader2 } from "lucide-react";
 import api from "../api/API_Djando";
 
-const OTP_LEN = 6;
-const RESEND_COOLDOWN = 60;
-const MAX_VERIFY_ATTEMPTS = 3;
-const HOME_PATH = "/";
+// ⚠️ Paramètres de sécurité globaux
+import { useSecuritySettings } from "../components/componentAdmin/useSecuritySettings";
 
 export default function EmailOTP({
   email,
@@ -14,6 +14,26 @@ export default function EmailOTP({
   sendUrl = "etudiants/otp/send/",
   verifyUrl = "etudiants/otp/verify/",
 }) {
+  // 6 chiffres pour le code OTP
+  const OTP_LEN = 6;
+  // Cooldown entre deux envois (UI uniquement)
+  const RESEND_COOLDOWN = 60;
+  const HOME_PATH = "/";
+  /*
+  =====================================================
+  PARAMÈTRES DE SÉCURITÉ (depuis SettingsContext)
+  =====================================================
+  */
+  const { otpValidityMinutes, otpMaxAttempts } = useSecuritySettings();
+  // otpValidityMinutes : durée pendant laquelle le code est valide (minutes)
+  // otpMaxAttempts     : limite tentatives OTP
+
+  /*
+  =====================================================
+  ÉTATS ORIGINAUX
+  =====================================================
+  */
+
   const isEmailValid = useMemo(() => {
     const v = (email || "").trim();
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
@@ -33,11 +53,22 @@ export default function EmailOTP({
   const [generalErrors, setGeneralErrors] = useState([]);
   const [verifyAttempts, setVerifyAttempts] = useState(0);
 
+  // Cooldown pour RENVOYER un code
   const [cooldown, setCooldown] = useState(0);
   const cooldownRef = useRef(null);
+
+  // ⚠️ NOUVEAU : durée de validité réelle du code OTP (en secondes)
+  const [otpRemainingSeconds, setOtpRemainingSeconds] = useState(0);
+  const otpTimerRef = useRef(null);
+
   const lastTriedOtpRef = useRef("");
   const autoVerifyTriggeredRef = useRef(false);
 
+  /*
+  =====================================================
+  RESET QUAND L'EMAIL CHANGE (GARDÉ)
+  =====================================================
+  */
   useEffect(() => {
     setStatus("idle");
     setOtp("");
@@ -50,16 +81,29 @@ export default function EmailOTP({
     lastTriedOtpRef.current = "";
     autoVerifyTriggeredRef.current = false;
 
+    // reset cooldown renvoi
     if (cooldownRef.current) {
       clearInterval(cooldownRef.current);
       cooldownRef.current = null;
     }
-
     setCooldown(0);
+
+    // reset timer de validité OTP
+    if (otpTimerRef.current) {
+      clearInterval(otpTimerRef.current);
+      otpTimerRef.current = null;
+    }
+    setOtpRemainingSeconds(0);
+
     onStatusChange?.("idle");
     onTicket?.(null);
   }, [email, onStatusChange, onTicket]);
 
+  /*
+  =====================================================
+  COOLDOWN RENVOI DE CODE (LOGIQUE ORIGINALE)
+  =====================================================
+  */
   useEffect(() => {
     if (cooldown <= 0) return;
     if (cooldownRef.current) return;
@@ -83,6 +127,39 @@ export default function EmailOTP({
     };
   }, [cooldown]);
 
+  /*
+  =====================================================
+  TIMER DE VALIDITÉ DU CODE OTP (NOUVEAU)
+  =====================================================
+  */
+  useEffect(() => {
+    if (otpRemainingSeconds <= 0) return;
+    if (otpTimerRef.current) return;
+
+    otpTimerRef.current = setInterval(() => {
+      setOtpRemainingSeconds((prev) => {
+        if (prev <= 1) {
+          clearInterval(otpTimerRef.current);
+          otpTimerRef.current = null;
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
+    return () => {
+      if (otpTimerRef.current) {
+        clearInterval(otpTimerRef.current);
+        otpTimerRef.current = null;
+      }
+    };
+  }, [otpRemainingSeconds]);
+
+  /*
+  =====================================================
+  PARSEUR D'ERREURS (ORIGINALE)
+  =====================================================
+  */
   const parseErrors = (data) => {
     const payload =
       data?.errors && typeof data.errors === "object" ? data.errors : data;
@@ -129,6 +206,11 @@ export default function EmailOTP({
     window.location.assign(HOME_PATH);
   };
 
+  /*
+  =====================================================
+  ENVOI DU CODE (ORIGINAL + démarrage timer OTP)
+  =====================================================
+  */
   const sendOtp = async () => {
     if (!isEmailValid) return;
     if (loadingVerify) return;
@@ -145,6 +227,13 @@ export default function EmailOTP({
     onTicket?.(null);
     onStatusChange?.("idle");
     setStatus("idle");
+
+    // reset timer de validité
+    if (otpTimerRef.current) {
+      clearInterval(otpTimerRef.current);
+      otpTimerRef.current = null;
+    }
+    setOtpRemainingSeconds(0);
 
     try {
       const res = await api.post(sendUrl, {
@@ -166,13 +255,17 @@ export default function EmailOTP({
       );
       setMessageType("info");
 
+      // démarre cooldown de renvoi (tjs 60s UI)
       startCooldown();
+
+      // démarre la durée de validité OTP réelle (paramètre admin)
+      setOtpRemainingSeconds(otpValidityMinutes * 60);
     } catch (err) {
       const { fieldErrors, nonField } = parseErrors(err?.response?.data);
 
       setMessageType("error");
       setMessage(
-        "L’envoi du code de vérification n’a pas pu être effectué pour le moment.",
+        "Une erreur est survenue,l’envoi du code de vérification n’a pas pu être effectué.",
       );
 
       setGeneralErrors(
@@ -185,18 +278,39 @@ export default function EmailOTP({
     }
   };
 
+  /*
+  =====================================================
+  RENVOI DU CODE (ORIGINAL)
+  =====================================================
+  */
   const resendOtp = async () => {
     if (loadingVerify) return;
     await sendOtp();
   };
 
+  /*
+  =====================================================
+  VÉRIFICATION DU CODE (ORIGINAL + otpMaxAttempts + otpValidity)
+  =====================================================
+  */
   const verifyOtp = useCallback(
     async (code) => {
       if (status !== "code_sent") return;
       if (loadingVerify) return;
       if (!code || code.length !== OTP_LEN) return;
       if (lastTriedOtpRef.current === code) return;
-      if (verifyAttempts >= MAX_VERIFY_ATTEMPTS) return;
+
+      // Limite de tentatives basée sur paramètre admin
+      if (verifyAttempts >= otpMaxAttempts) return;
+
+      // Expiration basée sur otpValidityMinutes
+      if (otpRemainingSeconds <= 0) {
+        const msg = "Le code a expiré. Veuillez demander un nouveau code.";
+        setMessageType("error");
+        setMessage(msg);
+        setCodeError(msg);
+        return;
+      }
 
       lastTriedOtpRef.current = code;
 
@@ -226,6 +340,13 @@ export default function EmailOTP({
           setCodeError("");
           setGeneralErrors([]);
           setVerifyAttempts(0);
+
+          // stoppe le timer OTP
+          if (otpTimerRef.current) {
+            clearInterval(otpTimerRef.current);
+            otpTimerRef.current = null;
+          }
+          setOtpRemainingSeconds(0);
         } else {
           const nextAttempts = verifyAttempts + 1;
           setVerifyAttempts(nextAttempts);
@@ -236,7 +357,7 @@ export default function EmailOTP({
           setMessage(errorMsg);
           setCodeError(errorMsg);
 
-          if (nextAttempts >= MAX_VERIFY_ATTEMPTS) {
+          if (nextAttempts >= otpMaxAttempts) {
             setGeneralErrors([
               "Nombre maximal de tentatives atteint. Redirection vers la page d’accueil...",
             ]);
@@ -253,20 +374,23 @@ export default function EmailOTP({
           nonField[0] ||
           "La vérification du code a échoué.";
 
+        setCooldown(0);
+        if (cooldownRef.current) {
+          clearInterval(cooldownRef.current);
+          cooldownRef.current = null;
+        }
+
         setVerifyAttempts(nextAttempts);
         setMessageType("error");
         setMessage(msg);
         setCodeError(msg);
         setGeneralErrors(
-          nextAttempts >= MAX_VERIFY_ATTEMPTS
-            ? [
-                ...nonField,
-                "Nombre maximal de tentatives atteint. Redirection vers la page d’accueil...",
-              ]
+          nextAttempts >= otpMaxAttempts
+            ? [...nonField, "Nombre maximal de tentatives atteint."]
             : nonField,
         );
 
-        if (nextAttempts >= MAX_VERIFY_ATTEMPTS) {
+        if (nextAttempts >= otpMaxAttempts) {
           setTimeout(() => {
             redirectToHome();
           }, 1200);
@@ -283,9 +407,16 @@ export default function EmailOTP({
       verifyUrl,
       status,
       verifyAttempts,
+      otpRemainingSeconds,
+      otpMaxAttempts,
     ],
   );
 
+  /*
+  =====================================================
+  AUTO-VERIFY (ORIGINAL)
+  =====================================================
+  */
   useEffect(() => {
     if (status !== "code_sent") return;
     if (otp.length !== OTP_LEN) {
@@ -301,12 +432,17 @@ export default function EmailOTP({
 
   if (!isEmailValid) return null;
 
+  /*
+  =====================================================
+  CONDITIONS DE RENVOI (ORIGINAL + otpMaxAttempts)
+  =====================================================
+  */
   const canResend =
     status === "code_sent" &&
     !loadingSend &&
     !loadingVerify &&
     cooldown === 0 &&
-    verifyAttempts < MAX_VERIFY_ATTEMPTS &&
+    verifyAttempts < otpMaxAttempts &&
     (remainingResends === null || remainingResends > 0);
 
   const messageStyles = {
@@ -315,6 +451,14 @@ export default function EmailOTP({
     error: "border-rose-200 bg-rose-50 text-rose-800",
   };
 
+  const otpMinutes = Math.floor(otpRemainingSeconds / 60);
+  const otpSeconds = otpRemainingSeconds % 60;
+
+  /*
+  =====================================================
+  RENDER (ORIGINAL + affichage durée OTP)
+  =====================================================
+  */
   return (
     <div className="mt-5 rounded-2xl border border-slate-200 bg-white shadow-sm">
       <div className="border-b border-slate-200 px-5 py-4">
@@ -413,8 +557,13 @@ export default function EmailOTP({
                   Entrez le code à 6 chiffres envoyé à votre adresse e-mail.
                 </p>
                 <p className="mt-1 text-xs text-slate-500">
-                  Tentatives de vérification : {verifyAttempts}/
-                  {MAX_VERIFY_ATTEMPTS}
+                  Tentatives de vérification : {verifyAttempts}/{otpMaxAttempts}
+                </p>
+                <p className="mt-1 text-xs text-slate-500">
+                  Durée de validité du code :{" "}
+                  {otpMinutes.toString().padStart(2, "0")}:
+                  {otpSeconds.toString().padStart(2, "0")} /{" "}
+                  {otpValidityMinutes} minutes
                 </p>
               </div>
 
@@ -458,9 +607,7 @@ export default function EmailOTP({
                   autoVerifyTriggeredRef.current = false;
                 }}
                 placeholder="••••••"
-                disabled={
-                  loadingVerify || verifyAttempts >= MAX_VERIFY_ATTEMPTS
-                }
+                disabled={loadingVerify || verifyAttempts >= otpMaxAttempts}
                 className={`w-full rounded-xl border px-4 py-3 text-center text-lg font-semibold tracking-[0.45em] shadow-sm outline-none transition ${
                   codeError
                     ? "border-rose-400 bg-rose-50 text-rose-700 focus:ring-4 focus:ring-rose-100"

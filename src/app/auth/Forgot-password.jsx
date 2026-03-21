@@ -32,16 +32,22 @@ function ReinilialiserMotDePasse() {
       );
       setEmail("");
     } catch (err) {
-      // même message pour sécurité
-      setMessage(
-        "Si ce compte existe, un lien de réinitialisation a été envoyé à votre e-mail.",
-      );
+      if (!err.response) {
+        // vrai problème de connexion au serveur
+        setError(
+          "Impossible de contacter le serveur. Vérifiez votre connexion ou réessayez plus tard.",
+        );
+      } else {
+        // pour sécurité, même message que si succès
+        setMessage(
+          "Si ce compte existe, un lien de réinitialisation a été envoyé à votre e-mail.",
+        );
+      }
       setEmail("");
     } finally {
       setIsSubmitting(false);
     }
   };
-
   return (
     <div className="min-h-screen bg-[#f9f8f6] text-gray-900">
       <div className="min-h-screen flex">
