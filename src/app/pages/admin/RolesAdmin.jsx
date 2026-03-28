@@ -3,6 +3,20 @@ import { ShieldCheck } from "lucide-react";
 
 import AdminLayout from "../../layouts/AdminLayout";
 
+const rolesData = [
+  {
+    id: 1,
+    role: "Administrateur",
+    description: "Gère l’ensemble de la plateforme.",
+    permissions: [
+      "Gérer les utilisateurs",
+      "Modifier les paramètres globaux",
+      "Accéder à tous les modules",
+    ],
+  },
+  // ajoute d’autres rôles ici si besoin
+];
+
 export default function RolesAdmin() {
   return (
     <AdminLayout>
@@ -18,8 +32,6 @@ export default function RolesAdmin() {
           </p>
         </div>
 
-        {/*
-
         <section className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
           {rolesData.map((role) => (
             <div
@@ -33,7 +45,7 @@ export default function RolesAdmin() {
                   {role.role}
                 </h2>
               </div>
-         
+
               <p className="mt-3 text-sm text-slate-500">{role.description}</p>
 
               <ul className="mt-4 space-y-2 text-sm text-slate-700">
@@ -44,7 +56,6 @@ export default function RolesAdmin() {
             </div>
           ))}
         </section>
-        */}
       </div>
     </AdminLayout>
   );

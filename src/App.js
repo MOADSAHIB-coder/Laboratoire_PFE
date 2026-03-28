@@ -15,7 +15,7 @@ import { useEffect } from "react";
 function AppInner() {
   const { getSetting } = useSettings();
 
-  // Exemple : titre du document basé sur "Nom de la plateforme"
+  // titre du document basé sur "Nom de la plateforme"
   const platformName =
     getSetting("general", "Nom de la plateforme") || "ESTD-LabTechNet";
 

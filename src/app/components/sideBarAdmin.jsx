@@ -1,9 +1,23 @@
 import { NavLink, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
+import { logout } from "../api/API_Djando";
+import { useAppearanceSettings } from "./componentAdmin/useAppearanceSettings";
 
 function SideBarAdmin({ menu }) {
   const location = useLocation();
   const [openMenu, setOpenMenu] = useState(null);
+
+  const { primaryColor } = useAppearanceSettings();
+
+  // map de la couleur principale vers une classe Tailwind
+  const primaryBgClass =
+    primaryColor === "Rouge"
+      ? "bg-red-600"
+      : primaryColor === "Vert"
+        ? "bg-green-600"
+        : primaryColor === "Violet"
+          ? "bg-violet-600"
+          : "bg-blue-600"; // défaut
 
   // Ouvrir automatiquement la section qui contient l’URL active
   useEffect(() => {
@@ -44,7 +58,7 @@ function SideBarAdmin({ menu }) {
               Espace admin
             </p>
             <p className="text-sm font-semibold text-slate-800">
-              Supervision & gestion
+              Supervision &amp; gestion
             </p>
           </div>
         </div>
@@ -76,7 +90,7 @@ function SideBarAdmin({ menu }) {
                     className={`flex h-9 w-9 items-center justify-center rounded-xl text-sm transition
                       ${
                         isOpen
-                          ? "bg-blue-600 text-white"
+                          ? `${primaryBgClass} text-white`
                           : "bg-blue-50 text-blue-600 group-hover:bg-blue-600 group-hover:text-white"
                       }`}
                   >
@@ -105,7 +119,7 @@ function SideBarAdmin({ menu }) {
                         className={`flex h-9 w-9 items-center justify-center rounded-xl text-sm transition
                           ${
                             isActive
-                              ? "bg-blue-600 text-white"
+                              ? `${primaryBgClass} text-white`
                               : "bg-blue-50 text-blue-600 group-hover:bg-blue-600 group-hover:text-white"
                           }`}
                       >
@@ -173,12 +187,23 @@ function SideBarAdmin({ menu }) {
 
         {/* Déconnexion */}
         <div className="px-4 pb-4 pt-3 border-t border-slate-100">
-          <NavLink
-            to="/"
-            className="flex items-center justify-center gap-2 rounded-2xl border border-red-100 bg-red-50/80 px-4 py-2.5 text-sm font-semibold text-red-700 hover:bg-red-100 hover:border-red-200 transition"
+          <button
+            onClick={logout}
+            className="flex items-center py-2 sm:py-3 px-4 sm:px-6 rounded-lg cursor-pointer text-red-600 transition-colors duration-200 gap-3 sm:gap-4 hover:bg-red-100 hover:text-red-700"
           >
-            Déconnexion
-          </NavLink>
+            <span className="text-sm sm:text-base">Déconnexion</span>
+          </button>
+          <button
+            onClick={logout}
+            className="flex items-center py-2 sm:py-3 px-4 sm:px-6 rounded-lg cursor-pointer text-gray-700 transition-colors duration-200 gap-3 sm:gap-4 hover:bg-blue-100 hover:text-blue-600 hover:font-bold"
+          >
+            <img
+              src="/icons/profil.png"
+              alt=""
+              className="w-4 h-4 sm:w-5 sm:h-5"
+            />
+            <span className="text-sm sm:text-base">Profil</span>
+          </button>
         </div>
       </div>
     </aside>

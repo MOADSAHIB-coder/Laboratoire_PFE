@@ -39,6 +39,9 @@ function Login() {
   // NOUVEAU : nombre de tentatives de connexion sur cette session de page
   const [loginAttempts, setLoginAttempts] = useState(0);
 
+  //bloc de message special
+  const [specialError, setSpecialError] = useState("");
+
   /*
   =====================================================
   HOOKS DE NAVIGATION
@@ -181,6 +184,17 @@ function Login() {
 
       const { access, refresh, user } = res.data;
 
+      //Vérification statut côté FRONT (en plus du backend)
+      if (user && user.role === "etudiant" && user.statut !== "actif") {
+        setSpecialError(
+          "Votre compte n'a pas encore été validé par l'administrateur. Vous ne pouvez pas vous connecter pour le moment.",
+        );
+        setError(""); // on vide le message générique
+        setSubmitMessage(""); // on vide les messages info
+        setIsSubmitting(false);
+        return;
+      }
+
       // stocker les tokens (ta fonction setTokens s'en occupe)
       setTokens(access, refresh);
 
@@ -209,17 +223,28 @@ function Login() {
     } catch (err) {
       const status = err.response?.status;
 
-      //En cas d'échec, on incrémente le compteur de tentatives
+      // En cas d'échec, on incrémente le compteur de tentatives
       setLoginAttempts((prev) => prev + 1);
 
       if (!err.response) {
         setError(
           "Impossible de contacter le serveur. Vérifiez votre connexion et réessayez.",
         );
+      } else if (
+        status === 403 &&
+        loginConfig.endpoint === "etudiants/login/"
+      ) {
+        // 403 sur /etudiants/login/ => on considère que le compte n'est pas activé / pas autorisé
+        setSpecialError(
+          "Votre compte n'est pas encore activé . Vous ne pouvez pas vous connecter pour le moment.",
+        );
+        setError("");
+        setSubmitMessage("");
       } else if (status === 400 || status === 401 || status === 403) {
+        // autres 400/401/403 => simple erreur d'identifiants
         setError("Nom d'utilisateur ou mot de passe incorrect.");
       } else if (status === 429) {
-        // Si le backend renvoie 429 quand il bloque un compte
+        // Si un jour tu utilises 429 pour autre chose
         setError("Trop de tentatives. Votre compte est temporairement bloqué.");
       } else if (status >= 500) {
         setError(
@@ -369,16 +394,19 @@ function Login() {
               {/* =====================================================
                   MESSAGES D'ERREUR / INFO
               ===================================================== */}
-              {(submitMessage || error) && (
+
+              {(specialError || error || submitMessage) && (
                 <div
                   className={[
                     "mb-5 rounded-xl border p-4 text-sm",
-                    error
-                      ? "border-red-200 bg-red-50 text-red-700"
-                      : "border-blue-200 bg-blue-50 text-blue-700",
+                    specialError
+                      ? "border-red-300 bg-red-100 text-red-800" // message compte non actif = très visible
+                      : error
+                        ? "border-red-200 bg-red-50 text-red-700" // erreurs classiques
+                        : "border-blue-200 bg-blue-50 text-blue-700", // infos (submitMessage)
                   ].join(" ")}
                 >
-                  {error || submitMessage}
+                  {specialError || error || submitMessage}
                 </div>
               )}
 

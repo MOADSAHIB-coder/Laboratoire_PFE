@@ -1,6 +1,6 @@
 // ContactezNous.jsx
-import Input from "../../../components/componentLongin/InputForm";
 import { useState } from "react";
+import Input from "../../../components/componentLongin/InputForm";
 import {
   filieres,
   niveaux,
@@ -8,6 +8,9 @@ import {
 } from "../../../components/componentLongin/ButonForm";
 import { BsExclamationCircleFill } from "react-icons/bs";
 import { FormMessage } from "../../../components/componentLongin/MessageForm";
+
+// IMPORT de ton axios configuré
+import api from "../../../api/API_Djando";
 
 function ContactezNous() {
   const [form, setForm] = useState({
@@ -25,6 +28,7 @@ function ContactezNous() {
   const [submitMessage, setSubmitMessage] = useState("");
   const [errors, setErrors] = useState({});
   const [submitType, setSubmitType] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false); // <-- AJOUT
 
   const inputClass = (field) =>
     `focus:outline-none focus:ring-0 border-b-2 ${
@@ -35,7 +39,6 @@ function ContactezNous() {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
 
-    // Supprimer l'erreur si champ corrigé
     setErrors((prev) => {
       const newErrors = { ...prev };
       if (value.trim() !== "") delete newErrors[name];
@@ -43,10 +46,11 @@ function ContactezNous() {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const newErrors = {};
 
+    // --- VALIDATION FRONT ---
     if (!form.nom) newErrors.nom = "Votre nom est obligatoire";
     if (!form.prenom) newErrors.prenom = "Votre prénom est obligatoire";
     if (!form.email) newErrors.email = "Veuillez saisir votre adresse e-mail";
@@ -68,28 +72,55 @@ function ContactezNous() {
       return;
     }
 
-    console.log("Formulaire soumis:", form);
-    setSubmitMessage("Votre message a été envoyé avec succès !");
-    setSubmitType("success");
+    // --- ENVOI AU BACKEND ---
+    setIsSubmitting(true);
+    setSubmitMessage("");
+    setSubmitType("");
 
-    setTimeout(() => {
-      setSubmitMessage("");
-      setSubmitType("");
-    }, 5000);
+    try {
+      // ATTENTION : baseURL = "http://127.0.0.1:8000/api/"
+      // donc ici il faut mettre seulement "etudiants/contactez-nous/"
+      await api.post("etudiants/contactez-nous/", form);
 
-    setForm({
-      nom: "",
-      prenom: "",
-      email: "",
-      filiere: "",
-      niveau: "",
-      cin: "",
-      telephone: "",
-      sujet: "",
-      message: "",
-    });
+      setSubmitMessage("Votre message a été envoyé avec succès !");
+      setSubmitType("success");
 
-    setErrors({});
+      setForm({
+        nom: "",
+        prenom: "",
+        email: "",
+        filiere: "",
+        niveau: "",
+        cin: "",
+        telephone: "",
+        sujet: "",
+        message: "",
+      });
+      setErrors({});
+    } catch (err) {
+      const status = err.response?.status;
+
+      if (!err.response) {
+        setSubmitMessage(
+          "Impossible de contacter le serveur. Vérifiez votre connexion et réessayez.",
+        );
+      } else if (status >= 500) {
+        setSubmitMessage(
+          "Le serveur rencontre un problème. Veuillez réessayer plus tard.",
+        );
+      } else {
+        const backendMsg =
+          err.response.data?.detail ||
+          err.response.data?.message ||
+          err.response.data?.error ||
+          "Votre message n'a pas pu être envoyé. Veuillez réessayer.";
+        setSubmitMessage(backendMsg);
+      }
+
+      setSubmitType("error");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -196,7 +227,6 @@ function ContactezNous() {
                 onChange={handleChange}
                 errors={errors.filiere}
                 options={filieres}
-                
               ></Select>
               {errors.filiere && (
                 <div className="flex items-center mt-1 text-red-500 gap-1">
@@ -216,7 +246,6 @@ function ContactezNous() {
                 onChange={handleChange}
                 errors={errors.niveau}
                 options={niveaux}
-                
               />
               {errors.niveau && (
                 <div className="flex items-center mt-1 text-red-500 gap-1">
@@ -293,9 +322,12 @@ function ContactezNous() {
           <div className="text-center">
             <button
               type="submit"
-              className="px-6 md:px-10 md:4 py-2 bg-blue-700 text-white rounded-md hover:bg-blue-800 transition-colors"
+              disabled={isSubmitting}
+              className={`px-6 md:px-10 md:4 py-2 bg-blue-700 text-white rounded-md hover:bg-blue-800 transition-colors ${
+                isSubmitting ? "opacity-60 cursor-not-allowed" : ""
+              }`}
             >
-              Envoyer
+              {isSubmitting ? "Envoi en cours..." : "Envoyer"}
             </button>
           </div>
         </form>

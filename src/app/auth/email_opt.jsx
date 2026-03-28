@@ -4,7 +4,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { MailCheck, ShieldCheck, RotateCcw, Loader2 } from "lucide-react";
 import api from "../api/API_Djando";
 
-// ⚠️ Paramètres de sécurité globaux
+// Paramètres de sécurité globaux
 import { useSecuritySettings } from "../components/componentAdmin/useSecuritySettings";
 
 export default function EmailOTP({
@@ -19,6 +19,8 @@ export default function EmailOTP({
   // Cooldown entre deux envois (UI uniquement)
   const RESEND_COOLDOWN = 60;
   const HOME_PATH = "/";
+
+
   /*
   =====================================================
   PARAMÈTRES DE SÉCURITÉ (depuis SettingsContext)
@@ -57,7 +59,7 @@ export default function EmailOTP({
   const [cooldown, setCooldown] = useState(0);
   const cooldownRef = useRef(null);
 
-  // ⚠️ NOUVEAU : durée de validité réelle du code OTP (en secondes)
+  //  durée de validité réelle du code OTP (en secondes)
   const [otpRemainingSeconds, setOtpRemainingSeconds] = useState(0);
   const otpTimerRef = useRef(null);
 

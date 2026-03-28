@@ -37,19 +37,27 @@ function DropdownMenu() {
       </button>
 
       {isOpen && (
-        <div className="absolute top-full left-1/2 -translate-x-1/2 w-screen bg-white/95 backdrop-blur-md shadow-2xl border-t border-gray-200 z-50">
-          <div className="max-w-7xl mx-auto px-8 py-12">
-            <div className="grid grid-cols-2 gap-24 place-items-center">
+        <div
+          className="
+            absolute top-full left-1/2 -translate-x-1/2 
+            w-screen bg-white/95 backdrop-blur-md shadow-2xl 
+            border-t border-gray-200 z-50
+          "
+        >
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+            {/* sur mobile: 1 colonne, à partir de md: 2 colonnes */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-24 place-items-center">
+              {/* Étudiant */}
               <div className="w-full max-w-sm text-center">
                 <Link
                   to="/etudiant/dashboard"
-                  className="inline-block text-2xl font-semibold tracking-wide text-gray-900 hover:text-blue-600 transition"
+                  className="inline-block text-xl sm:text-2xl font-semibold tracking-wide text-gray-900 hover:text-blue-600 transition"
                 >
                   Étudiant
                 </Link>
-                <div className="mt-3 mb-6 h-[2px] w-24 bg-blue-500 mx-auto rounded-full"></div>
+                <div className="mt-3 mb-6 h-[2px] w-16 sm:w-24 bg-blue-500 mx-auto rounded-full" />
 
-                <ul className="space-y-4">
+                <ul className="space-y-3 sm:space-y-4 text-sm sm:text-base">
                   {etudiantLinks.map((item) => (
                     <li key={item.name}>
                       <Link
@@ -63,16 +71,17 @@ function DropdownMenu() {
                 </ul>
               </div>
 
-              <div className="w-full max-w-sm text-center">
+              {/* Enseignant */}
+              <div className="w-full max-w-sm text-center mt-8 md:mt-0">
                 <Link
                   to="/enseignant/dashboard"
-                  className="inline-block text-2xl font-semibold tracking-wide text-gray-900 hover:text-blue-600 transition"
+                  className="inline-block text-xl sm:text-2xl font-semibold tracking-wide text-gray-900 hover:text-blue-600 transition"
                 >
                   Enseignant
                 </Link>
-                <div className="mt-3 mb-6 h-[2px] w-24 bg-blue-500 mx-auto rounded-full"></div>
+                <div className="mt-3 mb-6 h-[2px] w-16 sm:w-24 bg-blue-500 mx-auto rounded-full" />
 
-                <ul className="space-y-4">
+                <ul className="space-y-3 sm:space-y-4 text-sm sm:text-base">
                   {enseignantLinks.map((item) => (
                     <li key={item.name}>
                       <Link

@@ -1,5 +1,6 @@
 import { NavLink } from "react-router-dom";
 import { MdDashboard } from "react-icons/md";
+import { logout } from "../api/API_Djando";
 
 function SideBar({
   val1,
@@ -119,23 +120,20 @@ function SideBar({
           <span className="text-sm sm:text-base">Parametres</span>
         </NavLink>
 
-        <NavLink
-          to={link8}
-          className={({
-            isActive,
-          }) => `flex items-center py-2 sm:py-3 px-4 sm:px-6 rounded-lg cursor-pointer text-gray-700 transition-colors duration-200 gap-3 sm:gap-4 
-            ${isActive ? "bg-blue-100 text-blue-600" : "hover:bg-blue-100 hover:text-blue-600 hover:font-bold"}`}
+        <button
+          onClick={logout} // appelle la fonction logout
+          className="flex items-center py-2 sm:py-3 px-4 sm:px-6 rounded-lg cursor-pointer text-gray-700 transition-colors duration-200 gap-3 sm:gap-4 hover:bg-blue-100 hover:text-blue-600 hover:font-bold"
         >
           <img
             src="/icons/profil.png"
             alt=""
             className="w-4 h-4 sm:w-5 sm:h-5"
           />
-          <span className="text-sm sm:text-base">Pofil</span>
-        </NavLink>
+          <span className="text-sm sm:text-base">Profil</span>
+        </button>
 
         <NavLink
-          to="/"
+          to={logout}
           className="flex items-center py-3 px-6 rounded-lg cursor-pointer text-red-700 hover:bg-blue-100 hover:text-blue-600 transition-all duration-200 ease-in-out gap-4 shadow-sm mt-auto"
         >
           <span className="text-sm sm:text-base">Déconnexion</span>

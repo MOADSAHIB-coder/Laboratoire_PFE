@@ -202,7 +202,6 @@ const SignupStep1 = ({
                 <option value="">Sélectionnez un niveau</option>
                 <option value="bac+1">Bac+1</option>
                 <option value="bac+2">Bac+2</option>
-                <option value="bac+3">Bac+3</option>
               </select>
               {errorText("niveau") && (
                 <p className={errorBase}>{errorText("niveau")}</p>

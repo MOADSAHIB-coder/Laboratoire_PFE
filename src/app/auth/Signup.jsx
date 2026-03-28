@@ -367,8 +367,8 @@ const Signup = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-50 via-white to-slate-100 text-slate-900">
-      <div className="min-h-screen flex">
+    <div className="min-h-screen bg-gradient-to-b  from-slate-50 via-white to-slate-100 text-slate-900">
+      <div className="min-h-screen  flex">
         <SignupPanel />
 
         <main className="flex w-full items-center justify-center px-4 py-10 lg:w-[920px]">

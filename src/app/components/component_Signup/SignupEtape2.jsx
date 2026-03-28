@@ -210,9 +210,9 @@ const SignupStep2 = ({
                 onChange={handleChangeStep2}
               >
                 <option value="">Sélectionner</option>
-                <option value="2024-2025">2026-2027</option>
-                <option value="2025-2026">2027-2028</option>
-                <option value="2026-2027">2028-2029</option>
+                <option value="2026-2027">2026-2027</option>
+                <option value="2027-2028">2027-2028</option>
+                <option value="2028-2029">2028-2029</option>
               </select>
               {errorText("annee_universitaire") && (
                 <span className={errorBase}>

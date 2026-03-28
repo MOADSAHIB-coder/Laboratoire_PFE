@@ -10,6 +10,12 @@ import SecondaryCards from "../../components/componentAdmin/SecondaryCards";
 import LoginHistoryTable from "../../components/componentAdmin/LoginHistoryTable";
 import NotificationsPanel from "../../components/componentAdmin/NotificationsPanel";
 
+// <<< AJOUT : import de la barre de notification globale
+import {
+  NotificationBar,
+  useNotification,
+} from "../../components/componentAdmin/notificat";
+
 const SOCKET_MESSAGE_TYPES = {
   NEW_ACTIVITY: "new_activity",
   STATS_UPDATED: "stats_updated",
@@ -19,6 +25,7 @@ const SOCKET_MESSAGE_TYPES = {
   COURSES_TYPE_UPDATED: "courses_type_updated",
   TOP_TP_UPDATED: "top_tp_updated",
   STATUS_UPDATED: "status_updated",
+  NEW_NOTIFICATION: "new_notification",
 };
 
 export default function DashboardAdmin() {
@@ -44,6 +51,10 @@ export default function DashboardAdmin() {
     messagesCount: 0,
   });
 
+  // <<< AJOUT : hook de notification globale
+  const { notificationState, notification, clearNotification } =
+    useNotification();
+
   const wsToken = localStorage.getItem("access_token");
 
   useEffect(() => {
@@ -68,7 +79,7 @@ export default function DashboardAdmin() {
           onlineUsers: data.onlineUsers || prev.onlineUsers,
           loginHistory: data.loginHistory || prev.loginHistory,
           notifications: data.notifications || prev.notifications,
-          messagesCount: data.messages_count ?? prev.messagesCount ?? 0, // adapte au champ réel
+          messagesCount: data.messages_count ?? prev.messagesCount ?? 0,
         }));
       } catch (error) {
         console.error("Erreur chargement dashboard :", error);
@@ -77,38 +88,78 @@ export default function DashboardAdmin() {
     loadDashboard();
   }, []);
 
-  const handleSocketMessage = useCallback((message) => {
-    setDashboardData((prev) => {
-      switch (message.type) {
-        case SOCKET_MESSAGE_TYPES.NEW_ACTIVITY:
-          return {
-            ...prev,
-            recentActivities: [
-              message.payload,
-              ...(prev.recentActivities || []),
-            ].slice(0, 10),
-          };
-        case SOCKET_MESSAGE_TYPES.STATS_UPDATED: {
-          const payload = message.payload || {};
-          setStats((prevStats) =>
-            prevStats.map((stat) => ({
-              ...stat,
-              value: payload[stat.id] ?? stat.value,
-            })),
-          );
-          return prev;
+  const handleSocketMessage = useCallback(
+    (message) => {
+      setDashboardData((prev) => {
+        switch (message.type) {
+          case SOCKET_MESSAGE_TYPES.NEW_ACTIVITY:
+            return {
+              ...prev,
+              recentActivities: [
+                message.payload,
+                ...(prev.recentActivities || []),
+              ].slice(0, 10),
+            };
+
+          case SOCKET_MESSAGE_TYPES.STATS_UPDATED: {
+            const payload = message.payload || {};
+            setStats((prevStats) =>
+              prevStats.map((stat) => ({
+                ...stat,
+                value: payload[stat.id] ?? stat.value,
+              })),
+            );
+            return prev;
+          }
+
+          case SOCKET_MESSAGE_TYPES.SUMMARY_UPDATED:
+            return { ...prev, summary: message.payload };
+
+          case SOCKET_MESSAGE_TYPES.ACTIVITY_CHART_UPDATED:
+            return { ...prev, activityChartData: message.payload };
+
+          case SOCKET_MESSAGE_TYPES.STATUS_UPDATED:
+            return { ...prev, status: message.payload };
+
+          // <<< AJOUT : gestion des notifications temps réel
+          case SOCKET_MESSAGE_TYPES.NEW_NOTIFICATION: {
+            const notif = message.payload;
+            const newNotifications = [notif, ...(prev.notifications || [])];
+
+            // Choix du type de barre (couleur) selon la catégorie
+            let barType = "info";
+            if (notif.category === "security") {
+              barType = "error";
+            } else if (notif.category === "system") {
+              barType = "error";
+            } else if (notif.category === "user_activity") {
+              barType = "success";
+            }
+
+            const barMessage =
+              notif.title ||
+              (notif.category === "security"
+                ? "Nouvelle alerte de sécurité."
+                : notif.category === "system"
+                  ? "Nouvelle alerte système."
+                  : "Nouvelle activité utilisateur.");
+
+            // Affiche la barre en haut
+            notification(barType, barMessage);
+
+            return {
+              ...prev,
+              notifications: newNotifications,
+            };
+          }
+
+          default:
+            return prev;
         }
-        case SOCKET_MESSAGE_TYPES.SUMMARY_UPDATED:
-          return { ...prev, summary: message.payload };
-        case SOCKET_MESSAGE_TYPES.ACTIVITY_CHART_UPDATED:
-          return { ...prev, activityChartData: message.payload };
-        case SOCKET_MESSAGE_TYPES.STATUS_UPDATED:
-          return { ...prev, status: message.payload };
-        default:
-          return prev;
-      }
-    });
-  }, []);
+      });
+    },
+    [notification],
+  );
 
   const protocol = window.location.protocol === "https:" ? "wss" : "ws";
   const host = window.location.host;
@@ -150,6 +201,15 @@ export default function DashboardAdmin() {
   return (
     <AdminLayout>
       <div className="p-4 md:p-5 flex flex-col gap-6 md:gap-8 bg-gray-50 min-h-screen">
+        {/* Barre d’alerte globale */}
+        <div className="max-w-6xl mx-auto w-full">
+          <NotificationBar
+            type={notificationState.type}
+            message={notificationState.message}
+            onClose={clearNotification}
+          />
+        </div>
+
         {/* Carte bienvenue */}
         <div className="bg-white rounded-2xl shadow-md p-4 md:p-6 flex flex-col md:flex-row md:items-center md:justify-between border border-slate-100">
           <div>
@@ -186,7 +246,7 @@ export default function DashboardAdmin() {
           messagesCount={messagesCount}
         />
 
-        {/* Notifications style WhatsApp */}
+        {/* Notifications*/}
         <NotificationsPanel
           notifications={notifications}
           onNotificationRead={handleNotificationRead}
